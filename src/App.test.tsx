@@ -1,4 +1,4 @@
-import { getByText, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from 'App';
 import React from 'react';
 
@@ -8,11 +8,8 @@ describe('App component', () => {
   });
 
   it('should catch and handle errors', () => {
-
     render(<App throwError={true} />);
-
-    //expect(getByText('Seems like we have an error!')).toBeInTheDocument();
-
+    let label = screen.getByText('Something went wrong');
+    expect(label).toBeInTheDocument();
   });
-
 });
