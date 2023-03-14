@@ -1,12 +1,20 @@
-import App from '../App';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AppState from '../appstate';
 
-class RootLayout extends React.Component<object, AppState> {
+interface WrapperProps {
+  children: React.ReactNode;
+}
+
+class RootLayout extends React.Component<WrapperProps, AppState> {
   render(): React.ReactNode {
     return (
       <>
-        <div>Tis a root page</div>
+        <h1>Uber page</h1>
+        <Link to="/">Main</Link>
+        <Link to="/about">About us</Link>
+        <div>{this.props.children}</div>
+        Footer goes here
       </>
     );
   }

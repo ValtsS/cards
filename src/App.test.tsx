@@ -9,7 +9,7 @@ describe('App component', () => {
 
   it('should catch and handle errors', () => {
     render(<App throwError={true} />);
-    let label = screen.getByText('Something went wrong');
+    const label = screen.getByText('Something went wrong');
     expect(label).toBeInTheDocument();
   });
 });

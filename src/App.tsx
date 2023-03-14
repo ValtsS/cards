@@ -5,6 +5,8 @@ import ErrorPage from './routes/error-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ThrowsError from './components/throws-error';
 import RootLayout from './routes/root-layout';
+import AboutPage from './components/about-page';
+import MainPage from './components/main-page';
 
 interface AppProps {
   throwError?: boolean;
@@ -38,7 +40,30 @@ class App extends React.Component<AppProps, AppState> {
       <>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={this.state.throwError ? <ThrowsError /> : <RootLayout />} />
+            <Route
+              path="/"
+              element={
+                this.state.throwError ? (
+                  <ThrowsError />
+                ) : (
+                  <RootLayout>
+                    <MainPage />
+                  </RootLayout>
+                )
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                this.state.throwError ? (
+                  <ThrowsError />
+                ) : (
+                  <RootLayout>
+                    <AboutPage />
+                  </RootLayout>
+                )
+              }
+            />
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>
