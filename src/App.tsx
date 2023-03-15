@@ -64,7 +64,6 @@ class App extends React.Component<AppProps, AppState> {
                 )
               }
             />
-
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>
