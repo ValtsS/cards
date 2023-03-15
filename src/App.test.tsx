@@ -8,8 +8,17 @@ describe('App component', () => {
   });
 
   it('should catch and handle errors', () => {
-    render(<App throwError={true} />);
-    const label = screen.getByText('Something went wrong');
-    expect(label).toBeInTheDocument();
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      render(<App throwError={true} />);
+    } catch {
+      const errorLabel = screen.getByText(/Something went wrong/i);
+      expect(errorLabel).toBeInTheDocument();
+    }
+
+    expect(spy).toHaveBeenCalledWith('error caught:', new Error('Something went wrong!!'));
+
+    spy.mockRestore();
   });
 });

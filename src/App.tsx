@@ -24,7 +24,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidCatch(error: Error) {
-    console.log(error);
+    console.error('error caught:', error);
     this.setState({
       hasError: true,
       error: error,
@@ -64,6 +64,7 @@ class App extends React.Component<AppProps, AppState> {
                 )
               }
             />
+
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>
