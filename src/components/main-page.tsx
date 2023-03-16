@@ -1,20 +1,19 @@
 import React from 'react';
 import SearchBar from './searchbar';
+import MainPageState from './states';
 
 class MainPage extends React.Component<null, MainPageState> {
   constructor(props: null) {
     super(props);
 
-    const initialState: MainPageState = {
-      searchstring: '123',
-    };
+    const initialState: MainPageState = {};
 
     this.state = initialState;
   }
 
-  handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleQueryChange = (searchQuery: string) => {
     this.setState(() => ({
-      searchstring: event.target.value,
+      searchstring: searchQuery,
     }));
   };
 
@@ -30,7 +29,7 @@ class MainPage extends React.Component<null, MainPageState> {
         {' '}
         !!!!!!!!
         <SearchBar
-          query={this.state.searchstring}
+          id={'bar01'}
           onQueryChange={this.handleQueryChange}
           onSearch={this.handleSearch}
         />
