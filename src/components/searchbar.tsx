@@ -13,12 +13,15 @@ interface LocalSearchState {
 class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   constructor(props: SearchProps) {
     super(props);
-
     const initialState: LocalSearchState = {
-      lastquery: '',
+      lastquery: this.getLastValue(),
     };
 
     this.state = initialState;
+  }
+
+  getLastValue(): string {
+    return localStorage.getItem(this.getKey()) ?? '';
   }
 
   getKey(): string {
@@ -27,7 +30,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
 
   componentDidMount() {
     this.setState({
-      lastquery: localStorage.getItem(this.getKey()) ?? '',
+      lastquery: this.getLastValue(),
     });
   }
 
