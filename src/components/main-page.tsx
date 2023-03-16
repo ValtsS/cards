@@ -1,17 +1,19 @@
 import React from 'react';
 import SearchBar from './searchbar';
 
-class MainPage extends React.Component<object, MainPageState> {
-  constructor(props: object, _state: MainPageState) {
+class MainPage extends React.Component<null, MainPageState> {
+  constructor(props: null) {
     super(props);
 
-    this.state = {
+    const initialState: MainPageState = {
       searchstring: '123',
     };
+
+    this.state = initialState;
   }
 
   handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState((prevState) => ({
+    this.setState(() => ({
       searchstring: event.target.value,
     }));
   };
