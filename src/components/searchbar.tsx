@@ -4,7 +4,7 @@ interface SearchProps {
   id: string;
   onQueryChange: (searchQuery: string) => void;
   onSearch: () => void;
-  testId?:string;
+  testId?: string;
 }
 
 interface LocalSearchState {
@@ -50,7 +50,12 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   render() {
     return (
       <div>
-        <input type="text" value={this.state.lastquery} onChange={this.handleQueryChange} data-testid={this.props.testId} />
+        <input
+          type="text"
+          value={this.state.lastquery}
+          onChange={this.handleQueryChange}
+          data-testid={this.props.testId}
+        />
         <button onClick={this.props.onSearch}>Search</button>
       </div>
     );

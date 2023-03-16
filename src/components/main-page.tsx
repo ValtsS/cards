@@ -2,9 +2,8 @@ import React from 'react';
 import SearchBar from './searchbar';
 import { MainPageState } from './states';
 
-
 interface MainPageProps {
-  onSearchHook?: (searchQuery: string, searchpressed:boolean) => void;
+  onSearchHook?: (searchQuery: string, searchpressed: boolean) => void;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -12,7 +11,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     super(props);
 
     const initialState: MainPageState = {
-      onSearchHook: props.onSearchHook
+      onSearchHook: props.onSearchHook,
     };
 
     this.state = initialState;
@@ -22,16 +21,14 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.setState(() => ({
       searchstring: searchQuery,
     }));
-    if (this.state.onSearchHook)
-      this.state.onSearchHook(searchQuery, false);
+    if (this.state.onSearchHook) this.state.onSearchHook(searchQuery, false);
   };
 
   handleSearch = () => {
     // Perform the search using the query in this.state.query
     // and update this.state.results with the results
     console.log('going to search ' + this.state.searchstring);
-    if (this.state.onSearchHook)
-      this.state.onSearchHook(this.state.searchstring ?? "", true);
+    if (this.state.onSearchHook) this.state.onSearchHook(this.state.searchstring ?? '', true);
   };
 
   render() {

@@ -10,11 +10,24 @@ class RootLayout extends React.Component<WrapperProps, AppState> {
   render(): React.ReactNode {
     return (
       <>
-        <h1>Uber page</h1>
-        <Link to="/">Main</Link>
-        <Link to="/about">About us</Link>
-        <div>{this.props.children}</div>
-        Footer goes here
+        <header>
+          <h1>Uber page</h1>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Main</Link>
+              </li>
+              <li>
+                <Link to="/about">About us</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <main>{this.props.children}</main>
+        <div></div>
+        <footer>
+          <p>(c) Valts</p>
+        </footer>
       </>
     );
   }
