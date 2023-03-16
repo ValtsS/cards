@@ -13,13 +13,13 @@ interface AppProps {
 }
 
 class App extends React.Component<AppProps, AppState> {
-  constructor(params: AppProps) {
-    super(params);
+  constructor(props: AppProps) {
+    super(props);
 
     this.state = {
       hasError: false,
       error: null,
-      throwError: params?.throwError || false,
+      throwError: props?.throwError || false,
     };
   }
 
