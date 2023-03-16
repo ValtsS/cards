@@ -3,8 +3,15 @@ import App from 'App';
 import React from 'react';
 
 describe('App component', () => {
-  it('should render without crash', () => {
+  const error_text = 'Something went wrong!!';
+
+  it('should render without crash', async () => {
     render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('About us')).toBeInTheDocument();
+      expect(screen.queryByText(error_text)).not.toBeInTheDocument();
+    });
   });
 
   it('should catch and handle errors', async () => {
@@ -13,8 +20,6 @@ describe('App component', () => {
     try {
       render(<App throwError={true} />);
     } catch {}
-
-    const error_text = 'Something went wrong!!';
 
     expect(spy).toHaveBeenCalledWith('error caught:', new Error(error_text));
 
