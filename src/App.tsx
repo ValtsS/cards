@@ -7,15 +7,18 @@ import ThrowsError from './components/throws-error';
 import RootLayout from './routes/root-layout';
 import AboutPage from './components/about-page';
 import MainPage from './components/main-page';
+import { CardProviderStore } from './providers/card-provider';
 
 interface AppProps {
   throwError?: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
+  cardStore: CardProviderStore;
+
   constructor(props: AppProps) {
     super(props);
-
+    this.cardStore = new CardProviderStore();
     this.state = {
       hasError: false,
       error: null,
@@ -47,7 +50,7 @@ class App extends React.Component<AppProps, AppState> {
                   <ThrowsError />
                 ) : (
                   <RootLayout>
-                    <MainPage />
+                    <MainPage cardProvider={this.cardStore} />
                   </RootLayout>
                 )
               }

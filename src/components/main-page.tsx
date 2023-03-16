@@ -1,9 +1,12 @@
+import { CardProviderStore } from '../providers/card-provider';
 import React from 'react';
+import CardShell from './card-shell';
 import SearchBar from './searchbar';
 import { MainPageState } from './states';
 
 interface MainPageProps {
   onSearchHook?: (searchQuery: string, searchpressed: boolean) => void;
+  cardProvider: CardProviderStore;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -22,11 +25,15 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     if (this.props.onSearchHook) this.props.onSearchHook(searchQuery, false);
   };
 
-  handleSearch = () => {
+  handleSearch = async () => {
     // Perform the search using the query in this.state.query
     // and update this.state.results with the results
     console.log('going to search ' + this.state.searchstring);
     if (this.props.onSearchHook) this.props.onSearchHook(this.state.searchstring ?? '', true);
+
+    this.setState({
+      cards: await this.props.cardProvider.load(this.state.searchstring ?? ''),
+    });
   };
 
   render() {
@@ -40,7 +47,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           title="Enter search query"
         />
 
-        <div>AAA</div>
+        <CardShell data={this.state.cards} />
       </>
     );
   }

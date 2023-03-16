@@ -1,11 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { CardProviderStore } from '../providers/card-provider';
 import MainPage from './main-page';
 
 describe('Main page component', () => {
-  it('should render without crash', async () => {
-    render(<MainPage />);
+  const mockCards = new CardProviderStore() as jest.Mocked<CardProviderStore>;
 
+  it('should render without crash', async () => {
+    render(<MainPage cardProvider={mockCards} />);
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();
 
@@ -17,7 +19,7 @@ describe('Main page component', () => {
   it('should search', async () => {
     const sfun = jest.fn();
 
-    render(<MainPage onSearchHook={sfun} />);
+    render(<MainPage onSearchHook={sfun} cardProvider={mockCards} />);
 
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();

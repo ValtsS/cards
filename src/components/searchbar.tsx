@@ -52,7 +52,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   render() {
     return (
       <div className="search-container">
-        <form>
+        <div>
           {this.props.title && <div>{this.props.title}</div>}
           <input
             type="text"
@@ -61,7 +61,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
             data-testid={this.props.testId}
           />
           <button onClick={this.props.onSearch}>Search</button>
-        </form>
+        </div>
       </div>
     );
   }
