@@ -1,9 +1,9 @@
 import React from 'react';
 import SearchBar from './searchbar';
-import MainPageState from './states';
+import { MainPageState } from './states';
 
-class MainPage extends React.Component<null, MainPageState> {
-  constructor(props: null) {
+class MainPage extends React.Component<object, MainPageState> {
+  constructor(props: object) {
     super(props);
 
     const initialState: MainPageState = {};

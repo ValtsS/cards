@@ -1,5 +1,3 @@
-interface MainPageState {
+export interface MainPageState {
   searchstring?: string;
 }
-
-export default MainPageState;
