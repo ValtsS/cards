@@ -31,3 +31,5 @@ coverage
 
 # JUnit generated files
 junit.xml
+# trash from vite build
+src/**/*.js
