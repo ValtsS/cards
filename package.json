@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc && vite build",
+    "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
