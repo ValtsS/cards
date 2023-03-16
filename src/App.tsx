@@ -40,10 +40,10 @@ class App extends React.Component<AppProps, AppState> {
       <>
         <BrowserRouter>
           <Routes>
-            <RootLayout>
-              <Route path="/" element={this.state.throwError ? <ThrowsError /> : <MainPage />} />
-              <Route path="/about" Component={AboutPage} />
-            </RootLayout>
+
+              <Route path="/" element={this.state.throwError ? <ThrowsError /> : <RootLayout><MainPage /></RootLayout>} />
+              <Route path="/about" element={<RootLayout><AboutPage /></RootLayout>}  />
+
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>

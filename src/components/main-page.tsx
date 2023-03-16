@@ -1,8 +1,8 @@
 import React from 'react';
 import SearchBar from './searchbar';
 
-class MainPage extends React.Component<MainPageProps, MainPageState> {
-  constructor(props: MainPageProps, state: MainPageState) {
+class MainPage extends React.Component<object, MainPageState> {
+  constructor(props: object, _state: MainPageState) {
     super(props);
 
     this.state = {
