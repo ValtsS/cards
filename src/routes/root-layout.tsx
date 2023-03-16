@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AppState from '../appstate';
+import './root-layout.css';
 
 interface WrapperProps {
   children: React.ReactNode;

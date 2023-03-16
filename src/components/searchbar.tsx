@@ -1,10 +1,12 @@
 import React from 'react';
+import './searchbar.css';
 
 interface SearchProps {
   id: string;
   onQueryChange: (searchQuery: string) => void;
   onSearch: () => void;
   testId?: string;
+  title?: string;
 }
 
 interface LocalSearchState {
@@ -49,14 +51,17 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
 
   render() {
     return (
-      <div>
-        <input
-          type="text"
-          value={this.state.lastquery}
-          onChange={this.handleQueryChange}
-          data-testid={this.props.testId}
-        />
-        <button onClick={this.props.onSearch}>Search</button>
+      <div className="search-container">
+        <form>
+          {this.props.title && <div>{this.props.title}</div>}
+          <input
+            type="text"
+            value={this.state.lastquery}
+            onChange={this.handleQueryChange}
+            data-testid={this.props.testId}
+          />
+          <button onClick={this.props.onSearch}>Search</button>
+        </form>
       </div>
     );
   }
