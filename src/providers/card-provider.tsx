@@ -8,6 +8,11 @@ export enum StoreStatus {
 
 export class CardData {
   title?: string;
+  imageUrl?: string;
+  text?: string;
+  price?: string;
+  addedat?: Date;
+  minipic?: string;
 }
 
 export class CardProviderStore {

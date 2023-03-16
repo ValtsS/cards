@@ -1,8 +1,8 @@
 import { CardProviderStore } from '../providers/card-provider';
 import React from 'react';
-import CardShell from './card-shell';
 import SearchBar from './searchbar';
 import { MainPageState } from './states';
+import CardShell from './card-shell';
 
 interface MainPageProps {
   onSearchHook?: (searchQuery: string, searchpressed: boolean) => void;
@@ -14,7 +14,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     super(props);
 
     const initialState: MainPageState = {};
-
     this.state = initialState;
   }
 
