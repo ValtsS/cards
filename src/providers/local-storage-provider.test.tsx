@@ -14,9 +14,9 @@ function generateRandomString(length: number): string {
 
 describe('Local storage provider', () => {
   it('should not crash', async () => {
-    var rnd = generateRandomString(64);
-    var val = (Math.random() * 1000).toString();
-    var prov = new LocalStorageProvider();
+    const rnd = generateRandomString(64);
+    const val = (Math.random() * 1000).toString();
+    const prov = new LocalStorageProvider();
     expect(prov.getItem(rnd)).toBe(null);
     prov.setItem(rnd, val);
     expect(prov.getItem(rnd)).toBe(val);

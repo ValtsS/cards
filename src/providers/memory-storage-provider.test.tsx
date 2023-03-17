@@ -14,9 +14,9 @@ function generateRandomString(length: number): string {
 
 describe('Memory storage provider', () => {
   it('should not crash', async () => {
-    var rnd = generateRandomString(64);
-    var val = (Math.random() * 1000).toString();
-    var prov = new MemoryStorageProvider();
+    const rnd = generateRandomString(64);
+    const val = (Math.random() * 1000).toString();
+    const prov = new MemoryStorageProvider();
     expect(prov.getItem(rnd)).toBe(null);
     prov.setItem(rnd, val);
     expect(prov.getItem(rnd)).toBe(val);
