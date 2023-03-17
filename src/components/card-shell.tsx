@@ -16,7 +16,11 @@ class CardShell extends React.Component<CardLoaderProps> {
   render() {
     return (
       <>
-        <p>Filtering: {this.props.query}</p>
+        {(this.props.query ?? '').length > 0 ? (
+          <p className="filtertext">Filter: {this.props.query}</p>
+        ) : (
+          ''
+        )}
         <div className="card-container">
           {this.props.data && this.props.data.length > 0
             ? this.props.data.map((carddata, index) => (

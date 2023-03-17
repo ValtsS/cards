@@ -1,6 +1,5 @@
 /* Header styling */
 header {
-  height: 200px;
   background-color: #f2f2f2;
 }
 
@@ -9,7 +8,7 @@ nav {
   height: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 20px 0px 0 20px;
 }
 
 nav ul {
