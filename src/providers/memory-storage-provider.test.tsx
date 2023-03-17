@@ -1,6 +1,6 @@
 import { MemoryStorageProvider } from './memory-storage-provider';
 
-function generateRandomString(length: number): string {
+export function generateRandomString(length: number): string {
   const randomValues = new Uint32Array(length);
   window.crypto.getRandomValues(randomValues);
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
