@@ -5,6 +5,7 @@ import './card-shell.css';
 
 interface CardLoaderProps {
   data?: CardData[];
+  query?: string;
 }
 
 class CardShell extends React.Component<CardLoaderProps> {
@@ -15,12 +16,14 @@ class CardShell extends React.Component<CardLoaderProps> {
   render() {
     return (
       <>
+        <p>Filtering: {this.props.query}</p>
         <div className="card-container">
-          {this.props.data
-            ? this.props.data.map((carddata, index) => (
+          {(this.props.data && this.props.data.length > 0)
+            ?
+            this.props.data.map((carddata, index) => (
                 <Card card={carddata} key={'CardNr' + index.toString()} />
               ))
-            : 'none'}
+            : 'no cards found for your search query: '+this.props.query?? "" }
         </div>
       </>
     );
