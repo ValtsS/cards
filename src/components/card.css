@@ -1,11 +1,11 @@
 .card {
   width: 300px;
-  height: 500px;
   background-color: #dddddd;
   border-color: black;
   margin-bottom: 20px;
   margin-right: 20px;
   color: black;
+  border-radius: 20px;
 }
 .card .inner {
   margin: 20px;
