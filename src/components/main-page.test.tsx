@@ -15,8 +15,7 @@ jest.mock('../providers/card-provider', () => {
   };
 });
 
- describe('Main page component', () => {
-
+describe('Main page component', () => {
   it('should render without crash', async () => {
     act(() => {
       render(
@@ -55,21 +54,18 @@ jest.mock('../providers/card-provider', () => {
     const searchBar = screen.getByTestId('search-bar-test-id');
     expect(searchBar).toBeInTheDocument();
 
-    act(() => fireEvent.change(searchBar, { target: { value: '12345' } }) );
+    act(() => fireEvent.change(searchBar, { target: { value: '12345' } }));
     clickSearch();
 
     await waitFor(() => {
       expect(sfun).toBeCalledWith('12345', false);
       expect(sfun).toBeCalledWith('12345', true);
     });
-
-
   });
 
   const clickSearch = () => {
     const input = screen.getByRole('button', { name: 'Search' });
     expect(input).toBeInTheDocument();
     act(() => input.click());
-
   };
 });

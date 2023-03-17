@@ -11,7 +11,17 @@ describe('Searchbar component', () => {
     const pattern = 'sweetsearch';
 
     act(() => {
-      render(<SearchBar id='sb' localstore={memory} testId="sb-test" triggerOnLoad={false} onQueryChange={qcFunc} onSearch={scFunc} title={pattern}/>);
+      render(
+        <SearchBar
+          id="sb"
+          localstore={memory}
+          testId="sb-test"
+          triggerOnLoad={false}
+          onQueryChange={qcFunc}
+          onSearch={scFunc}
+          title={pattern}
+        />
+      );
     });
 
     await waitFor(() => {
@@ -20,6 +30,5 @@ describe('Searchbar component', () => {
 
     expect(qcFunc).toBeCalled();
     expect(scFunc).toBeCalled();
-
   });
 });
