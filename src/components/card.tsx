@@ -22,7 +22,7 @@ class Card extends React.Component<CardProps> {
 
           <p className="smalltitle">{this.props.card.text}</p>
           <img src={this.props.card.minipic} className="minipic"></img>
-          <p className="smalltitle">{this.props.card.addedat?.toDateString()}</p>
+          <p className="date">{this.props.card.addedat?.toDateString()}</p>
         </div>
       </div>
     );
