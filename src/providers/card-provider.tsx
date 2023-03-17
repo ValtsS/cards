@@ -48,7 +48,7 @@ export class CardProviderStore {
     for (let i = 0; i < cardTestData.length; i++) {
       const e = cardTestData[i];
 
-      if (e.price?.includes(filter) || e.text?.includes(filter) || e.title?.includes(filter)) {
+      if (e.price?.includes(filter) || e.text?.includes(filter) || e.title?.includes(filter) || (e.addedat?.toDateString().includes(filter)) ) {
         e.imageUrl = dummypics[i % dummypics.length];
         e.minipic = minipic[i % minipic.length];
         this.data.push(e);
