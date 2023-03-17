@@ -4,8 +4,7 @@ import './searchbar.css';
 
 interface SearchProps {
   id: string;
-  onQueryChange: (searchQuery: string) => void;
-  onSearch: () => void;
+  onQueryChange: (searchQuery: string, search:boolean) => void;
   testId?: string;
   title?: string;
   triggerOnLoad?: boolean;
@@ -38,7 +37,10 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     this.setState({
       lastquery: this.getLastValue(),
     });
-    if (this.props.triggerOnLoad && this.props.triggerOnLoad.valueOf()) this.handleSearch();
+    if (this.props.triggerOnLoad && this.props.triggerOnLoad.valueOf()) {
+      this.handleChange(this.state.lastquery, true);
+      this.handleSearch();
+    }
   }
 
   saveSearch(): void {
@@ -50,11 +52,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      lastquery: event.target.value,
-    });
-
-    this.props.onQueryChange(event.target.value);
+    this.handleChange(event.target.value, false);
   };
 
   handleKeyPress = (event: React.KeyboardEvent): void => {
@@ -63,9 +61,24 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     }
   };
 
+  handleChange = (filter:string|null, search:boolean) => {
+
+    if (filter === null)
+    {
+      filter = this.state.lastquery;
+    } else {
+      this.setState({
+        lastquery: filter,
+      });
+    }
+
+    this.props.onQueryChange(filter, search);
+
+  }
+
   handleSearch = () => {
-    this.props.onSearch();
     this.saveSearch();
+    this.handleChange(null, true)
   };
 
   render() {

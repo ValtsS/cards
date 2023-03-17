@@ -7,7 +7,6 @@ describe('Searchbar component', () => {
   it('should render without crash', async () => {
     const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
-    const scFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
@@ -18,7 +17,6 @@ describe('Searchbar component', () => {
           testId="sb-test"
           triggerOnLoad={true}
           onQueryChange={qcFunc}
-          onSearch={scFunc}
           title={pattern}
         />
       );
@@ -28,13 +26,13 @@ describe('Searchbar component', () => {
       expect(screen.getByText(pattern)).toBeInTheDocument();
     });
 
-    expect(scFunc).toBeCalled();
+    expect(qcFunc).toBeCalled();
+    expect(qcFunc).toBeCalledWith('', true);
   });
 
   it('should Trigger querychange', async () => {
     const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
-    const scFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
@@ -45,7 +43,6 @@ describe('Searchbar component', () => {
           testId="sb-test"
           triggerOnLoad={false}
           onQueryChange={qcFunc}
-          onSearch={scFunc}
           title={pattern}
         />
       );
@@ -61,12 +58,12 @@ describe('Searchbar component', () => {
     act(() => fireEvent.change(searchBar, { target: { value: '12345' } }));
 
     expect(qcFunc).toBeCalled();
+    expect(qcFunc).toBeCalledWith('12345', false);
   });
 
   it('should Trigger querychange via Enter', async () => {
     const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
-    const scFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
@@ -77,7 +74,6 @@ describe('Searchbar component', () => {
           testId="sb-test"
           triggerOnLoad={false}
           onQueryChange={qcFunc}
-          onSearch={scFunc}
           title={pattern}
         />
       );
@@ -100,7 +96,8 @@ describe('Searchbar component', () => {
 
     await waitFor(() => {
       expect(qcFunc).toBeCalled();
-      expect(scFunc).toBeCalled();
+      expect(qcFunc).toBeCalledWith('0', false);
+      expect(qcFunc).toBeCalledWith('0', true);
     });
   });
 });
