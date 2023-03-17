@@ -34,12 +34,13 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   componentDidMount(): void {
+    const val = this.getLastValue();
     this.setState({
-      lastquery: this.getLastValue(),
+      lastquery: val,
     });
     if (this.props.triggerOnLoad && this.props.triggerOnLoad.valueOf()) {
-      this.handleChange(this.state.lastquery, true);
-      this.handleSearch();
+      this.handleChange(val, false);
+      this.handleChange(null, true);
     }
   }
 

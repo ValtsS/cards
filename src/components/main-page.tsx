@@ -20,20 +20,27 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   }
 
   handleQueryChange = async (searchQuery: string, search: boolean) => {
-    this.setState({
-      searchstring: searchQuery,
-    });
+
+    if (search)
+    {
+      this.setState({
+        searchstring: searchQuery,
+        cards: await this.props.cardProvider.load(searchQuery ?? ''),
+        filteringBy: searchQuery ?? '',
+      });
+
+    } else {
+
+      this.setState({
+        searchstring: searchQuery
+      });
+
+    }
+
+
     if (this.props.onSearchHook) this.props.onSearchHook(searchQuery, search);
-    await this.handleSearch();
   };
 
-  handleSearch = async () => {
-    if (this.props.onSearchHook) this.props.onSearchHook(this.state.searchstring ?? '', true);
-    this.setState({
-      cards: await this.props.cardProvider.load(this.state.searchstring ?? ''),
-      filteringBy: this.state.searchstring ?? '',
-    });
-  };
 
   render() {
     return (
