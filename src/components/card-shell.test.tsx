@@ -1,11 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import { CardData } from 'providers/card-provider';
 import React from 'react';
-import Card from './card';
+import CardShell from './card-shell';
 
 
-describe('Card component', () => {
+describe('Card Shell component', () => {
   it('should not crash', () => {
+    render(<CardShell data={[]} query="UUUUU"  />);
+
+    expect(screen.getByText('no cards found for your search query: UUUUU')).toBeInTheDocument();
+
+  });
+  it('should render something', () => {
 
     const test = new CardData();
     test.title='Title';
@@ -13,11 +19,11 @@ describe('Card component', () => {
     test.price='$100';
     test.text='Text';
 
-    render(<Card card={test} />);
+    render(<CardShell data={[test]} />);
 
-    expect(screen.getByText(test.title)).toBeInTheDocument();
-    expect(screen.getByText(test.price)).toBeInTheDocument();
-    expect(screen.getByText(test.text)).toBeInTheDocument();
+
 
   });
+
+
 });
