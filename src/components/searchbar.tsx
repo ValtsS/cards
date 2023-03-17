@@ -55,9 +55,12 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     this.props.onQueryChange(event.target.value);
   };
 
-  handleKeyPress(event: React.KeyboardEvent) {
-    if (event.key === 'Enter') this.handleSearch();
-  }
+  handleKeyPress = (event: React.KeyboardEvent ): void => {
+    console.log(event);
+    if (event.key === 'Enter') {
+      this.handleSearch();
+    }
+  };
 
   handleSearch = () => {
     this.props.onSearch();
