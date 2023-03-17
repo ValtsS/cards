@@ -17,6 +17,11 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.state = initialState;
   }
 
+  async componentDidMount() {
+    this.handleQueryChange(this.state.searchstring ?? '');
+    await this.handleSearch();
+  }
+
   handleQueryChange = (searchQuery: string) => {
     this.setState(() => ({
       searchstring: searchQuery,

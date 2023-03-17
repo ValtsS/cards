@@ -31,14 +31,18 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     return `searchbar_${this.props.id}_lastquery`;
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.setState({
       lastquery: this.getLastValue(),
     });
   }
 
-  componentWillUnmount() {
+  saveSearch(): void {
     localStorage.setItem(this.getKey(), this.state.lastquery);
+  }
+
+  componentWillUnmount(): void {
+    this.saveSearch();
   }
 
   handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +51,11 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     });
 
     this.props.onQueryChange(event.target.value);
+  };
+
+  handleSearch = () => {
+    this.props.onSearch();
+    this.saveSearch();
   };
 
   render() {
@@ -60,7 +69,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
             onChange={this.handleQueryChange}
             data-testid={this.props.testId}
           />
-          <button onClick={this.props.onSearch}>Search</button>
+          <button onClick={this.handleSearch}>Search</button>
         </div>
       </div>
     );

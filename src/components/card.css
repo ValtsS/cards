@@ -1,8 +1,26 @@
 .card {
   width: 300px;
-  height: 200px;
-  background-color: #ccc;
+  height: 500px;
+  background-color: #dddddd;
   border-color: black;
   margin-bottom: 20px;
   margin-right: 20px;
+  color: black;
+}
+.card .inner {
+  margin: 20px;
+}
+
+.card .title {
+  font-size: medium;
+}
+
+.card .bigpic {
+  max-width: 255px;
+  max-height: 225px;
+}
+
+.card .minipic {
+  max-width: 96px;
+  max-height: 96px;
 }

@@ -27,8 +27,29 @@ export class CardProviderStore {
     this.storeStatus = StoreStatus.Pending;
     //Simulate delay
     console.log('Async loader Called with filter ' + filter);
-    await new Promise((resolve) => setTimeout(resolve, 250));
+    await new Promise((resolve) => setTimeout(resolve, 750));
     this.data = cardTestData;
+
+    const dummypics: string[] = [
+      'https://randomwordgenerator.com/img/picture-generator/54e3d3474c5aa514f1dc8460962e33791c3ad6e04e507440772d73d79749c7_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/55e8d3454d51b10ff3d8992cc12c30771037dbf85254794e722a73d4944b_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/giraffe-3351363_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/53e7d24b4d55ab14f1dc8460962e33791c3ad6e04e5077497c2a7ddd9e4dcd_640.jpg',
+      'https://randomwordgenerator.com/img/picture-generator/57e1d24b4352a914f1dc8460962e33791c3ad6e04e507440752f78d09445c6_640.jpg',
+    ];
+
+    const minipic: string[] = [
+      'https://randompicturegenerator.com/img/cat-generator/g0f94542dc316be8269f644259b2c33352d35679ae6abdefb768f6dc1e5ca62034d4dab3a649ebf74bd6997fd4fa16fa4_640.jpg',
+      'https://randompicturegenerator.com/img/cat-generator/gbc0167b5494b0f694cef1a200e0c580556048963590ce82c252451d73dfcdd9ed9ff28282a16b8f901f409deaa7a54e8_640.jpg',
+      'https://randompicturegenerator.com/img/cat-generator/ge9db644b010d046c9a4c2f01e132948959134b9b409680e72b3d758f7da3f8667c637f23a3e8984870b2aeb982859983_640.jpg',
+      'https://randompicturegenerator.com/img/cat-generator/g5d735248ebee4eacce077a3a5d0c832a7b306cb0edc1c28944edc9b44caea6e794b0b0ba00bbb22c55f24e819bb4ae12_640.jpg',
+    ];
+
+    for (let i = 0; i < this.data.length; i++) {
+      this.data[i].imageUrl = dummypics[i % dummypics.length];
+      this.data[i].minipic = minipic[i % minipic.length];
+    }
+
     this.storeStatus = StoreStatus.Done;
     console.log('Load complete!');
     return this.data;
