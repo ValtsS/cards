@@ -27,8 +27,6 @@ export class CardProviderStore {
     this.storeStatus = StoreStatus.Pending;
     //Simulate delay
     console.log('Async loader Called with filter ' + filter);
-    await new Promise((resolve) => setTimeout(resolve, 750));
-    this.data = cardTestData;
 
     const dummypics: string[] = [
       'https://randomwordgenerator.com/img/picture-generator/54e3d3474c5aa514f1dc8460962e33791c3ad6e04e507440772d73d79749c7_640.jpg',
@@ -45,9 +43,18 @@ export class CardProviderStore {
       'https://randompicturegenerator.com/img/cat-generator/g5d735248ebee4eacce077a3a5d0c832a7b306cb0edc1c28944edc9b44caea6e794b0b0ba00bbb22c55f24e819bb4ae12_640.jpg',
     ];
 
-    for (let i = 0; i < this.data.length; i++) {
-      this.data[i].imageUrl = dummypics[i % dummypics.length];
-      this.data[i].minipic = minipic[i % minipic.length];
+    this.data = [];
+
+    for (let i = 0; i < cardTestData.length; i++) {
+
+      let e = cardTestData[i];
+
+      if (e.price?.includes(filter) || e.text?.includes(filter) || e.title?.includes(filter)  )
+      {
+        e.imageUrl = dummypics[i % dummypics.length];
+        e.minipic = minipic[i % minipic.length];
+        this.data.push(e);
+      }
     }
 
     this.storeStatus = StoreStatus.Done;
