@@ -1,3 +1,4 @@
+import { LocalStorageProvider } from 'providers/local-storage-provider';
 import React from 'react';
 import './searchbar.css';
 
@@ -8,6 +9,7 @@ interface SearchProps {
   testId?: string;
   title?: string;
   triggerOnLoad?: boolean;
+  localstore: LocalStorageProvider;
 }
 
 interface LocalSearchState {
@@ -55,7 +57,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     this.props.onQueryChange(event.target.value);
   };
 
-  handleKeyPress = (event: React.KeyboardEvent ): void => {
+  handleKeyPress = (event: React.KeyboardEvent): void => {
     console.log(event);
     if (event.key === 'Enter') {
       this.handleSearch();

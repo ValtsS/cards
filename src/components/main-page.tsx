@@ -3,10 +3,12 @@ import React from 'react';
 import SearchBar from './searchbar';
 import { MainPageState } from './states';
 import CardShell from './card-shell';
+import { LocalStorageProvider } from 'providers/local-storage-provider';
 
 interface MainPageProps {
   onSearchHook?: (searchQuery: string, searchpressed: boolean) => void;
   cardProvider: CardProviderStore;
+  localStoreProvider: LocalStorageProvider;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -45,6 +47,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           testId="search-bar-test-id"
           title="Enter search query"
           triggerOnLoad={true}
+          localstore={this.props.localStoreProvider}
         />
 
         <CardShell data={this.state.cards} />

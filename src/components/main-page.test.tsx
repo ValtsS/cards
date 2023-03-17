@@ -1,13 +1,26 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { LocalStorageProvider } from 'providers/local-storage-provider';
 import React from 'react';
 import { CardProviderStore } from '../providers/card-provider';
 import MainPage from './main-page';
+
+class MemoryStorageProvider implements LocalStorageProvider {
+  private data: { [key: string]: string } = {};
+
+  setItem(key: string, value: string): void {
+    this.data[key] = value;
+  }
+
+  getItem(key: string): string | null {
+    return this.data[key] || null;
+  }
+}
 
 describe('Main page component', () => {
   const mockCards = new CardProviderStore() as jest.Mocked<CardProviderStore>;
 
   it('should render without crash', async () => {
-    render(<MainPage cardProvider={mockCards} />);
+    render(<MainPage cardProvider={mockCards} localStoreProvider={new MemoryStorageProvider()} />);
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();
 
@@ -19,7 +32,13 @@ describe('Main page component', () => {
   it('should search', async () => {
     const sfun = jest.fn();
 
-    render(<MainPage onSearchHook={sfun} cardProvider={mockCards} />);
+    render(
+      <MainPage
+        onSearchHook={sfun}
+        cardProvider={mockCards}
+        localStoreProvider={new MemoryStorageProvider()}
+      />
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();

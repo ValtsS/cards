@@ -8,6 +8,7 @@ import RootLayout from './routes/root-layout';
 import AboutPage from './components/about-page';
 import MainPage from './components/main-page';
 import { CardProviderStore } from './providers/card-provider';
+import { LocalStorageProvider } from './providers/local-storage-provider';
 
 interface AppProps {
   throwError?: boolean;
@@ -15,10 +16,13 @@ interface AppProps {
 
 class App extends React.Component<AppProps, AppState> {
   cardStore: CardProviderStore;
+  localStore: LocalStorageProvider;
 
   constructor(props: AppProps) {
     super(props);
     this.cardStore = new CardProviderStore();
+    this.localStore = new LocalStorageProvider();
+
     this.state = {
       hasError: false,
       error: null,
@@ -50,7 +54,7 @@ class App extends React.Component<AppProps, AppState> {
                   <ThrowsError />
                 ) : (
                   <RootLayout>
-                    <MainPage cardProvider={this.cardStore} />
+                    <MainPage cardProvider={this.cardStore} localStoreProvider={this.localStore} />
                   </RootLayout>
                 )
               }
