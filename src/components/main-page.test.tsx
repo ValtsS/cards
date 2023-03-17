@@ -1,26 +1,31 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { LocalStorageProvider } from 'providers/local-storage-provider';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { CardProviderStore } from '../providers/card-provider';
+import { MemoryStorageProvider } from '../providers/memory-storage-provider';
 import MainPage from './main-page';
 
-class MemoryStorageProvider implements LocalStorageProvider {
-  private data: { [key: string]: string } = {};
+// Create a mock for the CardProviderStore class
+jest.mock('../providers/card-provider', () => {
+  return {
+    CardProviderStore: jest.fn().mockImplementation(() => {
+      return {
+        load: jest.fn().mockResolvedValue([]),
+      };
+    }),
+  };
+});
 
-  setItem(key: string, value: string): void {
-    this.data[key] = value;
-  }
-
-  getItem(key: string): string | null {
-    return this.data[key] || null;
-  }
-}
-
-describe('Main page component', () => {
-  const mockCards = new CardProviderStore() as jest.Mocked<CardProviderStore>;
+ describe('Main page component', () => {
 
   it('should render without crash', async () => {
-    render(<MainPage cardProvider={mockCards} localStoreProvider={new MemoryStorageProvider()} />);
+    act(() => {
+      render(
+        <MainPage
+          cardProvider={new CardProviderStore()}
+          localStoreProvider={new MemoryStorageProvider()}
+        />
+      );
+    });
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();
 
@@ -31,32 +36,40 @@ describe('Main page component', () => {
 
   it('should search', async () => {
     const sfun = jest.fn();
-
-    render(
-      <MainPage
-        onSearchHook={sfun}
-        cardProvider={mockCards}
-        localStoreProvider={new MemoryStorageProvider()}
-      />
-    );
-
+    act(() => {
+      render(
+        <MainPage
+          onSearchHook={sfun}
+          cardProvider={new CardProviderStore()}
+          localStoreProvider={new MemoryStorageProvider()}
+        />
+      );
+    });
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();
+
+      const searchBar = screen.getByTestId('search-bar-test-id');
+      expect(searchBar).toBeInTheDocument();
     });
 
     const searchBar = screen.getByTestId('search-bar-test-id');
     expect(searchBar).toBeInTheDocument();
 
-    fireEvent.change(searchBar, { target: { value: '12345' } });
+    act(() => fireEvent.change(searchBar, { target: { value: '12345' } }) );
     clickSearch();
 
-    expect(sfun).toBeCalledWith('12345', false);
-    expect(sfun).toBeCalledWith('12345', true);
+    await waitFor(() => {
+      expect(sfun).toBeCalledWith('12345', false);
+      expect(sfun).toBeCalledWith('12345', true);
+    });
+
+
   });
 
   const clickSearch = () => {
     const input = screen.getByRole('button', { name: 'Search' });
     expect(input).toBeInTheDocument();
-    input.click();
+    act(() => input.click());
+
   };
 });

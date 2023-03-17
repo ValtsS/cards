@@ -29,7 +29,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   handleSearch = async () => {
     // Perform the search using the query in this.state.query
     // and update this.state.results with the results
-    console.log('going to search ' + this.state.searchstring);
     if (this.props.onSearchHook) this.props.onSearchHook(this.state.searchstring ?? '', true);
 
     this.setState({
