@@ -1,25 +1,29 @@
+import LinkEx from '../components/link-ex';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import AppState from '../appstate';
 import './root-layout.css';
 
-interface WrapperProps {
+interface RootLayoutProps {
   children: React.ReactNode;
+  currentPath: string;
 }
 
-class RootLayout extends React.Component<WrapperProps, AppState> {
+class RootLayout extends React.Component<RootLayoutProps, AppState> {
   render(): React.ReactNode {
     return (
       <>
         <header>
-          <h1>Uber page</h1>
           <nav>
             <ul>
               <li>
-                <Link to="/">Main</Link>
+                <LinkEx to="/" path={this.props.currentPath}>
+                  Main
+                </LinkEx>
               </li>
               <li>
-                <Link to="/about">About us</Link>
+                <LinkEx to="/about" path={this.props.currentPath}>
+                  About us
+                </LinkEx>
               </li>
             </ul>
           </nav>

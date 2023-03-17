@@ -9,6 +9,7 @@ import AboutPage from './components/about-page';
 import MainPage from './components/main-page';
 import { CardProviderStore } from './providers/card-provider';
 import { LocalStorageProvider } from './providers/local-storage-provider';
+import { RouteConfig, routesConfig } from 'routes/routes-config';
 
 interface AppProps {
   throwError?: boolean;
@@ -53,7 +54,7 @@ class App extends React.Component<AppProps, AppState> {
                 this.state.throwError ? (
                   <ThrowsError />
                 ) : (
-                  <RootLayout>
+                  <RootLayout currentPath="/">
                     <MainPage cardProvider={this.cardStore} localStoreProvider={this.localStore} />
                   </RootLayout>
                 )
@@ -62,7 +63,7 @@ class App extends React.Component<AppProps, AppState> {
             <Route
               path="/about"
               element={
-                <RootLayout>
+                <RootLayout currentPath="/about">
                   <AboutPage />
                 </RootLayout>
               }
