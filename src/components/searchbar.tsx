@@ -7,6 +7,7 @@ interface SearchProps {
   onSearch: () => void;
   testId?: string;
   title?: string;
+  triggerOnLoad?: boolean;
 }
 
 interface LocalSearchState {
@@ -35,6 +36,9 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     this.setState({
       lastquery: this.getLastValue(),
     });
+    if (this.props.triggerOnLoad && this.props.triggerOnLoad.valueOf())
+      this.handleSearch();
+
   }
 
   saveSearch(): void {

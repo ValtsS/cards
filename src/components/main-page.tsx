@@ -17,11 +17,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.state = initialState;
   }
 
-  async componentDidMount() {
-    this.handleQueryChange(this.state.searchstring ?? '');
-    await this.handleSearch();
-  }
-
   handleQueryChange = (searchQuery: string) => {
     this.setState(() => ({
       searchstring: searchQuery,
@@ -49,6 +44,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           onSearch={this.handleSearch}
           testId="search-bar-test-id"
           title="Enter search query"
+          triggerOnLoad={true}
         />
 
         <CardShell data={this.state.cards} />
