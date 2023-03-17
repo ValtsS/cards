@@ -25,6 +25,7 @@ export class CardProviderStore {
   }
 
   load = async (filter: string): Promise<CardData[]> => {
+    filter ??= "";
     this.storeStatus = StoreStatus.Pending;
     //Simulate delay
     console.log('Async loader Called with filter ' + filter);

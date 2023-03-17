@@ -26,7 +26,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       this.setState({
         searchstring: searchQuery,
         cards: await this.props.cardProvider.load(searchQuery),
-        filteringBy: searchQuery ?? '',
+        filteringBy: searchQuery,
       });
 
     } else {
