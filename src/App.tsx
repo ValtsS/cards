@@ -9,7 +9,6 @@ import AboutPage from './components/about-page';
 import MainPage from './components/main-page';
 import { CardProviderStore } from './providers/card-provider';
 import { LocalStorageProvider } from './providers/local-storage-provider';
-import { RouteConfig, routesConfig } from 'routes/routes-config';
 
 interface AppProps {
   throwError?: boolean;
