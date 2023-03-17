@@ -12,8 +12,6 @@ interface MainPageProps {
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
-
-
   constructor(props: MainPageProps) {
     super(props);
 
@@ -21,7 +19,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.state = initialState;
   }
 
-  handleQueryChange = async (searchQuery: string, search:boolean) => {
+  handleQueryChange = async (searchQuery: string, search: boolean) => {
     this.setState({
       searchstring: searchQuery,
     });
@@ -33,11 +31,10 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     // Perform the search using the query in this.state.query
     // and update this.state.results with the results
     if (this.props.onSearchHook) this.props.onSearchHook(this.state.searchstring ?? '', true);
-    console.log('handleSearch with state : ' + this.state.searchstring );
+    console.log('handleSearch with state : ' + this.state.searchstring);
     this.setState({
       cards: await this.props.cardProvider.load(this.state.searchstring ?? ''),
-      filteringBy: this.state.searchstring ?? ''
-
+      filteringBy: this.state.searchstring ?? '',
     });
   };
 

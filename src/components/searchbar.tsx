@@ -4,7 +4,7 @@ import './searchbar.css';
 
 interface SearchProps {
   id: string;
-  onQueryChange: (searchQuery: string, search:boolean) => void;
+  onQueryChange: (searchQuery: string, search: boolean) => void;
   testId?: string;
   title?: string;
   triggerOnLoad?: boolean;
@@ -61,10 +61,8 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     }
   };
 
-  handleChange = (filter:string|null, search:boolean) => {
-
-    if (filter === null)
-    {
+  handleChange = (filter: string | null, search: boolean) => {
+    if (filter === null) {
       filter = this.state.lastquery;
     } else {
       this.setState({
@@ -73,12 +71,11 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     }
 
     this.props.onQueryChange(filter, search);
-
-  }
+  };
 
   handleSearch = () => {
     this.saveSearch();
-    this.handleChange(null, true)
+    this.handleChange(null, true);
   };
 
   render() {
