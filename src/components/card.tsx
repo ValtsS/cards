@@ -1,6 +1,7 @@
 import { CardData } from 'providers/card-provider';
 import React from 'react';
 import './card.css';
+import Rating from './rating';
 
 interface CardProps {
   card: CardData;
@@ -13,7 +14,12 @@ class Card extends React.Component<CardProps> {
         <div className="inner">
           <div className="title">{this.props.card.title}</div>
           <img src={this.props.card.imageUrl} className="bigpic"></img>
-          <p className="price">{this.props.card.price}</p>
+
+          <div className="price">
+            <span>{this.props.card.price}</span>
+            <Rating count={this.props.card.rating ?? 0} />
+          </div>
+
           <p className="smalltitle">{this.props.card.text}</p>
           <img src={this.props.card.minipic} className="minipic"></img>
           <p className="smalltitle">{this.props.card.addedat?.toDateString()}</p>

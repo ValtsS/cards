@@ -13,6 +13,7 @@ export class CardData {
   price?: string;
   addedat?: Date;
   minipic?: string;
+  rating?: number;
 }
 
 export class CardProviderStore {
@@ -56,6 +57,7 @@ export class CardProviderStore {
       ) {
         e.imageUrl = dummypics[i % dummypics.length];
         e.minipic = minipic[i % minipic.length];
+        e.rating = (13 + i) % 5;
         this.data.push(e);
       }
     }
