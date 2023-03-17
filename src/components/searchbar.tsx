@@ -57,6 +57,13 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     this.props.onQueryChange(event.target.value);
   };
 
+  handleKeyPress = (event: any) :void=> {
+    if (event.key === "Enter") {
+       this.handleSearch();
+    }
+};
+
+
   handleSearch = () => {
     this.props.onSearch();
     this.saveSearch();
@@ -72,6 +79,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
             value={this.state.lastquery}
             onChange={this.handleQueryChange}
             data-testid={this.props.testId}
+            onKeyDown={this.handleKeyPress}
           />
           <button onClick={this.handleSearch}>Search</button>
         </div>
