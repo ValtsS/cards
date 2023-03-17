@@ -14,6 +14,8 @@ export class CardData {
   addedat?: Date;
   minipic?: string;
   rating?: number;
+  flipimg?: boolean;
+  grayscale?: boolean;
 }
 
 export class CardProviderStore {
@@ -25,7 +27,7 @@ export class CardProviderStore {
   }
 
   load = async (filter: string): Promise<CardData[]> => {
-    filter ??= "";
+    filter ??= '';
     this.storeStatus = StoreStatus.Pending;
     //Simulate delay
     console.log('Async loader Called with filter ' + filter);
@@ -59,6 +61,8 @@ export class CardProviderStore {
         e.imageUrl = dummypics[i % dummypics.length];
         e.minipic = minipic[i % minipic.length];
         e.rating = (13 + i) % 5;
+        e.flipimg = i % 2 == 0;
+        e.grayscale = i % 3 == 0;
         this.data.push(e);
       }
     }

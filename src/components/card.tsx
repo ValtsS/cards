@@ -9,11 +9,15 @@ interface CardProps {
 
 class Card extends React.Component<CardProps> {
   render() {
+    const imgclass =
+      'bigpic' +
+      (this.props.card.flipimg && this.props.card.flipimg.valueOf() ? ' flip' : '') +
+      (this.props.card.grayscale && this.props.card.grayscale.valueOf() ? ' grayscale' : '');
     return (
       <div className="card">
         <div className="inner">
           <div className="title">{this.props.card.title}</div>
-          <img src={this.props.card.imageUrl} className="bigpic"></img>
+          <img src={this.props.card.imageUrl} className={imgclass}></img>
 
           <div className="price">
             <span>{this.props.card.price}</span>
