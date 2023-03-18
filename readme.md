@@ -1,3 +1,6 @@
+
+[![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module01)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
+
 **Cards**
 
 *Git:*
