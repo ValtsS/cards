@@ -29,8 +29,6 @@ export class CardProviderStore {
   load = async (filter: string): Promise<CardData[]> => {
     filter ??= '';
     this.storeStatus = StoreStatus.Pending;
-    //Simulate delay
-    console.log('Async loader Called with filter ' + filter);
 
     const dummypics: string[] = [
       'https://randomwordgenerator.com/img/picture-generator/54e3d3474c5aa514f1dc8460962e33791c3ad6e04e507440772d73d79749c7_640.jpg',
@@ -68,7 +66,6 @@ export class CardProviderStore {
     }
 
     this.storeStatus = StoreStatus.Done;
-    console.log('Load complete!');
     return this.data;
   };
 }
