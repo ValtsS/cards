@@ -33,12 +33,10 @@ describe('Card Shell component', () => {
     expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('$100')).toBeInTheDocument();
     expect(screen.getByText('Text')).toBeInTheDocument();
-
   });
 
   it('renders default message when query is undefined', () => {
     const { getByText } = render(<CardShell data={[]} query={undefined} />);
     expect(getByText('no cards found for your search query:')).toBeInTheDocument();
   });
-
 });
