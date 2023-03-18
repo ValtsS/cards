@@ -26,7 +26,7 @@ class CardShell extends React.Component<CardLoaderProps> {
             ? this.props.data.map((carddata, index) => (
                 <Card card={carddata} key={'CardNr' + index.toString()} />
               ))
-            : 'no cards found for your search query: ' + this.props.query ?? ''}
+            : 'no cards found for your search query: ' + (this.props.query ?? '')}
         </div>
       </>
     );
