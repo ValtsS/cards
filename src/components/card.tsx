@@ -3,7 +3,7 @@ import React from 'react';
 import './card.css';
 import Rating from './rating';
 
-interface CardProps {
+export interface CardProps {
   card: CardData;
 }
 
