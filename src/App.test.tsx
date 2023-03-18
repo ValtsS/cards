@@ -1,16 +1,20 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from 'App';
+import ThrowsError from 'components/throws-error';
 import React from 'react';
 
 describe('App component', () => {
   const error_text = 'Something went wrong!!';
 
   it('should render without crash', async () => {
-    render(<App />);
+    render(
+      <App>
+        <div>Test text</div>
+      </App>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('About us')).toBeInTheDocument();
-      expect(screen.queryByText(error_text)).not.toBeInTheDocument();
+      expect(screen.getByText('Test text')).toBeInTheDocument();
     });
   });
 
@@ -18,7 +22,11 @@ describe('App component', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     try {
-      render(<App throwError={true} />);
+      render(
+        <App>
+          <ThrowsError />
+        </App>
+      );
     } catch {}
 
     expect(spy).toHaveBeenCalledWith('error caught: ', new Error(error_text));
