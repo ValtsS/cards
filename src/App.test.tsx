@@ -21,7 +21,7 @@ describe('App component', () => {
       render(<App throwError={true} />);
     } catch {}
 
-    expect(spy).toHaveBeenCalledWith('error caught:', new Error(error_text));
+    expect(spy).toHaveBeenCalledWith('error caught: ', new Error(error_text));
 
     await waitFor(() => {
       expect(screen.getByText(new RegExp(error_text, 'i'))).toBeInTheDocument();
