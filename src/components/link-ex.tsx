@@ -13,7 +13,7 @@ class LinkEx extends React.Component<LinkExProps> {
     const className = this.props.path.toLowerCase() === to ? 'active' : '';
     return (
       <>
-        <Link className={className} {...this.props}></Link>
+        <Link className={className} {...(this.props as LinkProps)}></Link>
       </>
     );
   }
