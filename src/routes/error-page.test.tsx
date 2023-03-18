@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ErrorPage, { unkErrorText } from './error-page';
 
 describe('Error page component', () => {
@@ -8,7 +9,11 @@ describe('Error page component', () => {
 
     const testError = new Error(text);
 
-    render(<ErrorPage error={testError} />);
+    render(
+      <BrowserRouter>
+        <ErrorPage error={testError} />
+      </BrowserRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText(new RegExp(text, 'i'))).toBeInTheDocument();
@@ -16,7 +21,11 @@ describe('Error page component', () => {
   });
 
   it('should render with undefined error', async () => {
-    render(<ErrorPage error={null} />);
+    render(
+      <BrowserRouter>
+        <ErrorPage error={null} />
+      </BrowserRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText(new RegExp(unkErrorText, 'i'))).toBeInTheDocument();

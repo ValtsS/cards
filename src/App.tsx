@@ -40,7 +40,13 @@ class App extends React.Component<AppProps, AppState> {
 
   render(): React.ReactNode {
     if (this.state.hasError) {
-      return <ErrorPage error={this.state.error} />;
+      return (
+        <>
+          <BrowserRouter>
+            <ErrorPage error={this.state.error} />
+          </BrowserRouter>
+        </>
+      );
     }
 
     return (
