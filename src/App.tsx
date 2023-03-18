@@ -4,11 +4,11 @@ import AppState from './appstate';
 import ErrorPage from './routes/error-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ThrowsError from './components/throws-error';
-import RootLayout from './routes/root-layout';
 import AboutPage from './components/about-page';
 import MainPage from './components/main-page';
 import { CardProviderStore } from './providers/card-provider';
 import { LocalStorageProvider } from './providers/local-storage-provider';
+import { RootLayout } from './routes/root-layout';
 
 interface AppProps {
   throwError?: boolean;
@@ -53,7 +53,7 @@ class App extends React.Component<AppProps, AppState> {
                 this.state.throwError ? (
                   <ThrowsError />
                 ) : (
-                  <RootLayout currentPath="/">
+                  <RootLayout>
                     <MainPage cardProvider={this.cardStore} localStoreProvider={this.localStore} />
                   </RootLayout>
                 )
@@ -62,7 +62,7 @@ class App extends React.Component<AppProps, AppState> {
             <Route
               path="/about"
               element={
-                <RootLayout currentPath="/about">
+                <RootLayout>
                   <AboutPage />
                 </RootLayout>
               }
