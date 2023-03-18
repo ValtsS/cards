@@ -1,19 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 import './link-ex.css'; // import CSS file
 
-interface LinkExProps {
-  to: string;
+interface LinkExProps extends LinkProps {
   path: string;
   children: React.ReactNode;
 }
 
 class LinkEx extends React.Component<LinkExProps> {
   render() {
-    const className = this.props.path.toLowerCase() === this.props.to.toLowerCase() ? 'active' : '';
+    const to = this.props.to.valueOf().toString().toLowerCase();
+    const className = this.props.path.toLowerCase() === to ? 'active' : '';
     return (
       <>
-        <Link to={this.props.to} className={className}>
+        <Link className={className} {...this.props}>
           {this.props.children}
         </Link>
       </>
