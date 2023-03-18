@@ -7,15 +7,40 @@ import MainPage from './components/main-page';
 import AboutPage from './components/about-page';
 import ErrorPage from './routes/error-page';
 
-export interface CardsAppProps {
-  cardStore: CardProviderStore;
-  localStore: LocalStorageProvider;
+export interface RouteConfig {
+  path: string;
+  element: React.ReactNode;
 }
+
+export interface CardsAppProps {
+  routesConfig: RouteConfig[];
+}
+
+const routes: RouteConfig[] = [
+  {
+    path: '/',
+    element: (
+      <RootLayout fancyName="Main page">
+        <MainPage
+          cardProvider={new CardProviderStore()}
+          localStoreProvider={new LocalStorageProvider()}
+        />
+      </RootLayout>
+    ),
+  },
+  {
+    path: '/about',
+    element: (
+      <RootLayout fancyName="About page">
+        <AboutPage />
+      </RootLayout>
+    ),
+  },
+];
 
 class CardsApp extends React.Component<CardsAppProps> {
   static defaultProps = {
-    cardStore: new CardProviderStore(),
-    localStore: new LocalStorageProvider(),
+    routesConfig: routes,
   };
 
   constructor(props: CardsAppProps) {
@@ -23,29 +48,15 @@ class CardsApp extends React.Component<CardsAppProps> {
   }
 
   render() {
+    const { routesConfig } = this.props;
+
     return (
       <>
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <RootLayout fancyName="Main page">
-                  <MainPage
-                    cardProvider={this.props.cardStore}
-                    localStoreProvider={this.props.localStore}
-                  />
-                </RootLayout>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <RootLayout fancyName="About page">
-                  <AboutPage />
-                </RootLayout>
-              }
-            />
+            {routesConfig.map((c, index) => (
+              <Route path={c.path} element={c.element} key={'route_ca_' + index.toString()} />
+            ))}
 
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
           </Routes>
