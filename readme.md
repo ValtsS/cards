@@ -1,5 +1,11 @@
 Cards
 
+Git:
+
+`git clone https://github.com/ValtsS/cards.git`
+`git checkout module01`
+
+
 Install:
 
 `npm install`
