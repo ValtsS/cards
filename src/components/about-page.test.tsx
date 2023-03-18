@@ -7,7 +7,7 @@ describe('About page component', () => {
     render(<AboutPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(new RegExp('Fantastic about page', 'i'))).toBeInTheDocument();
+      expect(screen.getByText(/Fantastic about page/i)).toBeInTheDocument();
     });
   });
 });

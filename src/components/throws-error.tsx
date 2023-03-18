@@ -2,8 +2,16 @@ import React from 'react';
 
 class ThrowsError extends React.Component {
   render() {
-    throw new Error('Something went wrong!!');
-    return <div></div>;
+    const showError = true;
+    return (
+      <div>
+        {showError &&
+          (() => {
+            throw new Error('Something went wrong!!');
+          })()}
+        <p>Other content...</p>
+      </div>
+    );
   }
 }
 

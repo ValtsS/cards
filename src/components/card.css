@@ -11,18 +11,9 @@
   margin: 20px;
 }
 
-.card .title {
-  font-size: medium;
-}
-
 .card .bigpic {
   max-width: 255px;
   max-height: 225px;
-}
-
-.card .minipic {
-  max-width: 96px;
-  max-height: 96px;
 }
 
 .card .minipic {
@@ -32,6 +23,7 @@
 }
 
 .card .title {
+  font-size: medium;
   font-style: italic;
 }
 .card .date {
