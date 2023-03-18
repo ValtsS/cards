@@ -6,16 +6,18 @@ import { withRouter, WithRouterProps } from '../components/router-hoc';
 
 interface RootLayoutProps extends WithRouterProps {
   children: React.ReactNode;
+  fancyName?: string;
 }
 
 class RootLayoutInt extends React.Component<RootLayoutProps, AppState> {
   render(): React.ReactNode {
-    const { location } = this.props;
+    const { location, fancyName } = this.props;
     return (
       <>
         <header>
           <p className="currpath">
-            <>{location.pathname}</>
+            <span>This {fancyName} is located at: </span>
+            <span>{location.pathname}</span>
           </p>
           <nav>
             <ul>

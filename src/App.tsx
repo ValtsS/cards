@@ -59,7 +59,7 @@ class App extends React.Component<AppProps, AppState> {
                 this.state.throwError ? (
                   <ThrowsError />
                 ) : (
-                  <RootLayout>
+                  <RootLayout fancyName="Main page">
                     <MainPage cardProvider={this.cardStore} localStoreProvider={this.localStore} />
                   </RootLayout>
                 )
@@ -68,7 +68,7 @@ class App extends React.Component<AppProps, AppState> {
             <Route
               path="/about"
               element={
-                <RootLayout>
+                <RootLayout fancyName="About page">
                   <AboutPage />
                 </RootLayout>
               }
