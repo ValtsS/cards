@@ -1,19 +1,17 @@
-
 [![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module01)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
 
 **Cards**
 
-*Git:*
+_Git:_
 
 `git clone https://github.com/ValtsS/cards.git`
 `git checkout module01`
 
-*Install*:
+_Install_:
 
 `npm install`
 
-
-*Build:*
+_Build:_
 
 `npm run build`
 
@@ -25,8 +23,6 @@ or
 
 `npm run preview`
 
-
-
-*Test coverage:*
+_Test coverage:_
 
 `npm run coverage`
