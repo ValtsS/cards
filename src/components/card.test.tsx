@@ -5,16 +5,33 @@ import Card from './card';
 
 describe('Card component', () => {
   it('should not crash', () => {
-    const test = new CardData();
-    test.title = 'Title';
-    test.addedat = new Date(2000, 11, 15);
-    test.price = '$100';
-    test.text = 'Text';
+    const test: CardData[] = [
+      {
+        title: 'Luxury Suite at Marriott',
+        imageUrl: '',
+        text: 'Experience the ultimate comfort and relaxation in our spacious luxury suite at Marriott.',
+        price: '$800',
+        addedat: new Date('2024-06-11'),
+        minipic: '',
+      },
+      {
+        title: 'Standard Room at Hilton',
+        imageUrl: '',
+        text: 'Enjoy a comfortable stay in our standard room at Hilton, perfect for business or leisure.',
+        price: '$250',
+        addedat: new Date('2024-03-05'),
+        minipic: '',
+        grayscale: true,
+        flipimg: true,
+        rating: 3,
+      },
+    ];
 
-    render(<Card card={test} />);
-
-    expect(screen.getByText(test.title)).toBeInTheDocument();
-    expect(screen.getByText(test.price)).toBeInTheDocument();
-    expect(screen.getByText(test.text)).toBeInTheDocument();
+    test.forEach(function (card: CardData) {
+      render(<Card card={card} />);
+      expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
+      expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
+      expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+    });
   });
 });
