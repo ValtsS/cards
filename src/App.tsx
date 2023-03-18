@@ -31,7 +31,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidCatch(error: Error) {
-    console.error('error caught:', error);
+    console.error('error caught: ', error);
     this.setState({
       hasError: true,
       error: error,
