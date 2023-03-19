@@ -1,0 +1,39 @@
+.card {
+  width: 300px;
+  background-color: #dddddd;
+  border-color: black;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  color: black;
+  border-radius: 20px;
+}
+.card .inner {
+  margin: 20px;
+}
+
+.card .bigpic {
+  max-width: 255px;
+  max-height: 225px;
+}
+
+.card .minipic {
+  max-width: 96px;
+  max-height: 96px;
+  float: right;
+}
+
+.card .title {
+  font-size: medium;
+  font-style: italic;
+}
+.card .date {
+  font-size: 0.9rem;
+}
+
+.card img.flip {
+  transform: scaleX(-1);
+}
+
+.card img.grayscale {
+  filter: grayscale(100%);
+}

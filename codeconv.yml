@@ -1,0 +1,16 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 90%
+    patch:
+      default:
+        target: auto
+        threshold: 80%
+  reports:
+    # Generate a codecov report in the `coverage` folder
+    codecov: true
+  # Push coverage reports to GitHub
+  after_n_builds: 1
+  require_ci_to_pass: true
