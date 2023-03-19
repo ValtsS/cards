@@ -36,6 +36,9 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   componentDidMount(): void {
+    if (!this.context) {
+      throw new Error('AppContext provider is not present');
+    }
     const lastquery = this.getLastValue();
     this.setState({
       lastquery: lastquery,

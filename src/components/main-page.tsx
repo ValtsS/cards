@@ -26,6 +26,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   }
 
   componentDidMount(): void {
+    if (!this.context) {
+      throw new Error('AppContext provider is not present');
+    }
     const searched = this.context.localstore.getItem(this.getKey());
     this.handleQueryChange(searched ?? '');
   }
