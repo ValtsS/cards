@@ -1,6 +1,6 @@
-import { LocalStorageProvider } from 'providers/local-storage-provider';
+import { LocalStorage } from 'providers/local-storage';
 
-export class MemoryStorageProvider implements LocalStorageProvider {
+export class MemoryStorage implements LocalStorage {
   private data: { [key: string]: string } = {};
 
   setItem(key: string, value: string): void {

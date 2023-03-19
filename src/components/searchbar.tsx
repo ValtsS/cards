@@ -1,4 +1,4 @@
-import { LocalStorageProvider } from 'providers/local-storage-provider';
+import { AppContext } from '../providers/app-context-provider';
 import React from 'react';
 import './searchbar.css';
 
@@ -8,25 +8,28 @@ interface SearchProps {
   testId?: string;
   title?: string;
   triggerOnLoad?: boolean;
-  localstore: LocalStorageProvider;
 }
 
 interface LocalSearchState {
   lastquery: string;
+  contextReady: boolean;
 }
 
 class SearchBar extends React.Component<SearchProps, LocalSearchState> {
+  static contextType = AppContext;
+  declare context: React.ContextType<typeof AppContext>;
+
   constructor(props: SearchProps) {
     super(props);
     const initialState: LocalSearchState = {
-      lastquery: this.getLastValue(),
+      lastquery: '',
+      contextReady: false,
     };
-
     this.state = initialState;
   }
 
   getLastValue(): string {
-    return localStorage.getItem(this.getKey()) ?? '';
+    return this.context.localstore.getItem(this.getKey()) ?? '';
   }
 
   getKey(): string {
@@ -34,18 +37,22 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   componentDidMount(): void {
-    const val = this.getLastValue();
+    const lastquery = this.getLastValue();
     this.setState({
-      lastquery: val,
+      lastquery: lastquery,
+      contextReady: true,
     });
+
     if (this.props.triggerOnLoad && this.props.triggerOnLoad.valueOf()) {
-      this.handleChange(val, false);
+      this.handleChange(lastquery, false);
       this.handleChange(null, true);
     }
   }
 
   saveSearch(): void {
-    localStorage.setItem(this.getKey(), this.state.lastquery);
+    if (this.state.contextReady) {
+      this.context.localstore.setItem(this.getKey(), this.state.lastquery);
+    }
   }
 
   componentWillUnmount(): void {
@@ -84,14 +91,18 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
       <div className="search-container">
         <div>
           {this.props.title && <div>{this.props.title}</div>}
-          <input
-            type="text"
-            value={this.state.lastquery}
-            onChange={this.handleQueryChange}
-            data-testid={this.props.testId}
-            onKeyDown={this.handleKeyPress}
-          />
-          <button onClick={this.handleSearch}>Search</button>
+          {this.state.contextReady && (
+            <>
+              <input
+                type="text"
+                value={this.state.lastquery}
+                onChange={this.handleQueryChange}
+                data-testid={this.props.testId}
+                onKeyDown={this.handleKeyPress}
+              />
+              <button onClick={this.handleSearch}>Search</button>
+            </>
+          )}
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-export class LocalStorageProvider {
+export class LocalStorage {
   setItem(key: string, value: string): void {
     localStorage.setItem(key, value);
   }

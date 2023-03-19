@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { AppContextProvider } from 'providers/app-context-provider';
 import React from 'react';
 import { CardProviderStore } from '../providers/card-provider';
-import { MemoryStorageProvider } from '../providers/memory-storage-provider';
+import { MemoryStorage } from '../providers/memory-storage';
 import MainPage from './main-page';
 
 // Create a mock for the CardProviderStore class
@@ -19,10 +20,12 @@ describe('Main page component', () => {
   it('should render without crash', async () => {
     act(() => {
       render(
-        <MainPage
+        <AppContextProvider
           cardProvider={new CardProviderStore()}
-          localStoreProvider={new MemoryStorageProvider()}
-        />
+          localStoreProvider={new MemoryStorage()}
+        >
+          <MainPage />
+        </AppContextProvider>
       );
     });
     await waitFor(() => {
@@ -35,15 +38,18 @@ describe('Main page component', () => {
 
   it('should search', async () => {
     const sfun = jest.fn();
+
     act(() => {
       render(
-        <MainPage
-          onSearchHook={sfun}
+        <AppContextProvider
           cardProvider={new CardProviderStore()}
-          localStoreProvider={new MemoryStorageProvider()}
-        />
+          localStoreProvider={new MemoryStorage()}
+        >
+          <MainPage onSearch={sfun} />
+        </AppContextProvider>
       );
     });
+
     await waitFor(() => {
       expect(screen.getByText('Enter search query')).toBeInTheDocument();
 

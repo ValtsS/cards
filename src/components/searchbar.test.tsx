@@ -1,24 +1,39 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { AppContextProvider } from 'providers/app-context-provider';
+import { CardProviderStore } from 'providers/card-provider';
 import React from 'react';
-import { MemoryStorageProvider } from '../providers/memory-storage-provider';
+import { MemoryStorage } from '../providers/memory-storage';
 import SearchBar from './searchbar';
 
+// Create a mock for the CardProviderStore class
+jest.mock('../providers/card-provider', () => {
+  return {
+    CardProviderStore: jest.fn().mockImplementation(() => {
+      return {
+        load: jest.fn().mockResolvedValue([]),
+      };
+    }),
+  };
+});
+
 describe('Searchbar component', () => {
+  const memory = new MemoryStorage();
+
   it('should render without crash', async () => {
-    const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
       render(
-        <SearchBar
-          id="sb"
-          localstore={memory}
-          testId="sb-test"
-          triggerOnLoad={true}
-          onQueryChange={qcFunc}
-          title={pattern}
-        />
+        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+          <SearchBar
+            id="sb"
+            testId="sb-test"
+            triggerOnLoad={true}
+            onQueryChange={qcFunc}
+            title={pattern}
+          />
+        </AppContextProvider>
       );
     });
 
@@ -31,20 +46,20 @@ describe('Searchbar component', () => {
   });
 
   it('should Trigger querychange', async () => {
-    const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
       render(
-        <SearchBar
-          id="sb"
-          localstore={memory}
-          testId="sb-test"
-          triggerOnLoad={false}
-          onQueryChange={qcFunc}
-          title={pattern}
-        />
+        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+          <SearchBar
+            id="sb"
+            testId="sb-test"
+            triggerOnLoad={false}
+            onQueryChange={qcFunc}
+            title={pattern}
+          />
+        </AppContextProvider>
       );
     });
 
@@ -62,20 +77,20 @@ describe('Searchbar component', () => {
   });
 
   it('should Trigger querychange via Enter', async () => {
-    const memory = new MemoryStorageProvider();
     const qcFunc = jest.fn();
     const pattern = 'sweetsearch';
 
     act(() => {
       render(
-        <SearchBar
-          id="sb"
-          localstore={memory}
-          testId="sb-test"
-          triggerOnLoad={false}
-          onQueryChange={qcFunc}
-          title={pattern}
-        />
+        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+          <SearchBar
+            id="sb"
+            testId="sb-test"
+            triggerOnLoad={false}
+            onQueryChange={qcFunc}
+            title={pattern}
+          />
+        </AppContextProvider>
       );
     });
 

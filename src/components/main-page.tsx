@@ -1,17 +1,17 @@
-import { CardProviderStore } from '../providers/card-provider';
 import React from 'react';
 import SearchBar from './searchbar';
 import { MainPageState } from './states';
 import CardShell from './card-shell';
-import { LocalStorageProvider } from 'providers/local-storage-provider';
+import { AppContext } from '../providers/app-context-provider';
 
 interface MainPageProps {
-  onSearchHook?: (searchQuery: string, searchpressed: boolean) => void;
-  cardProvider: CardProviderStore;
-  localStoreProvider: LocalStorageProvider;
+  onSearch?: (searchQuery: string, searchpressed: boolean) => void;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
+  static contextType = AppContext;
+  declare context: React.ContextType<typeof AppContext>;
+
   constructor(props: MainPageProps) {
     super(props);
 
@@ -23,7 +23,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     if (search) {
       this.setState({
         searchstring: searchQuery,
-        cards: await this.props.cardProvider.load(searchQuery),
+        cards: await this.context.cardprovider.load(searchQuery),
         filteringBy: searchQuery,
       });
     } else {
@@ -32,7 +32,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       });
     }
 
-    if (this.props.onSearchHook) this.props.onSearchHook(searchQuery, search);
+    if (this.props.onSearch) this.props.onSearch(searchQuery, search);
   };
 
   render() {
@@ -44,7 +44,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           testId="search-bar-test-id"
           title="Enter search query"
           triggerOnLoad={true}
-          localstore={this.props.localStoreProvider}
         />
 
         <CardShell data={this.state.cards} query={this.state.filteringBy} />

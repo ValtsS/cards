@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RootLayout } from './routes/root-layout';
-import { CardProviderStore } from './providers/card-provider';
-import { LocalStorageProvider } from './providers/local-storage-provider';
 import MainPage from './components/main-page';
 import AboutPage from './components/about-page';
 import ErrorPage from './routes/error-page';
@@ -21,10 +19,7 @@ const routes: RouteConfig[] = [
     path: '/',
     element: (
       <RootLayout fancyName="Main page">
-        <MainPage
-          cardProvider={new CardProviderStore()}
-          localStoreProvider={new LocalStorageProvider()}
-        />
+        <MainPage />
       </RootLayout>
     ),
   },
