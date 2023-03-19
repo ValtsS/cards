@@ -10,7 +10,7 @@ describe('CardsApp', () => {
       {
         path: '/',
         element: (
-          <RootLayout fancyName="About page">
+          <RootLayout>
             <AboutPage />
           </RootLayout>
         ),
@@ -20,7 +20,5 @@ describe('CardsApp', () => {
     act(() => render(<CardsApp routesConfig={routes} />));
 
     expect(screen.getByText('Fantastic about page of module01 react project')).toBeInTheDocument();
-    expect(screen.getByText('Main')).toBeInTheDocument();
-    expect(screen.getByText('About us')).toBeInTheDocument();
   });
 });

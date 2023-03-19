@@ -17,19 +17,11 @@ export interface CardsAppProps {
 const routes: RouteConfig[] = [
   {
     path: '/',
-    element: (
-      <RootLayout fancyName="Main page">
-        <MainPage />
-      </RootLayout>
-    ),
+    element: <MainPage />,
   },
   {
     path: '/about',
-    element: (
-      <RootLayout fancyName="About page">
-        <AboutPage />
-      </RootLayout>
-    ),
+    element: <AboutPage />,
   },
 ];
 
@@ -50,7 +42,13 @@ class CardsApp extends React.Component<CardsAppProps> {
         <BrowserRouter>
           <Routes>
             {routesConfig.map((c, index) => (
-              <Route path={c.path} element={c.element} key={'route_ca_' + index.toString()} />
+              <Route
+                path={c.path}
+                element={
+                  <RootLayout key={'rootlayout_ca_' + index.toString()}>{c.element}</RootLayout>
+                }
+                key={'route_ca_' + index.toString()}
+              />
             ))}
 
             <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
