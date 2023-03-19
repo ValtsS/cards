@@ -85,7 +85,7 @@ describe('Searchbar component', () => {
           <SearchBar
             id="sb"
             testId="sb-test"
-            triggerOnLoad={false}
+            triggerOnLoad={true}
             onQueryChange={qcFunc}
             title={pattern}
           />
@@ -112,5 +112,14 @@ describe('Searchbar component', () => {
       expect(qcFunc).toBeCalled();
       expect(qcFunc).toBeCalledWith('0');
     });
+  });
+
+  test('does not display input field when context is not ready', () => {
+    const { queryByTestId } = render(
+      <SearchBar id="test" onQueryChange={() => {}} triggerOnLoad={true} />
+    );
+
+    // Assert that input field is not displayed
+    expect(queryByTestId('search-input')).not.toBeInTheDocument();
   });
 });

@@ -11,7 +11,7 @@ interface SearchProps {
 }
 
 interface LocalSearchState {
-  lastquery?: string;
+  lastquery: string;
   contextReady: boolean;
 }
 
@@ -23,6 +23,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     super(props);
     const initialState: LocalSearchState = {
       contextReady: false,
+      lastquery: '',
     };
     this.state = initialState;
   }
@@ -49,7 +50,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
 
   saveSearch(): void {
     if (this.state.contextReady)
-      this.context.localstore.setItem(this.getKey(), this.state.lastquery ?? '');
+      this.context.localstore.setItem(this.getKey(), this.state.lastquery);
   }
 
   componentWillUnmount(): void {
@@ -63,7 +64,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
       this.setState({
         lastquery: apply,
       });
-    if (search) this.props.onQueryChange(apply ?? '');
+    if (search) this.props.onQueryChange(apply);
   };
 
   handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +91,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
             <>
               <input
                 type="text"
-                value={this.state.lastquery ?? ''}
+                value={this.state.lastquery}
                 onChange={this.handleQueryChange}
                 data-testid={this.props.testId}
                 onKeyDown={this.handleKeyPress}
