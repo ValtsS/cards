@@ -68,6 +68,19 @@ describe('Main page component', () => {
     });
   });
 
+  it('test slow propogation due to unmount', async () => {
+    const { unmount } = render(
+      <AppContextProvider
+        cardProvider={new CardProviderStore()}
+        localStoreProvider={new MemoryStorage()}
+      >
+        <MainPage />
+      </AppContextProvider>
+    );
+
+    unmount();
+  });
+
   const clickSearch = () => {
     const input = screen.getByRole('button', { name: 'Search' });
     expect(input).toBeInTheDocument();

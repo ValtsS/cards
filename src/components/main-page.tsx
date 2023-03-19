@@ -15,15 +15,31 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   constructor(props: MainPageProps) {
     super(props);
 
-    const initialState: MainPageState = {};
+    const initialState: MainPageState = {
+      ready: false,
+    };
     this.state = initialState;
+  }
+
+  getKey(): string {
+    return `mainpage_lastquery`;
+  }
+
+  componentDidMount(): void {
+    const searched = this.context.localstore.getItem(this.getKey());
+    this.handleQueryChange(searched ?? '');
+  }
+
+  componentWillUnmount(): void {
+    if (this.state.ready)
+      this.context.localstore.setItem(this.getKey(), this.state.filteringBy ?? '');
   }
 
   handleQueryChange = async (searchQuery: string) => {
     this.setState({
-      searchstring: searchQuery,
       cards: await this.context.cardprovider.load(searchQuery),
       filteringBy: searchQuery,
+      ready: true,
     });
     if (this.props.onSearch) this.props.onSearch(searchQuery);
   };
@@ -36,7 +52,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           onQueryChange={this.handleQueryChange}
           testId="search-bar-test-id"
           title="Enter search query"
-          triggerOnLoad={true}
         />
 
         <CardShell data={this.state.cards} query={this.state.filteringBy} />
