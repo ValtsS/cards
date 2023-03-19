@@ -50,9 +50,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   saveSearch(): void {
-    if (this.state.contextReady) {
       this.context.localstore.setItem(this.getKey(), this.state.lastquery);
-    }
   }
 
   componentWillUnmount(): void {
