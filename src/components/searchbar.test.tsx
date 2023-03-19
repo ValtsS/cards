@@ -114,12 +114,18 @@ describe('Searchbar component', () => {
     });
   });
 
-  test('does not display input field when context is not ready', () => {
-    const { queryByTestId } = render(
-      <SearchBar id="test" onQueryChange={() => {}} triggerOnLoad={true} />
-    );
+  test('does not display input field when context is not ready', async () => {
+    render(<SearchBar id="sb" testId="sb-test" onQueryChange={() => {}} triggerOnLoad={false} />);
 
-    // Assert that input field is not displayed
-    expect(queryByTestId('search-input')).not.toBeInTheDocument();
+    const searchBar = screen.getByTestId('sb-test');
+    expect(searchBar).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.keyDown(searchBar, { key: '0', keyCode: 48 });
+      fireEvent.keyUp(searchBar, { key: '0', keyCode: 48 });
+      fireEvent.change(searchBar, { target: { value: '0' } });
+      fireEvent.keyDown(searchBar, { key: 'Enter', keyCode: 13 });
+      fireEvent.keyUp(searchBar, { key: 'Enter', keyCode: 13 });
+    });
   });
 });

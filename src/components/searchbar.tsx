@@ -87,7 +87,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
       <div className="search-container">
         <div>
           {this.props.title && <div>{this.props.title}</div>}
-          {this.state.contextReady && (
+          {
             <>
               <input
                 type="text"
@@ -98,7 +98,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
               />
               <button onClick={this.handleSearch}>Search</button>
             </>
-          )}
+          }
         </div>
       </div>
     );
