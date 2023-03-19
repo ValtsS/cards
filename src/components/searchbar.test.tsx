@@ -26,13 +26,7 @@ describe('Searchbar component', () => {
     act(() => {
       render(
         <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
-          <SearchBar
-            id="sb"
-            testId="sb-test"
-            triggerOnLoad={true}
-            onQueryChange={qcFunc}
-            title={pattern}
-          />
+          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
     });
@@ -41,8 +35,24 @@ describe('Searchbar component', () => {
       expect(screen.getByText(pattern)).toBeInTheDocument();
     });
 
-    expect(qcFunc).toBeCalled();
-    expect(qcFunc).toBeCalledWith('');
+    expect(qcFunc).toBeCalledTimes(0);
+    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
+  });
+
+  it('should render with forced umount', async () => {
+    const qcFunc = jest.fn();
+    const pattern = 'sweetsearch';
+
+    const memory = new MemoryStorage();
+
+    const { unmount } = render(
+      <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+        <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
+      </AppContextProvider>
+    );
+
+    unmount();
+    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
   });
 
   it('should Trigger querychange', async () => {
@@ -52,13 +62,7 @@ describe('Searchbar component', () => {
     act(() => {
       render(
         <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
-          <SearchBar
-            id="sb"
-            testId="sb-test"
-            triggerOnLoad={false}
-            onQueryChange={qcFunc}
-            title={pattern}
-          />
+          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
     });
@@ -73,6 +77,7 @@ describe('Searchbar component', () => {
     act(() => fireEvent.change(searchBar, { target: { value: '12345' } }));
 
     expect(qcFunc).toBeCalledTimes(0);
+    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
   });
 
   it('should Trigger querychange via Enter', async () => {
@@ -82,13 +87,7 @@ describe('Searchbar component', () => {
     act(() => {
       render(
         <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
-          <SearchBar
-            id="sb"
-            testId="sb-test"
-            triggerOnLoad={true}
-            onQueryChange={qcFunc}
-            title={pattern}
-          />
+          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
     });
@@ -111,21 +110,7 @@ describe('Searchbar component', () => {
     await waitFor(() => {
       expect(qcFunc).toBeCalled();
       expect(qcFunc).toBeCalledWith('0');
-    });
-  });
-
-  test('does not display input field when context is not ready', async () => {
-    render(<SearchBar id="sb" testId="sb-test" onQueryChange={() => {}} triggerOnLoad={false} />);
-
-    const searchBar = screen.getByTestId('sb-test');
-    expect(searchBar).toBeInTheDocument();
-
-    act(() => {
-      fireEvent.keyDown(searchBar, { key: '0', keyCode: 48 });
-      fireEvent.keyUp(searchBar, { key: '0', keyCode: 48 });
-      fireEvent.change(searchBar, { target: { value: '0' } });
-      fireEvent.keyDown(searchBar, { key: 'Enter', keyCode: 13 });
-      fireEvent.keyUp(searchBar, { key: 'Enter', keyCode: 13 });
+      expect(memory.getItem(`searchbar_sb_lastquery`)).toBe('0');
     });
   });
 });
