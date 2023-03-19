@@ -64,8 +64,7 @@ describe('Main page component', () => {
     clickSearch();
 
     await waitFor(() => {
-      expect(sfun).toBeCalledWith('12345', false);
-      expect(sfun).toBeCalledWith('12345', true);
+      expect(sfun).toBeCalledWith('12345');
     });
   });
 

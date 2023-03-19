@@ -42,7 +42,7 @@ describe('Searchbar component', () => {
     });
 
     expect(qcFunc).toBeCalled();
-    expect(qcFunc).toBeCalledWith('', true);
+    expect(qcFunc).toBeCalledWith('');
   });
 
   it('should Trigger querychange', async () => {
@@ -72,8 +72,7 @@ describe('Searchbar component', () => {
 
     act(() => fireEvent.change(searchBar, { target: { value: '12345' } }));
 
-    expect(qcFunc).toBeCalled();
-    expect(qcFunc).toBeCalledWith('12345', false);
+    expect(qcFunc).toBeCalledTimes(0);
   });
 
   it('should Trigger querychange via Enter', async () => {
@@ -111,8 +110,7 @@ describe('Searchbar component', () => {
 
     await waitFor(() => {
       expect(qcFunc).toBeCalled();
-      expect(qcFunc).toBeCalledWith('0', false);
-      expect(qcFunc).toBeCalledWith('0', true);
+      expect(qcFunc).toBeCalledWith('0');
     });
   });
 });

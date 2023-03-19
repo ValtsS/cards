@@ -5,7 +5,7 @@ import CardShell from './card-shell';
 import { AppContext } from '../providers/app-context-provider';
 
 interface MainPageProps {
-  onSearch?: (searchQuery: string, searchpressed: boolean) => void;
+  onSearch?: (searchQuery: string) => void;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -19,20 +19,13 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.state = initialState;
   }
 
-  handleQueryChange = async (searchQuery: string, search: boolean) => {
-    if (search) {
-      this.setState({
-        searchstring: searchQuery,
-        cards: await this.context.cardprovider.load(searchQuery),
-        filteringBy: searchQuery,
-      });
-    } else {
-      this.setState({
-        searchstring: searchQuery,
-      });
-    }
-
-    if (this.props.onSearch) this.props.onSearch(searchQuery, search);
+  handleQueryChange = async (searchQuery: string) => {
+    this.setState({
+      searchstring: searchQuery,
+      cards: await this.context.cardprovider.load(searchQuery),
+      filteringBy: searchQuery,
+    });
+    if (this.props.onSearch) this.props.onSearch(searchQuery);
   };
 
   render() {
