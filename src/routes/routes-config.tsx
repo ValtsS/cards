@@ -1,3 +1,4 @@
+import FormerPage from '../components/former-page';
 import React from 'react';
 import AboutPage from '../components/about-page';
 import MainPage from '../components/main-page';
@@ -24,7 +25,7 @@ export const defaultRoutes: RouteConfig[] = [
   },
   {
     path: '/former',
-    element: <AboutPage />,
+    element: <FormerPage />,
     displayInMenu: true,
     menuText: 'Form',
   },
