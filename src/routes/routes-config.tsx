@@ -20,7 +20,7 @@ export const defaultRoutes: RouteConfig[] = [
     path: '/about',
     element: <AboutPage />,
     displayInMenu: true,
-    menuText: 'About',
+    menuText: 'About us',
   },
   {
     path: '/former',

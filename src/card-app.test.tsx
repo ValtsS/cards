@@ -1,8 +1,9 @@
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
-import CardsApp, { RouteConfig } from './cards-app';
+import CardsApp from './cards-app';
 import { RootLayout } from 'routes/root-layout';
 import AboutPage from 'components/about-page';
+import { RouteConfig } from 'routes/routes-config';
 
 describe('CardsApp', () => {
   it('should render main page with correct props', async () => {
