@@ -1,33 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RootLayout } from './routes/root-layout';
-import MainPage from './components/main-page';
-import AboutPage from './components/about-page';
 import ErrorPage from './routes/error-page';
-
-export interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-}
+import { RouteConfig, defaultRoutes } from './routes/routes-config';
 
 export interface CardsAppProps {
   routesConfig: RouteConfig[];
 }
 
-const routes: RouteConfig[] = [
-  {
-    path: '/',
-    element: <MainPage />,
-  },
-  {
-    path: '/about',
-    element: <AboutPage />,
-  },
-];
-
 class CardsApp extends React.Component<CardsAppProps> {
   static defaultProps = {
-    routesConfig: routes,
+    routesConfig: defaultRoutes,
   };
 
   constructor(props: CardsAppProps) {

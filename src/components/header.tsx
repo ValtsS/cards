@@ -3,6 +3,7 @@ import React from 'react';
 import AppState from '../appstate';
 import { withRouter, WithRouterProps } from './router-hoc';
 import './header.css';
+import { defaultRoutes } from '../routes/routes-config';
 
 interface HeaderProps extends WithRouterProps {
   fancyName: string;
@@ -21,16 +22,18 @@ export class HeaderInt extends React.Component<HeaderProps, AppState> {
           </p>
           <nav>
             <ul>
-              <li>
-                <LinkEx to="/" path={location.pathname}>
-                  Main
-                </LinkEx>
-              </li>
-              <li>
-                <LinkEx to="/about" path={location.pathname}>
-                  About us
-                </LinkEx>
-              </li>
+              {defaultRoutes.map(
+                (route, index) =>
+                  route.displayInMenu && (
+                    <>
+                      <li>
+                        <LinkEx to={route.path} path={location.pathname} key={route.menuText}>
+                          {route.menuText}
+                        </LinkEx>
+                      </li>
+                    </>
+                  )
+              )}
             </ul>
           </nav>
         </header>
