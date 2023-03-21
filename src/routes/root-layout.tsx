@@ -13,7 +13,6 @@ export class RootLayout extends React.Component<RootLayoutProps, AppState> {
       <>
         <Header fancyName="CompanyName"></Header>
         <main>{this.props.children}</main>
-        <div></div>
         <footer>
           <p>(c) Valts</p>
         </footer>
