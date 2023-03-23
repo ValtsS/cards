@@ -4,10 +4,12 @@ import { CardValidator } from './card-validator';
 import { InputWithDecorator } from './input-component';
 import { SelectWithDecorator } from './select-component';
 
-export interface CardCreatorProps {}
+export interface CardCreatorProps {
+  onCardCreate: (newCard: CardData) => void;
+}
 
 class LocalCardState {
-  valid: boolean = false;
+  valid = false;
   card: CardData;
 
   constructor(defaultDate: Date) {
@@ -45,11 +47,15 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
     c.rating = +(this.refSelect.current?.value ?? 0);
 
+    const isValid = this.validator.isValid(c);
+
     this.setState((prevState) => ({
       ...prevState,
       card: c,
-      valid: this.validator.isValid(c),
+      valid: isValid,
     }));
+
+    if (isValid) this.props.onCardCreate(c);
 
     console.log(c);
   }
