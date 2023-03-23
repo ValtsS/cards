@@ -8,12 +8,11 @@ interface Props {
 }
 
 export default class Decorator extends React.Component<Props> {
-
   static contextType = FormContext;
   declare context: React.ContextType<typeof FormContext>;
 
   render() {
-    const { title, name} = this.props;
+    const { title, name } = this.props;
     const errormessage = this.context.errors[name];
 
     return (

@@ -6,7 +6,7 @@ type FormContextValue = {
 };
 
 export const FormContext = React.createContext<FormContextValue>({
-  errors: {}
+  errors: {},
 });
 
 type FormContextProviderProps = {
@@ -14,13 +14,6 @@ type FormContextProviderProps = {
   errors: CardErrors;
 };
 
-export const FormContextProvider = ({
-  children,
-  errors
-}: FormContextProviderProps) => {
-  return (
-    <FormContext.Provider value={{ errors: errors }}>
-      {children}
-    </FormContext.Provider>
-  );
+export const FormContextProvider = ({ children, errors }: FormContextProviderProps) => {
+  return <FormContext.Provider value={{ errors: errors }}>{children}</FormContext.Provider>;
 };

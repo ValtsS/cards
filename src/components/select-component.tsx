@@ -10,9 +10,9 @@ interface SelectProps extends HTMLAttributes<HTMLSelectElement> {
 
 export const SelectWithDecorator = forwardRef(
   (props: SelectProps, ref: ForwardedRef<HTMLSelectElement>) => {
-    const { name, title, values, errormessage } = props;
+    const { name, title, values } = props;
     return (
-      <Decorator name={name} title={title} errormessage={errormessage}>
+      <Decorator name={name} title={title}>
         <select {...props} ref={ref}>
           {values.map((val) => (
             <option value={val} key={'Sel' + val}>

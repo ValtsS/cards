@@ -12,7 +12,7 @@ export const InputWithDecorator = forwardRef(
   (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
     const { name, title, type, errormessage } = props;
     return (
-      <Decorator name={name} title={title} errormessage={errormessage}>
+      <Decorator name={name} title={title}>
         <input {...props} type={type} name={name} ref={ref} />
       </Decorator>
     );

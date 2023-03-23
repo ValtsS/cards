@@ -35,7 +35,14 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     this.state = new LocalCardState(new Date());
     this.validator = new CardValidator();
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
+  reset() {
+    if (this.refTitle.current) this.refTitle.current.value = '';
+    if (this.refText.current) this.refText.current.value = '';
+    if (this.refPrice.current) this.refPrice.current.value = '';
+    if (this.refAdded.current) this.refAdded.current.value = '';
+    if (this.refSelect.current) this.refSelect.current.value = '';
   }
 
   handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -57,12 +64,13 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
       ...prevState,
       card: c,
       valid: isValid,
-      errors: this.validator.errors
+      errors: this.validator.errors,
     }));
 
-    if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
-
     console.log(c);
+
+    if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
+    if (isValid) this.reset();
   }
 
   /*
@@ -88,30 +96,30 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
         {this.state.valid.toString()}
 
         <FormContextProvider errors={this.state.errors}>
-        <form onSubmit={this.handleSubmit}>
-          <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle}  />
+          <form onSubmit={this.handleSubmit}>
+            <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle} />
 
-          <InputWithDecorator name="text" title="Text" type="text" ref={this.refText} />
+            <InputWithDecorator name="text" title="Text" type="text" ref={this.refText} />
 
-          <InputWithDecorator name="price" title="Price" type="number" ref={this.refPrice} />
+            <InputWithDecorator name="price" title="Price" type="number" ref={this.refPrice} />
 
-          <InputWithDecorator
-            name="addedat"
-            title="Added at"
-            type="date"
-            ref={this.refAdded}
-            defaultValue={defaultDate}
-          />
+            <InputWithDecorator
+              name="addedat"
+              title="Added at"
+              type="date"
+              ref={this.refAdded}
+              defaultValue={defaultDate}
+            />
 
-          <SelectWithDecorator
-            name="rating"
-            title="Rating"
-            values={['1', '2', '3', '4', '5']}
-            ref={this.refSelect}
-          />
+            <SelectWithDecorator
+              name="rating"
+              title="Rating"
+              values={['', '1', '2', '3', '4', '5']}
+              ref={this.refSelect}
+            />
 
-          <button type="submit">Submit</button>
-        </form>
+            <button type="submit">Submit</button>
+          </form>
         </FormContextProvider>
       </>
     );
