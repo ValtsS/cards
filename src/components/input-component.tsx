@@ -5,12 +5,11 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   name: string;
   title: string;
   type: string;
-  errormessage?: string;
 }
 
 export const InputWithDecorator = forwardRef(
   (props: InputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { name, title, type, errormessage } = props;
+    const { name, title, type } = props;
     return (
       <Decorator name={name} title={title}>
         <input {...props} type={type} name={name} ref={ref} />
