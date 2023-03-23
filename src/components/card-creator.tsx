@@ -46,6 +46,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     c.price = this.R.refPrice.current?.value;
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
     c.rating = +(this.R.refSelect.current?.value ?? 0);
+    c.grayscale = this.R.refGray.current?.checked;
 
     const isValid = this.validator.isValid(c);
 
@@ -105,6 +106,13 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
               title="Rating"
               values={['', '1', '2', '3', '4', '5']}
               ref={this.R.refSelect}
+            />
+
+            <InputWithDecorator
+              name="grayscale"
+              title="Grayscale picture"
+              type="checkbox"
+              ref={this.R.refGray}
             />
 
             <button type="submit">Submit</button>

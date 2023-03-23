@@ -6,6 +6,7 @@ export default class Refs {
   refPrice: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refAdded: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refSelect: React.RefObject<HTMLSelectElement> = createRef<HTMLSelectElement>();
+  refGray: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
 
   reset() {
     if (this.refTitle.current) this.refTitle.current.value = '';
@@ -13,5 +14,6 @@ export default class Refs {
     if (this.refPrice.current) this.refPrice.current.value = '';
     if (this.refAdded.current) this.refAdded.current.value = '';
     if (this.refSelect.current) this.refSelect.current.value = '';
+    if (this.refGray.current) this.refGray.current.checked = false;
   }
 }
