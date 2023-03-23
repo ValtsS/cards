@@ -17,6 +17,7 @@ class LocalCardState {
 }
 
 class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
+
   validator: CardValidator;
 
   refTitle: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
@@ -36,12 +37,14 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     event.preventDefault();
     console.log('Submit called');
 
+
     const parsed = Date.parse(this.refAdded.current?.value ?? '');
 
     const c = new CardData();
     c.title = this.refTitle.current?.value;
     c.text = this.refText.current?.value;
     c.price = this.refPrice.current?.value;
+
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
     c.rating = +(this.refSelect.current?.value ?? 0);
 
@@ -79,6 +82,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
         {this.state.valid.toString()}
 
         <form onSubmit={this.handleSubmit}>
+
           <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle} />
 
           <InputWithDecorator name="text" title="Text" type="text" ref={this.refText} />
