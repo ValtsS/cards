@@ -1,9 +1,10 @@
 import { CardData } from '../providers/card-provider';
-import React, { createRef, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { CardErrors, CardValidator } from './card-validator';
 import { InputWithDecorator } from './input-component';
 import { SelectWithDecorator } from './select-component';
 import { FormContextProvider } from '../providers/form-context-provider';
+import Refs from './card-creator-refs';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
@@ -23,40 +24,28 @@ class LocalCardState {
 
 class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
   validator: CardValidator;
-
-  refTitle: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
-  refText: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
-  refPrice: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
-  refAdded: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
-  refSelect: React.RefObject<HTMLSelectElement> = createRef<HTMLSelectElement>();
+  R: Refs;
 
   constructor(props: CardCreatorProps) {
     super(props);
     this.state = new LocalCardState(new Date());
+    this.R = new Refs();
     this.validator = new CardValidator();
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  reset() {
-    if (this.refTitle.current) this.refTitle.current.value = '';
-    if (this.refText.current) this.refText.current.value = '';
-    if (this.refPrice.current) this.refPrice.current.value = '';
-    if (this.refAdded.current) this.refAdded.current.value = '';
-    if (this.refSelect.current) this.refSelect.current.value = '';
   }
 
   handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log('Submit called');
 
-    const parsed = Date.parse(this.refAdded.current?.value ?? '');
+    const parsed = Date.parse(this.R.refAdded.current?.value ?? '');
 
     const c = new CardData();
-    c.title = this.refTitle.current?.value;
-    c.text = this.refText.current?.value;
-    c.price = this.refPrice.current?.value;
+    c.title = this.R.refTitle.current?.value;
+    c.text = this.R.refText.current?.value;
+    c.price = this.R.refPrice.current?.value;
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
-    c.rating = +(this.refSelect.current?.value ?? 0);
+    c.rating = +(this.R.refSelect.current?.value ?? 0);
 
     const isValid = this.validator.isValid(c);
 
@@ -70,7 +59,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     console.log(c);
 
     if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
-    if (isValid) this.reset();
+    if (isValid) this.R.reset();
   }
 
   /*
@@ -97,17 +86,17 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
 
         <FormContextProvider errors={this.state.errors}>
           <form onSubmit={this.handleSubmit}>
-            <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle} />
+            <InputWithDecorator name="title" title="Title" type="text" ref={this.R.refTitle} />
 
-            <InputWithDecorator name="text" title="Text" type="text" ref={this.refText} />
+            <InputWithDecorator name="text" title="Text" type="text" ref={this.R.refText} />
 
-            <InputWithDecorator name="price" title="Price" type="number" ref={this.refPrice} />
+            <InputWithDecorator name="price" title="Price" type="number" ref={this.R.refPrice} />
 
             <InputWithDecorator
               name="addedat"
               title="Added at"
               type="date"
-              ref={this.refAdded}
+              ref={this.R.refAdded}
               defaultValue={defaultDate}
             />
 
@@ -115,7 +104,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
               name="rating"
               title="Rating"
               values={['', '1', '2', '3', '4', '5']}
-              ref={this.refSelect}
+              ref={this.R.refSelect}
             />
 
             <button type="submit">Submit</button>
