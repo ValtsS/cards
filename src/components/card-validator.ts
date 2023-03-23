@@ -25,6 +25,8 @@ export class CardValidator {
     if (!card.rating || card.rating < 1)
       this.errors['rating'] = 'At least one star rating is required';
 
+    if (!card.grayscale) this.errors['grayscale'] = 'Box should be checked or unchecked!';
+
     return Object.keys(this.errors).length === 0 ?? false;
   }
 }
