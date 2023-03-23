@@ -5,7 +5,6 @@ interface SelectProps extends HTMLAttributes<HTMLSelectElement> {
   name: string;
   title: string;
   values: string[];
-  errormessage?: string;
 }
 
 export const SelectWithDecorator = forwardRef(
