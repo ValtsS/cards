@@ -23,7 +23,7 @@ export class HeaderInt extends React.Component<HeaderProps, AppState> {
           <nav>
             <ul>
               {defaultRoutes.map(
-                (route, index) =>
+                (route) =>
                   route.displayInMenu && (
                     <li key={'ul_' + route.path + route.menuText}>
                       <LinkEx

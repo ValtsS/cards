@@ -5,7 +5,7 @@ import { InputWithDecorator } from './input-component';
 import { SelectWithDecorator } from './select-component';
 
 export interface CardCreatorProps {
-  onCardCreate: (newCard: CardData) => void;
+  onCardCreate?: (newCard: CardData) => void;
 }
 
 class LocalCardState {
@@ -55,7 +55,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
       valid: isValid,
     }));
 
-    if (isValid) this.props.onCardCreate(c);
+    if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
 
     console.log(c);
   }
