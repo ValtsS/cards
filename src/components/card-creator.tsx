@@ -1,8 +1,9 @@
 import { CardData } from '../providers/card-provider';
 import React, { createRef, FormEvent } from 'react';
-import { CardValidator } from './card-validator';
+import { CardErrors, CardValidator } from './card-validator';
 import { InputWithDecorator } from './input-component';
 import { SelectWithDecorator } from './select-component';
+import { FormContextProvider } from '../providers/form-context-provider';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
@@ -11,10 +12,12 @@ export interface CardCreatorProps {
 class LocalCardState {
   valid = false;
   card: CardData;
+  errors: CardErrors;
 
   constructor(defaultDate: Date) {
     this.card = new CardData();
     this.card.addedat = defaultDate;
+    this.errors = {};
   }
 }
 
@@ -32,6 +35,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     this.state = new LocalCardState(new Date());
     this.validator = new CardValidator();
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -53,6 +57,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
       ...prevState,
       card: c,
       valid: isValid,
+      errors: this.validator.errors
     }));
 
     if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
@@ -82,8 +87,9 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
       <>
         {this.state.valid.toString()}
 
+        <FormContextProvider errors={this.state.errors}>
         <form onSubmit={this.handleSubmit}>
-          <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle} />
+          <InputWithDecorator name="title" title="Title" type="text" ref={this.refTitle}  />
 
           <InputWithDecorator name="text" title="Text" type="text" ref={this.refText} />
 
@@ -106,6 +112,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
 
           <button type="submit">Submit</button>
         </form>
+        </FormContextProvider>
       </>
     );
   }
