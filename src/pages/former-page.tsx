@@ -1,5 +1,5 @@
 import React from 'react';
-import CardCreator from './card-creator';
+import CardCreator from '../components/card-creator';
 
 class FormerPage extends React.Component {
   render() {

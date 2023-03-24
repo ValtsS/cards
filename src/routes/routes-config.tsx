@@ -1,7 +1,7 @@
-import FormerPage from '../components/former-page';
+import FormerPage from '../pages/former-page';
 import React from 'react';
-import AboutPage from '../components/about-page';
-import MainPage from '../components/main-page';
+import AboutPage from '../pages/about-page';
+import MainPage from '../pages/main-page';
 
 export interface RouteConfig {
   path: string;

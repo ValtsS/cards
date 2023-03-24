@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchBar from './searchbar';
+import SearchBar from '../components/searchbar';
 import { MainPageState } from './states';
-import CardShell from './card-shell';
+import CardShell from '../components/card-shell';
 import { AppContext } from '../providers/app-context-provider';
 
 interface MainPageProps {
