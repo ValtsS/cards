@@ -117,6 +117,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
                   type="file"
                   ref={this.R.refImg}
                   onChange={this.handleImagePrview}
+                  accept={'image/*'}
                 />
 
                 <RadioWithDecorator
