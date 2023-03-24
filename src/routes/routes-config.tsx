@@ -18,15 +18,15 @@ export const defaultRoutes: RouteConfig[] = [
     menuText: 'Main',
   },
   {
-    path: '/about',
-    element: <AboutPage />,
-    displayInMenu: true,
-    menuText: 'About us',
-  },
-  {
     path: '/former',
     element: <FormerPage />,
     displayInMenu: true,
     menuText: 'Form',
+  },
+  {
+    path: '/about',
+    element: <AboutPage />,
+    displayInMenu: true,
+    menuText: 'About us',
   },
 ];
