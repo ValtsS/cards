@@ -39,12 +39,7 @@ export class CardValidator {
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
     c.rating = +(R.refSelect.current?.value ?? 0);
     c.grayscale = R.refGray.current?.checked;
-
-    if (R.refImg.current && R.refImg.current.files && (R.refImg.current.files?.length ?? 0) > 0) {
-      const file = R.refImg.current.files[0];
-      const url = URL.createObjectURL(file);
-      c.imageUrl = url;
-    }
+    c.imageUrl = R.formImageURL(true);
 
     return c;
   }

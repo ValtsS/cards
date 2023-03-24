@@ -16,7 +16,6 @@ export class CardData {
   rating?: number;
   flipimg?: boolean;
   grayscale?: boolean;
-  rawImage?: File;
 }
 
 export class CardProviderStore {
@@ -57,8 +56,7 @@ export class CardProviderStore {
         e.title?.includes(filter) ||
         e.addedat?.toDateString().includes(filter)
       ) {
-        if (e.rawImage) e.imageUrl = URL.createObjectURL(e.rawImage);
-        else e.imageUrl = dummypics[i % dummypics.length];
+        e.imageUrl = dummypics[i % dummypics.length];
 
         e.minipic = minipic[i % minipic.length];
         e.rating = (13 + i) % 5;
