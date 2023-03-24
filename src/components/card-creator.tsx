@@ -53,14 +53,14 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
 
     if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
     if (isValid) this.R.reset();
-  }
+  };
 
   handleImagePrview = () => {
     this.setState((prevState) => ({
       ...prevState,
       previewimageurl: this.R.formImageURL(false),
     }));
-  }
+  };
 
   render() {
     const defaultDate = this.state.card.addedat?.toISOString().split('T')[0] ?? '';

@@ -7,6 +7,7 @@ describe('Card component', () => {
   it('should not crash', () => {
     const test: CardData[] = [
       {
+        uuid: '9999999X',
         title: 'Luxury Suite at Marriott',
         imageUrl: '',
         text: 'Experience the ultimate comfort and relaxation in our spacious luxury suite at Marriott.',
@@ -15,6 +16,7 @@ describe('Card component', () => {
         minipic: '',
       },
       {
+        uuid: '9999999Y',
         title: 'Standard Room at Hilton',
         imageUrl: '',
         text: 'Enjoy a comfortable stay in our standard room at Hilton, perfect for business or leisure.',

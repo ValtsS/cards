@@ -19,8 +19,16 @@ export class CardData {
   flipimg?: boolean;
   grayscale?: boolean;
 
+  static getNext(): number {
+    return CardData.counter++;
+  }
+
+  static getNextAsStr(): string {
+    return CardData.getNext().toString();
+  }
+
   constructor() {
-    this.uuid = (CardData.counter++).toString();
+    this.uuid = CardData.getNext().toString();
   }
 }
 
