@@ -1,10 +1,8 @@
-.validation-error
-{
-    color: brown;
+.validation-error {
+  color: brown;
 }
 
-div.input-wrapper
-{
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+div.input-wrapper {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
