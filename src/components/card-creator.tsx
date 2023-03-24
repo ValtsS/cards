@@ -21,6 +21,7 @@ class LocalCardState {
     this.card = new CardData();
     this.card.addedat = defaultDate;
     this.errors = {};
+    this.valid = false;
   }
 }
 
