@@ -10,7 +10,7 @@ jest.mock('../providers/card-provider', () => {
   return {
     CardProviderStore: jest.fn().mockImplementation(() => {
       return {
-        load: jest.fn().mockResolvedValue([]),
+        loadTestData: jest.fn().mockResolvedValue([]),
       };
     }),
   };
