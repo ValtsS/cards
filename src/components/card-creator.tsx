@@ -41,7 +41,6 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
 
   handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log('Submit called');
 
     const c = this.validator.prepareCard(this.R);
     const isValid = this.validator.isValid(c);
@@ -53,8 +52,6 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
       errors: this.validator.errors,
       previewimageurl: isValid ? undefined : prevState.previewimageurl,
     }));
-
-    console.log(c);
 
     if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
     if (isValid) this.R.reset();
