@@ -7,6 +7,8 @@ export enum StoreStatus {
 }
 
 export class CardData {
+  static counter = 0;
+  uuid: string;
   title?: string;
   imageUrl?: string;
   text?: string;
@@ -16,6 +18,10 @@ export class CardData {
   rating?: number;
   flipimg?: boolean;
   grayscale?: boolean;
+
+  constructor() {
+    this.uuid = (CardData.counter++).toString();
+  }
 }
 
 export class CardProviderStore {
