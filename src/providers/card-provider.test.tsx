@@ -5,8 +5,8 @@ describe('Card provider', () => {
     const prov = new CardProviderStore();
     expect(prov.data).toBeUndefined();
 
-    prov.load('').then((data) => expect(data.length).toBeGreaterThan(0));
+    prov.loadTestData('').then((data) => expect(data.length).toBeGreaterThan(0));
 
-    prov.load('!@#@%@@#%@#%@#^@').then((data) => expect(data.length).toEqual(0));
+    prov.loadTestData('!@#@%@@#%@#%@#^@').then((data) => expect(data.length).toEqual(0));
   });
 });

@@ -19,7 +19,11 @@ class CardShell extends React.Component<CardLoaderProps> {
 
     return (
       <>
-        {found ? <p className="filtertext">Filter: {this.props.query}</p> : ''}
+        {found && !this.props.hidequery ? (
+          <p className="filtertext">Filter: {this.props.query}</p>
+        ) : (
+          ''
+        )}
         <div className="card-container">
           {found && this.props.data
             ? this.props.data.map((carddata, index) => (

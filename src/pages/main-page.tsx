@@ -40,7 +40,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
 
   handleQueryChange = async (searchQuery: string) => {
     this.setState({
-      cards: await this.context.cardprovider.load(searchQuery),
+      cards: await this.context.cardprovider.loadTestData(searchQuery),
       filteringBy: searchQuery,
       ready: true,
     });

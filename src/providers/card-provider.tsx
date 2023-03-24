@@ -40,7 +40,7 @@ export class CardProviderStore {
     this.storeStatus = StoreStatus.Done;
   }
 
-  load = async (filter: string): Promise<CardData[]> => {
+  loadTestData = async (filter: string): Promise<CardData[]> => {
     filter ??= '';
     this.storeStatus = StoreStatus.Pending;
 

@@ -2,6 +2,7 @@ import CardShell from '../components/card-shell';
 import { CardData } from '../providers/card-provider';
 import React from 'react';
 import CardCreator from '../components/card-creator';
+import './former-page.css';
 
 interface FormerPageState {
   cards: CardData[];
@@ -28,13 +29,16 @@ class FormerPage extends React.Component<object, FormerPageState> {
     this.setState((prevState) => ({
       ...prevState,
       cards: this.insert(prevState.cards, newCard),
+      message: 'Card(' + newCard.uuid + ') has been saved',
     }));
   };
 
   render() {
     return (
       <>
+        <br />
         <CardCreator onCardCreate={this.new} />
+        {this.state.message && <p className="confirmation">{this.state.message}</p>}
         <CardShell data={this.state.cards} hidequery={true} />
       </>
     );
