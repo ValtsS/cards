@@ -28,7 +28,7 @@ export class CardValidator {
 
     if (!card.imageUrl) this.errors['bigimagemage'] = 'please provide a pretty picture';
 
-    if (!card.flipimg) this.errors['radioflip'] = 'Need to pick orientation';
+    if (typeof card.flipimg === 'undefined') this.errors['radioflip'] = 'Need to pick orientation';
 
     return Object.keys(this.errors).length === 0 ?? false;
   }
@@ -46,7 +46,17 @@ export class CardValidator {
     c.imageUrl = R.formImageURL(true);
 
     const selected = R.refRadios.selectedIndex();
-    if (selected && selected >= 0) c.flipimg = selected == 1;
+
+    switch (selected) {
+      case 0:
+        c.flipimg = false;
+        break;
+      case 1:
+        c.flipimg = true;
+        break;
+      default:
+        c.flipimg = undefined;
+    }
 
     return c;
   }
