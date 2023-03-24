@@ -17,7 +17,10 @@ export class HeaderInt extends React.Component<HeaderProps, AppState> {
         <header>
           <p className="currpath">
             <span className="companyName">{fancyName}</span>
-            <span>This page is located at: </span>
+            <span>
+              Welcome to {defaultRoutes.find((x) => x.path == location.pathname)?.menuText} page we
+              are located at:{' '}
+            </span>
             <span>{location.pathname}</span>
           </p>
           <nav>
