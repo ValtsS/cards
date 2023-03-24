@@ -30,7 +30,7 @@ export class CardValidator {
 
     if (typeof card.flipimg === 'undefined') this.errors['radioflip'] = 'Need to pick orientation';
 
-    return Object.keys(this.errors).length === 0 ?? false;
+    return Object.keys(this.errors).length === 0;
   }
 
   prepareCard(R: Refs): CardData {
