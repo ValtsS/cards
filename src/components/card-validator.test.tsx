@@ -152,10 +152,8 @@ describe('CardValidator', () => {
     expect(card.flipimg).toBe(undefined);
   });
 
-
   it('check if reset works', () => {
     const refs = new Refs(['radio1', 'radio2']);
-
 
     renderMode(refs, 0);
     refs.reset();
@@ -179,10 +177,5 @@ describe('CardValidator', () => {
       bigimagemage: 'please provide a pretty picture',
       radioflip: 'Need to pick orientation',
     });
-
-
   });
-
-
-
 });
