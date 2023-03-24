@@ -1,4 +1,5 @@
-import { CardData } from 'providers/card-provider';
+import { CardData } from '../providers/card-provider';
+import Refs from './card-creator-refs';
 
 export interface CardErrors {
   [key: string]: string;
@@ -25,8 +26,26 @@ export class CardValidator {
     if (!card.rating || card.rating < 1)
       this.errors['rating'] = 'At least one star rating is required';
 
-    if (!card.grayscale) this.errors['grayscale'] = 'Box should be checked or unchecked!';
-
     return Object.keys(this.errors).length === 0 ?? false;
+  }
+
+  prepareCard(R: Refs): CardData {
+    const parsed = Date.parse(R.refAdded.current?.value ?? '');
+
+    const c = new CardData();
+    c.title = R.refTitle.current?.value;
+    c.text = R.refText.current?.value;
+    c.price = R.refPrice.current?.value;
+    c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
+    c.rating = +(R.refSelect.current?.value ?? 0);
+    c.grayscale = R.refGray.current?.checked;
+
+    if (R.refImg.current && R.refImg.current.files && (R.refImg.current.files?.length ?? 0) > 0) {
+      const file = R.refImg.current.files[0];
+      const url = URL.createObjectURL(file);
+      c.imageUrl = url;
+    }
+
+    return c;
   }
 }

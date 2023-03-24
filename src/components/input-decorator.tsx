@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default class Decorator extends React.Component<Props> {
+export default class InputDecorator extends React.Component<Props> {
   static contextType = FormContext;
   declare context: React.ContextType<typeof FormContext>;
 

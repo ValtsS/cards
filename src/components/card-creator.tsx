@@ -23,14 +23,12 @@ class LocalCardState {
 }
 
 class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
-  validator: CardValidator;
-  R: Refs;
+  validator: CardValidator = new CardValidator();
+  R: Refs = new Refs();
 
   constructor(props: CardCreatorProps) {
     super(props);
     this.state = new LocalCardState(new Date());
-    this.R = new Refs();
-    this.validator = new CardValidator();
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -38,22 +36,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     event.preventDefault();
     console.log('Submit called');
 
-    const parsed = Date.parse(this.R.refAdded.current?.value ?? '');
-
-    const c = new CardData();
-    c.title = this.R.refTitle.current?.value;
-    c.text = this.R.refText.current?.value;
-    c.price = this.R.refPrice.current?.value;
-    c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
-    c.rating = +(this.R.refSelect.current?.value ?? 0);
-    c.grayscale = this.R.refGray.current?.checked;
-
-    if (this.R.refImg.current && this.R.refImg.current.files) {
-      const file = this.R.refImg.current.files[0];
-      const url = URL.createObjectURL(file);
-      c.imageUrl = url;
-    }
-
+    const c = this.validator.prepareCard(this.R);
     const isValid = this.validator.isValid(c);
 
     this.setState((prevState) => ({
