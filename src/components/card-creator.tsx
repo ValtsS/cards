@@ -6,6 +6,7 @@ import { SelectWithDecorator } from './select-component';
 import { FormContextProvider } from '../providers/form-context-provider';
 import Refs from './card-creator-refs';
 import './card-creator.css';
+import { RadioWithDecorator } from './radio-component';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
@@ -27,7 +28,9 @@ class LocalCardState {
 
 class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
   validator: CardValidator = new CardValidator();
-  R: Refs = new Refs();
+
+  radioNames: string[] = ['Normal', 'Flipped'];
+  R: Refs = new Refs(this.radioNames);
 
   constructor(props: CardCreatorProps) {
     super(props);
@@ -57,27 +60,12 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     if (isValid) this.R.reset();
   }
 
-  handleImagePrview(event: FormEvent<HTMLInputElement>) {
+  handleImagePrview() {
     this.setState((prevState) => ({
       ...prevState,
       previewimageurl: this.R.formImageURL(false),
     }));
   }
-
-  /*
-
-  title?: string;
-  imageUrl?: string;
-  text?: string;
-  price?: string;
-  addedat?: Date;
-  minipic?: string;
-  rating?: number;
-  flipimg?: boolean;
-  grayscale?: boolean;
-
-
-  */
 
   render() {
     const defaultDate = this.state.card.addedat?.toISOString().split('T')[0] ?? '';
@@ -129,6 +117,13 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
                   type="file"
                   ref={this.R.refImg}
                   onChange={this.handleImagePrview}
+                />
+
+                <RadioWithDecorator
+                  name="radioflip"
+                  title="Image orientation"
+                  values={this.radioNames}
+                  forwardedRefs={this.R.refRadios.refs}
                 />
 
                 <button type="submit">Submit</button>

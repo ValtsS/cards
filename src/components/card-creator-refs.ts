@@ -1,6 +1,28 @@
 import { Queue } from '../core/queue';
 import { createRef } from 'react';
 
+export class RadioInfos {
+  names: string[];
+  refs: React.RefObject<HTMLInputElement>[] = [];
+
+  constructor(radioNames: string[]) {
+    this.names = radioNames;
+    for (let i = 0; i < radioNames.length; i++) this.refs.push(createRef<HTMLInputElement>());
+  }
+
+  clear() {
+    this.refs.forEach((e) => {
+      if (e.current) e.current.checked = false;
+    });
+  }
+
+  selectedIndex(): number | null {
+    for (let i = 0; i < this.refs.length; i++) if (this.refs[i].current?.checked) return i;
+
+    return -1;
+  }
+}
+
 export default class Refs {
   refTitle: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refText: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
@@ -10,7 +32,13 @@ export default class Refs {
   refGray: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refImg: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
 
+  refRadios: RadioInfos;
+
   oldimages: Queue<string> = new Queue<string>();
+
+  constructor(radioNames: string[]) {
+    this.refRadios = new RadioInfos(radioNames);
+  }
 
   reset() {
     if (this.refTitle.current) this.refTitle.current.value = '';
@@ -20,6 +48,7 @@ export default class Refs {
     if (this.refSelect.current) this.refSelect.current.value = '';
     if (this.refGray.current) this.refGray.current.checked = false;
     if (this.refImg.current) this.refImg.current.value = '';
+    this.refRadios.clear();
   }
 
   formImageURL(permanent: boolean): string | undefined {

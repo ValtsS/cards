@@ -26,6 +26,10 @@ export class CardValidator {
     if (!card.rating || card.rating < 1)
       this.errors['rating'] = 'At least one star rating is required';
 
+    if (!card.imageUrl) this.errors['bigimagemage'] = 'please provide a pretty picture';
+
+    if (!card.flipimg) this.errors['radioflip'] = 'Need to pick orientation';
+
     return Object.keys(this.errors).length === 0 ?? false;
   }
 
@@ -40,6 +44,9 @@ export class CardValidator {
     c.rating = +(R.refSelect.current?.value ?? 0);
     c.grayscale = R.refGray.current?.checked;
     c.imageUrl = R.formImageURL(true);
+
+    const selected = R.refRadios.selectedIndex();
+    if (selected && selected >= 0) c.flipimg = selected == 1;
 
     return c;
   }
