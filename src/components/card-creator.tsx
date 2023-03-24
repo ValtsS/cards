@@ -35,11 +35,9 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
   constructor(props: CardCreatorProps) {
     super(props);
     this.state = new LocalCardState(new Date());
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleImagePrview = this.handleImagePrview.bind(this);
   }
 
-  handleSubmit(event: FormEvent<HTMLFormElement>) {
+  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const c = this.validator.prepareCard(this.R);
@@ -57,7 +55,7 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     if (isValid) this.R.reset();
   }
 
-  handleImagePrview() {
+  handleImagePrview = () => {
     this.setState((prevState) => ({
       ...prevState,
       previewimageurl: this.R.formImageURL(false),
@@ -69,8 +67,6 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
 
     return (
       <>
-        {this.state.valid.toString()}
-
         <FormContextProvider errors={this.state.errors}>
           <div className="flex-container">
             <div className="column">
