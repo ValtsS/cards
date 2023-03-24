@@ -6,3 +6,6 @@ div.input-wrapper {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+div.input-wrapper > label {
+  margin-right: 0.5rem;
+}

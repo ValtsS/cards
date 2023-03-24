@@ -18,7 +18,7 @@ export default class InputDecorator extends React.Component<Props> {
 
     return (
       <div className="input-wrapper">
-        <label htmlFor={name}>{title}:</label>
+        <label htmlFor={name}>{title}</label>
         {this.props.children}
         {errormessage && (
           <>
