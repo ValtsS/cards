@@ -6,6 +6,7 @@ import './card-shell.css';
 interface CardLoaderProps {
   data?: CardData[];
   query?: string;
+  hidequery?: boolean;
 }
 
 class CardShell extends React.Component<CardLoaderProps> {
@@ -24,6 +25,8 @@ class CardShell extends React.Component<CardLoaderProps> {
             ? this.props.data.map((carddata, index) => (
                 <Card card={carddata} key={'CardNr' + index.toString()} />
               ))
+            : this.props.hidequery
+            ? ''
             : 'no cards found for your search query: ' + (this.props.query ?? '')}
         </div>
       </>
