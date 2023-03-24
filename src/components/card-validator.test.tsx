@@ -151,4 +151,38 @@ describe('CardValidator', () => {
     expect(card.grayscale).toBe(true);
     expect(card.flipimg).toBe(undefined);
   });
+
+
+  it('check if reset works', () => {
+    const refs = new Refs(['radio1', 'radio2']);
+
+
+    renderMode(refs, 0);
+    refs.reset();
+
+    const card = validator.prepareCard(refs);
+    expect(card.title).toBe('');
+    expect(card.text).toBe('');
+    expect(card.price).toBe('');
+    expect(card.addedat).toBeUndefined();
+    expect(card.rating).toBe(0);
+    expect(card.grayscale).toBe(false);
+    expect(card.flipimg).toBeUndefined();
+
+    expect(validator.isValid(card)).toBe(false);
+    expect(validator.errors).toEqual({
+      title: 'Title is required',
+      text: 'Text is required',
+      price: 'Price is required',
+      addedat: 'Added at is required',
+      rating: 'At least one star rating is required',
+      bigimagemage: 'please provide a pretty picture',
+      radioflip: 'Need to pick orientation',
+    });
+
+
+  });
+
+
+
 });
