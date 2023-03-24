@@ -48,6 +48,12 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     c.rating = +(this.R.refSelect.current?.value ?? 0);
     c.grayscale = this.R.refGray.current?.checked;
 
+    if (this.R.refImg.current && this.R.refImg.current.files) {
+      const file = this.R.refImg.current.files[0];
+      const url = URL.createObjectURL(file);
+      c.imageUrl = url;
+    }
+
     const isValid = this.validator.isValid(c);
 
     this.setState((prevState) => ({
@@ -114,6 +120,15 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
               type="checkbox"
               ref={this.R.refGray}
             />
+
+            <InputWithDecorator
+              name="rawImage"
+              title="Upload picture"
+              type="file"
+              ref={this.R.refImg}
+            />
+
+            {this.state.card.imageUrl && <img src={this.state.card.imageUrl}></img>}
 
             <button type="submit">Submit</button>
           </form>
