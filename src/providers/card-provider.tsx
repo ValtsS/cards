@@ -23,10 +23,6 @@ export class CardData {
     return CardData.counter++;
   }
 
-  static getNextAsStr(): string {
-    return CardData.getNext().toString();
-  }
-
   constructor() {
     this.uuid = CardData.getNext().toString();
   }

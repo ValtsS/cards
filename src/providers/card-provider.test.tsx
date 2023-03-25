@@ -16,4 +16,10 @@ describe('Card provider', () => {
 
     prov.loadTestData('!@#@%@@#%@#%@#^@').then((data) => expect(data.length).toEqual(0));
   });
+
+  it('should generate guids', () => {
+    const card = new CardData();
+    expect(card.uuid).toBe((CardData.counter - 1).toString());
+    expect(new CardData().uuid).not.toBe(card.uuid);
+  });
 });
