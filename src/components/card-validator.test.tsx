@@ -62,13 +62,15 @@ describe('CardValidator', () => {
         <input type="text" ref={refs.refTitle} defaultValue="Test Title" />
         <input type="text" ref={refs.refText} defaultValue="Test Text" />
         <input type="number" ref={refs.refPrice} defaultValue={100} />
-        <input type="date" ref={refs.refAdded} defaultValue="2023-01-13" />
-        <select ref={refs.refSelect} defaultValue={mode == -2 ? '' : '3'}>
-          <option value=""></option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
+        {mode != -7 && <input type="date" ref={refs.refAdded} defaultValue="2023-01-13" />}
+        {mode != -8 && (
+          <select ref={refs.refSelect} defaultValue={mode == -2 ? '' : '3'}>
+            <option value=""></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        )}
         <input type="checkbox" ref={refs.refGray} defaultChecked={true} />
         <input
           type="radio"
@@ -141,6 +143,36 @@ describe('CardValidator', () => {
     const refs = new Refs(['radio1', 'radio2']);
 
     renderMode(refs, -2);
+
+    const card = validator.prepareCard(refs);
+    expect(card.title).toBe('Test Title');
+    expect(card.text).toBe('Test Text');
+    expect(card.price).toBe('100');
+    expect(card.addedat).toEqual(new Date('2023-01-13'));
+    expect(card.rating).toBe(0);
+    expect(card.grayscale).toBe(true);
+    expect(card.flipimg).toBe(undefined);
+  });
+
+  it('returns the missing date', () => {
+    const refs = new Refs(['radio1', 'radio2']);
+
+    renderMode(refs, -7);
+
+    const card = validator.prepareCard(refs);
+    expect(card.title).toBe('Test Title');
+    expect(card.text).toBe('Test Text');
+    expect(card.price).toBe('100');
+    expect(card.addedat).toBeUndefined();
+    expect(card.rating).toBe(3);
+    expect(card.grayscale).toBe(true);
+    expect(card.flipimg).toBe(undefined);
+  });
+
+  it('returns the rating not defined', () => {
+    const refs = new Refs(['radio1', 'radio2']);
+
+    renderMode(refs, -8);
 
     const card = validator.prepareCard(refs);
     expect(card.title).toBe('Test Title');
