@@ -1,15 +1,19 @@
 export class Queue<T> {
+  static EMPTY_ERROR = 'Queue is empty';
+
   private items: T[] = [];
 
   enqueue(item: T): void {
     this.items.push(item);
   }
 
-  dequeue(): T | undefined {
-    return this.items.shift();
+  dequeue(): T {
+    if (this.isEmpty()) throw Error(Queue.EMPTY_ERROR);
+    return this.items.shift() as T;
   }
 
   peek(): T | undefined {
+    if (this.isEmpty()) throw Error(Queue.EMPTY_ERROR);
     return this.items[0];
   }
 

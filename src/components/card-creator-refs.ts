@@ -55,15 +55,10 @@ export default class Refs {
 
   formImageURL(permanent: boolean): string | undefined {
     while (this.oldimages.size() >= Refs.CACHED_IMAGES) {
-      const oldur = this.oldimages.dequeue();
-      if (oldur) URL.revokeObjectURL(oldur);
+      URL.revokeObjectURL(this.oldimages.dequeue());
     }
 
-    if (
-      this.refImg.current &&
-      this.refImg.current.files &&
-      (this.refImg.current.files?.length ?? 0) > 0
-    ) {
+    if (this.refImg.current && this.refImg.current.files && this.refImg.current.files.length > 0) {
       const file = this.refImg.current.files[0];
       const url = URL.createObjectURL(file);
       if (!permanent) this.oldimages.enqueue(url);

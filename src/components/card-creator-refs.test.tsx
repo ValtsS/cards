@@ -1,9 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { CardData } from 'providers/card-provider';
 import React from 'react';
-import CardCreator from './card-creator';
 import Refs, { RadioInfos } from './card-creator-refs';
-import { CardValidator } from './card-validator';
 import { InputWithDecorator } from './input-component';
 
 describe('Card creator refs', () => {
@@ -22,7 +19,30 @@ describe('Card creator refs', () => {
     expect(refs.refRadios).toBeInstanceOf(RadioInfos);
   });
 
-  it('should not crash', () => {
+  it('should reset with no crash', () => {
+    const refs = new Refs(['Radio']);
+    refs.reset();
+  });
+
+  it('should not create iamges', () => {
+    const refs = new Refs(['Radio']);
+
+    const props = {
+      name: 'test-input',
+      title: 'Upload picture',
+      type: 'file',
+      accept: '.jpg,.png,.gif',
+      placeholder: 'Enter a value',
+      onChange: jest.fn(),
+      ref: refs.refImg,
+    };
+
+    render(<InputWithDecorator {...props} />);
+
+    expect(refs.formImageURL(true)).toBe(undefined);
+  });
+
+  it('should create images', () => {
     const mockCreateObjectURL = jest.fn(() => 'mock-url');
     global.URL.createObjectURL = mockCreateObjectURL;
 
