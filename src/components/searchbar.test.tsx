@@ -25,7 +25,11 @@ describe('Searchbar component', () => {
 
     act(() => {
       render(
-        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+        <AppContextProvider
+          localStoreProvider={memory}
+          cardProvider={new CardProviderStore()}
+          formCardProvider={new CardProviderStore()}
+        >
           <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
@@ -46,7 +50,11 @@ describe('Searchbar component', () => {
     const memory = new MemoryStorage();
 
     const { unmount } = render(
-      <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+      <AppContextProvider
+        localStoreProvider={memory}
+        cardProvider={new CardProviderStore()}
+        formCardProvider={new CardProviderStore()}
+      >
         <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
       </AppContextProvider>
     );
@@ -61,7 +69,11 @@ describe('Searchbar component', () => {
 
     act(() => {
       render(
-        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+        <AppContextProvider
+          localStoreProvider={memory}
+          cardProvider={new CardProviderStore()}
+          formCardProvider={new CardProviderStore()}
+        >
           <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
@@ -86,7 +98,11 @@ describe('Searchbar component', () => {
 
     act(() => {
       render(
-        <AppContextProvider localStoreProvider={memory} cardProvider={new CardProviderStore()}>
+        <AppContextProvider
+          localStoreProvider={memory}
+          cardProvider={new CardProviderStore()}
+          formCardProvider={new CardProviderStore()}
+        >
           <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );

@@ -23,6 +23,7 @@ describe('Main page component', () => {
         <AppContextProvider
           cardProvider={new CardProviderStore()}
           localStoreProvider={new MemoryStorage()}
+          formCardProvider={new CardProviderStore()}
         >
           <MainPage />
         </AppContextProvider>
@@ -44,6 +45,7 @@ describe('Main page component', () => {
         <AppContextProvider
           cardProvider={new CardProviderStore()}
           localStoreProvider={new MemoryStorage()}
+          formCardProvider={new CardProviderStore()}
         >
           <MainPage onSearch={sfun} />
         </AppContextProvider>
@@ -73,6 +75,7 @@ describe('Main page component', () => {
       <AppContextProvider
         cardProvider={new CardProviderStore()}
         localStoreProvider={new MemoryStorage()}
+        formCardProvider={new CardProviderStore()}
       >
         <MainPage />
       </AppContextProvider>

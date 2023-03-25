@@ -3,6 +3,7 @@ import { CardData } from '../providers/card-provider';
 import React from 'react';
 import CardCreator from '../components/card-creator';
 import './former-page.css';
+import { AppContext } from '../providers/app-context-provider';
 
 interface FormerPageState {
   cards: CardData[];
@@ -10,6 +11,9 @@ interface FormerPageState {
 }
 
 class FormerPage extends React.Component<object, FormerPageState> {
+  static contextType = AppContext;
+  declare context: React.ContextType<typeof AppContext>;
+
   constructor(props: object) {
     super(props);
 
@@ -19,6 +23,14 @@ class FormerPage extends React.Component<object, FormerPageState> {
     this.state = initialState;
   }
 
+  componentDidMount(): void {
+    this.setState((prevState) => ({
+      ...prevState,
+      cards: this.context.formCardProvider.data,
+      message: '',
+    }));
+  }
+
   insert(cards: CardData[], card: CardData): CardData[] {
     const lastcardUUID = cards.length > 0 ? cards[0].uuid : -1;
     if (card.uuid != lastcardUUID) cards.unshift(card);
@@ -26,9 +38,11 @@ class FormerPage extends React.Component<object, FormerPageState> {
     return cards;
   }
   new = async (newCard: CardData) => {
+    if (!this.context.formCardProvider) throw new Error('Cardprovider2 not set');
+
     this.setState((prevState) => ({
       ...prevState,
-      cards: this.insert(prevState.cards, newCard),
+      cards: this.insert(this.context.formCardProvider.data, newCard),
       message: 'Card(' + newCard.uuid + ') has been saved',
     }));
   };
