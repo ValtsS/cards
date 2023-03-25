@@ -44,7 +44,7 @@ class FormerPage extends React.Component<object, FormerPageState> {
     this.setState((prevState) => ({
       ...prevState,
       cards: this.context.formCardProvider.insert(newCard),
-      message: 'Card(' + newCard.uuid + ') has been saved',
+      message: 'Card (Id = ' + newCard.uuid + ') has been saved',
     }));
   };
 

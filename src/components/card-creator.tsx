@@ -1,5 +1,5 @@
 import { CardData } from '../providers/card-provider';
-import React, { FormEvent } from 'react';
+import React, { Component, FormEvent } from 'react';
 import { CardErrors, CardValidator } from './card-validator';
 import { InputWithDecorator } from './input-component';
 import { SelectWithDecorator } from './select-component';
