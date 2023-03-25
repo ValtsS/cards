@@ -32,9 +32,6 @@ class FormerPage extends React.Component<object, FormerPageState> {
   }
 
   componentDidMount(): void {
-    console.log('Mounting!');
-    console.log(this.context);
-    console.log(this.context.formCardProvider);
     if (!this.context.formCardProvider) throw new Error('formCardProvider not set');
     this.setState((prevState) => ({
       ...prevState,
