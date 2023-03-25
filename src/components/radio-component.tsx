@@ -18,14 +18,16 @@ export const RadioWithDecorator = forwardRef(
 
           {values.map((val, index) => (
             <div key={'RadioDiv' + val}>
-              <input
-                type={'radio'}
-                name={name}
-                key={'Radio' + val}
-                value={val}
-                ref={forwardedRefs ? forwardedRefs[index] : null}
-              />
-              <label>{val}</label>
+              <label>
+                <input
+                  type={'radio'}
+                  name={name}
+                  key={'Radio' + val}
+                  value={val}
+                  ref={forwardedRefs ? forwardedRefs[index] : null}
+                />
+                {val}
+              </label>
             </div>
           ))}
         </fieldset>

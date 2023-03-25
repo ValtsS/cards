@@ -18,12 +18,14 @@ export default class InputDecorator extends React.Component<Props> {
 
     return (
       <div className="input-wrapper">
-        <label htmlFor={name}>{title}</label>
-        {this.props.children}
+        <label>
+          {title}
+          {this.props.children}
+        </label>
         {errormessage && (
           <>
             <br />
-            <label className="validation-error">{errormessage}</label>
+            <div className="validation-error">{errormessage}</div>
           </>
         )}
         <br />
