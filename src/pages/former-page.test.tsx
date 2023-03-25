@@ -26,7 +26,5 @@ describe('Former page component', () => {
     expect(submit).toBeInTheDocument();
     expect(screen.getByText(firstCard.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(firstCard.text ?? '')).toBeInTheDocument();
-
-    screen.debug();
   });
 });

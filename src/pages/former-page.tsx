@@ -31,18 +31,12 @@ class FormerPage extends React.Component<object, FormerPageState> {
     }));
   }
 
-  insert(cards: CardData[], card: CardData): CardData[] {
-    const lastcardUUID = cards.length > 0 ? cards[0].uuid : -1;
-    if (card.uuid != lastcardUUID) cards.unshift(card);
-
-    return cards;
-  }
   new = async (newCard: CardData) => {
     if (!this.context.formCardProvider) throw new Error('Cardprovider2 not set');
 
     this.setState((prevState) => ({
       ...prevState,
-      cards: this.insert(this.context.formCardProvider.data, newCard),
+      cards: this.context.formCardProvider.insert(newCard),
       message: 'Card(' + newCard.uuid + ') has been saved',
     }));
   };
