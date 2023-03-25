@@ -10,6 +10,14 @@ interface FormerPageState {
   message?: string;
 }
 
+interface MessageProps {
+  message?: string;
+}
+
+export const ConfirmationMessage: React.FC<MessageProps> = ({ message }) => {
+  return message ? <p className="confirmation">{message}</p> : null;
+};
+
 class FormerPage extends React.Component<object, FormerPageState> {
   static contextType = AppContext;
   declare context: React.ContextType<typeof AppContext>;
@@ -24,6 +32,10 @@ class FormerPage extends React.Component<object, FormerPageState> {
   }
 
   componentDidMount(): void {
+    console.log('Mounting!');
+    console.log(this.context);
+    console.log(this.context.formCardProvider);
+    if (!this.context.formCardProvider) throw new Error('formCardProvider not set');
     this.setState((prevState) => ({
       ...prevState,
       cards: this.context.formCardProvider.data,
@@ -31,9 +43,7 @@ class FormerPage extends React.Component<object, FormerPageState> {
     }));
   }
 
-  new = async (newCard: CardData) => {
-    if (!this.context.formCardProvider) throw new Error('Cardprovider2 not set');
-
+  new = (newCard: CardData) => {
     this.setState((prevState) => ({
       ...prevState,
       cards: this.context.formCardProvider.insert(newCard),
@@ -46,7 +56,7 @@ class FormerPage extends React.Component<object, FormerPageState> {
       <>
         <br />
         <CardCreator onCardCreate={this.new} />
-        {this.state.message && <p className="confirmation">{this.state.message}</p>}
+        <ConfirmationMessage message={this.state.message} />
         <CardShell data={this.state.cards} hidequery={true} />
       </>
     );

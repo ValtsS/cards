@@ -4,7 +4,7 @@ import { CardProviderStore } from 'providers/card-provider';
 import { cardTestData } from 'providers/card-test-data';
 import { MemoryStorage } from 'providers/memory-storage';
 import React from 'react';
-import FormerPage from './former-page';
+import FormerPage, { ConfirmationMessage } from './former-page';
 
 describe('Former page component', () => {
   it('should render without crash', async () => {
@@ -26,5 +26,18 @@ describe('Former page component', () => {
     expect(submit).toBeInTheDocument();
     expect(screen.getByText(firstCard.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(firstCard.text ?? '')).toBeInTheDocument();
+  });
+});
+
+describe('ConfirmationMessage', () => {
+  it('renders message when provided', () => {
+    const message = 'Success message';
+    const { getByText } = render(<ConfirmationMessage message={message} />);
+    expect(getByText(message)).toBeInTheDocument();
+  });
+
+  it('does not render message when not provided', () => {
+    const { container } = render(<ConfirmationMessage />);
+    expect(container.firstChild).toBeNull();
   });
 });
