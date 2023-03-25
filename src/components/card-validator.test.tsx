@@ -29,13 +29,13 @@ describe('CardValidator', () => {
       const card = new CardData();
       expect(validator.isValid(card)).toBe(false);
       expect(validator.errors).toEqual({
-        title: 'Title is required',
-        text: 'Text is required',
-        price: 'Price is required',
-        addedat: 'Added at is required',
-        rating: 'At least one star rating is required',
-        bigimagemage: 'please provide a pretty picture',
-        radioflip: 'Need to pick orientation',
+        title: CardValidator.ERRORS.TITLE_REQUIRED,
+        text: CardValidator.ERRORS.TEXT_REQUIRED,
+        price: CardValidator.ERRORS.PRICE_REQUIRED,
+        addedat: CardValidator.ERRORS.ADDED_AT_REQUIRED,
+        rating: CardValidator.ERRORS.RATING_REQUIRED,
+        bigimagemage: CardValidator.ERRORS.IMAGE_REQUIRED,
+        radioflip: CardValidator.ERRORS.ORIENTATION_REQUIRED,
       });
     });
 
@@ -50,8 +50,8 @@ describe('CardValidator', () => {
       card.flipimg = false;
       expect(validator.isValid(card)).toBe(false);
       expect(validator.errors).toEqual({
-        addedat: 'Added at cannot be in the future!',
-        price: 'Price has to be valid (positive)',
+        addedat: CardValidator.ERRORS.ADDED_AT_FUTURE,
+        price: CardValidator.ERRORS.PRICE_VALID,
       });
     });
   });
@@ -169,13 +169,13 @@ describe('CardValidator', () => {
 
     expect(validator.isValid(card)).toBe(false);
     expect(validator.errors).toEqual({
-      title: 'Title is required',
-      text: 'Text is required',
-      price: 'Price is required',
-      addedat: 'Added at is required',
-      rating: 'At least one star rating is required',
-      bigimagemage: 'please provide a pretty picture',
-      radioflip: 'Need to pick orientation',
+      title: CardValidator.ERRORS.TITLE_REQUIRED,
+      text: CardValidator.ERRORS.TEXT_REQUIRED,
+      price: CardValidator.ERRORS.PRICE_REQUIRED,
+      addedat: CardValidator.ERRORS.ADDED_AT_REQUIRED,
+      rating: CardValidator.ERRORS.RATING_REQUIRED,
+      bigimagemage: CardValidator.ERRORS.IMAGE_REQUIRED,
+      radioflip: CardValidator.ERRORS.ORIENTATION_REQUIRED,
     });
   });
 });
