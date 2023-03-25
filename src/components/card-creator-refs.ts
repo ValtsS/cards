@@ -24,6 +24,8 @@ export class RadioInfos {
 }
 
 export default class Refs {
+  static CACHED_IMAGES = 8;
+
   refTitle: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refText: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refPrice: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
@@ -52,7 +54,7 @@ export default class Refs {
   }
 
   formImageURL(permanent: boolean): string | undefined {
-    while (this.oldimages.size() > 8) {
+    while (this.oldimages.size() >= Refs.CACHED_IMAGES) {
       const oldur = this.oldimages.dequeue();
       if (oldur) URL.revokeObjectURL(oldur);
     }
