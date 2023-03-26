@@ -1,6 +1,6 @@
 import React from 'react';
-import { CardProviderStore } from './card-provider';
-import { LocalStorage } from './local-storage';
+import { CardProviderStore } from './card';
+import { LocalStorage } from './storage';
 
 type AppContextValue = {
   localStore: LocalStorage;

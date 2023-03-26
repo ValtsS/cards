@@ -1,4 +1,4 @@
-import { FormContext } from '../providers/form-context-provider';
+import { FormContext } from '@/providers';
 import React from 'react';
 import './input-decorator.css';
 

@@ -1,5 +1,5 @@
+import { CardData } from '@/providers';
 import { render } from '@testing-library/react';
-import { CardData } from 'providers/card-provider';
 import React from 'react';
 import Refs from './card-creator-refs';
 import { CardValidator } from './card-validator';

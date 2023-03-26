@@ -1,18 +1,19 @@
+import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { AppContextProvider } from 'providers/app-context-provider';
 import React from 'react';
-import { CardProviderStore } from '../../providers/card-provider';
-import { MemoryStorage } from '../../providers/memory-storage';
 import { MainPage } from './main-page';
 
 // Create a mock for the CardProviderStore class
-jest.mock('../../providers/card-provider', () => {
+jest.mock('@/providers', () => {
+  const MockCardProviderStore = jest.fn().mockImplementation(() => {
+    return {
+      loadTestData: jest.fn().mockResolvedValue([]),
+    };
+  });
+
   return {
-    CardProviderStore: jest.fn().mockImplementation(() => {
-      return {
-        loadTestData: jest.fn().mockResolvedValue([]),
-      };
-    }),
+    ...jest.requireActual('@/providers'),
+    CardProviderStore: MockCardProviderStore,
   };
 });
 

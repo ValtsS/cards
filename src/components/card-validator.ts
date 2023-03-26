@@ -1,4 +1,4 @@
-import { CardData } from '../providers/card-provider';
+import { CardData } from '@/providers';
 import Refs from './card-creator-refs';
 
 export interface CardErrors {

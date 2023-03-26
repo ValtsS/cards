@@ -1,5 +1,5 @@
+import { CardData } from '@/providers';
 import { render, screen } from '@testing-library/react';
-import { CardData } from 'providers/card-provider';
 import React from 'react';
 import { CardProps } from './card';
 import CardShell from './card-shell';

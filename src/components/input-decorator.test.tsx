@@ -1,6 +1,6 @@
-import React from 'react';
+import { FormContext } from '@/providers';
 import { render, screen } from '@testing-library/react';
-import { FormContext } from '../providers/form-context-provider';
+import React from 'react';
 import InputDecorator from './input-decorator';
 
 describe('InputDecorator', () => {

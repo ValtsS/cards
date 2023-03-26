@@ -1,6 +1,5 @@
+import { CardData, FormContextProvider } from '@/providers';
 import React, { FormEvent } from 'react';
-import { CardData } from '../providers/card-provider';
-import { FormContextProvider } from '../providers/form-context-provider';
 import Refs from './card-creator-refs';
 import './card-creator.css';
 import { CardErrors, CardValidator } from './card-validator';

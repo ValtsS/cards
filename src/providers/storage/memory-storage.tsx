@@ -1,4 +1,4 @@
-import { LocalStorage } from 'providers/local-storage';
+import { LocalStorage } from './local-storage';
 
 export class MemoryStorage implements LocalStorage {
   private data: { [key: string]: string } = {};

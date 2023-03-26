@@ -1,4 +1,4 @@
-import { CardData } from 'providers/card-provider';
+import { CardData } from '@/providers';
 import React from 'react';
 import Card from './card';
 import './card-shell.css';
@@ -12,6 +12,12 @@ interface CardLoaderProps {
 class CardShell extends React.Component<CardLoaderProps> {
   constructor(props: CardLoaderProps) {
     super(props);
+  }
+
+  getQuery(): string {
+    return this.props.hidequery
+      ? ''
+      : 'no cards found for your search query: ' + (this.props.query ?? '');
   }
 
   render() {
@@ -29,9 +35,7 @@ class CardShell extends React.Component<CardLoaderProps> {
             ? this.props.data.map((carddata, index) => (
                 <Card card={carddata} key={'CardNr' + index.toString()} />
               ))
-            : this.props.hidequery
-            ? ''
-            : 'no cards found for your search query: ' + (this.props.query ?? '')}
+            : this.getQuery()}
         </div>
       </>
     );

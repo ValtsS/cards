@@ -1,4 +1,4 @@
-import { CardData } from 'providers/card-provider';
+import { CardData } from '@/providers';
 import React from 'react';
 import './card.css';
 import Rating from './rating';

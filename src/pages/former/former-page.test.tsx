@@ -1,8 +1,6 @@
+import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
+import { cardTestData } from '@/providers/card/card-test-data';
 import { render, screen } from '@testing-library/react';
-import { AppContextProvider } from 'providers/app-context-provider';
-import { CardProviderStore } from 'providers/card-provider';
-import { cardTestData } from 'providers/card-test-data';
-import { MemoryStorage } from 'providers/memory-storage';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';
 

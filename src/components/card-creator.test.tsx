@@ -1,5 +1,5 @@
+import { CardData } from '@/providers';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { CardData } from 'providers/card-provider';
 import React from 'react';
 import CardCreator from './card-creator';
 import { CardValidator } from './card-validator';

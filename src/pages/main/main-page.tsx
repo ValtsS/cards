@@ -1,8 +1,7 @@
-import { CardData } from 'providers/card-provider';
+import CardShell from '@/components/card-shell';
+import SearchBar from '@/components/searchbar';
+import { AppContext, CardData } from '@/providers';
 import React from 'react';
-import CardShell from '../../components/card-shell';
-import SearchBar from '../../components/searchbar';
-import { AppContext } from '../../providers/app-context-provider';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
