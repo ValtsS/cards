@@ -3,14 +3,14 @@ import { CardProviderStore } from './card-provider';
 import { LocalStorage } from './local-storage';
 
 type AppContextValue = {
-  localstore: LocalStorage;
-  cardprovider: CardProviderStore;
+  localStore: LocalStorage;
+  cardProvider: CardProviderStore;
   formCardProvider: CardProviderStore;
 };
 
 export const AppContext = React.createContext<AppContextValue>({
-  localstore: new LocalStorage(),
-  cardprovider: new CardProviderStore(),
+  localStore: new LocalStorage(),
+  cardProvider: new CardProviderStore(),
   formCardProvider: new CardProviderStore(),
 });
 
@@ -30,8 +30,8 @@ export const AppContextProvider = ({
   return (
     <AppContext.Provider
       value={{
-        localstore: localStoreProvider,
-        cardprovider: cardProvider,
+        localStore: localStoreProvider,
+        cardProvider: cardProvider,
         formCardProvider: cardProvider2,
       }}
     >

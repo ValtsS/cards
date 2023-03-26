@@ -28,7 +28,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   }
 
   getLastValue(): string {
-    return this.context.localstore.getItem(this.getKey()) ?? '';
+    return this.context.localStore.getItem(this.getKey()) ?? '';
   }
 
   getKey(): string {
@@ -48,7 +48,7 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
 
   saveSearch(): void {
     if (this.state.contextReady)
-      this.context.localstore.setItem(this.getKey(), this.state.lastquery);
+      this.context.localStore.setItem(this.getKey(), this.state.lastquery);
   }
 
   componentWillUnmount(): void {

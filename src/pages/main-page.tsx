@@ -29,18 +29,18 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     if (!this.context) {
       throw new Error('AppContext provider is not present');
     }
-    const searched = this.context.localstore.getItem(this.getKey());
+    const searched = this.context.localStore.getItem(this.getKey());
     this.handleQueryChange(searched ?? '');
   }
 
   componentWillUnmount(): void {
     if (this.state.ready)
-      this.context.localstore.setItem(this.getKey(), this.state.filteringBy ?? '');
+      this.context.localStore.setItem(this.getKey(), this.state.filteringBy ?? '');
   }
 
   handleQueryChange = async (searchQuery: string) => {
     this.setState({
-      cards: await this.context.cardprovider.loadTestData(searchQuery),
+      cards: await this.context.cardProvider.loadTestData(searchQuery),
       filteringBy: searchQuery,
       ready: true,
     });

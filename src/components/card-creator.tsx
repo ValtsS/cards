@@ -1,12 +1,12 @@
+import React, { FormEvent } from 'react';
 import { CardData } from '../providers/card-provider';
-import React, { Component, FormEvent } from 'react';
-import { CardErrors, CardValidator } from './card-validator';
-import { InputWithDecorator } from './input-component';
-import { SelectWithDecorator } from './select-component';
 import { FormContextProvider } from '../providers/form-context-provider';
 import Refs from './card-creator-refs';
 import './card-creator.css';
+import { CardErrors, CardValidator } from './card-validator';
+import { InputWithDecorator } from './input-component';
 import { RadioWithDecorator } from './radio-component';
+import { SelectWithDecorator } from './select-component';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;

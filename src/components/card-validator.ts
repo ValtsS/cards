@@ -46,19 +46,19 @@ export class CardValidator {
     return Object.keys(this.errors).length === 0;
   }
 
-  prepareCard(R: Refs): CardData {
-    const parsed = Date.parse(R.refAdded.current?.value ?? '');
+  prepareCard(refs: Refs): CardData {
+    const parsed = Date.parse(refs.refAdded.current?.value ?? '');
 
     const c = new CardData();
-    c.title = R.refTitle.current?.value;
-    c.text = R.refText.current?.value;
-    c.price = R.refPrice.current?.value;
+    c.title = refs.refTitle.current?.value;
+    c.text = refs.refText.current?.value;
+    c.price = refs.refPrice.current?.value;
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
-    c.rating = +(R.refSelect.current?.value ?? 0);
-    c.grayscale = R.refGray.current?.checked;
-    c.imageUrl = R.formImageURL(true);
+    c.rating = +(refs.refSelect.current?.value ?? 0);
+    c.grayscale = refs.refGray.current?.checked;
+    c.imageUrl = refs.formImageURL(true);
 
-    const selected = R.refRadios.selectedIndex();
+    const selected = refs.refRadios.selectedIndex();
 
     switch (selected) {
       case 0:
