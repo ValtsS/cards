@@ -94,7 +94,6 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
                   title="Added at"
                   type="date"
                   ref={this.references.refAdded}
-                  defaultValue={defaultDate}
                 />
 
                 <SelectWithDecorator
