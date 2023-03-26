@@ -189,7 +189,6 @@ describe('CardValidator', () => {
     console.log('ref-reset-test');
     act(() => {
       renderMode(refs, 0);
-      refs.reset();
     });
     // Working around the fact that DOM is not fully rendered yet
     setTimeout(() => {
