@@ -1,8 +1,8 @@
 import React from 'react';
-import CardCreator from '../../components/card-creator';
-import CardShell from '../../components/card-shell';
-import { AppContext } from '../../providers/app-context-provider';
-import { CardData } from '../../providers/card-provider';
+import CardCreator from '@/components/card-creator';
+import CardShell from '@/components/card-shell';
+import { AppContext } from '@/providers/app-context-provider';
+import { CardData } from '@/providers/card-provider';
 import './former-page.css';
 
 interface FormerPageState {
