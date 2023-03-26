@@ -1,5 +1,5 @@
 import React from 'react';
-import reactLogo from '../assets/react.svg';
+import reactLogo from '../../assets/react.svg';
 import './about-page.css';
 
 export class AboutPage extends React.Component {

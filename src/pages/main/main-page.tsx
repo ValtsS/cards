@@ -1,14 +1,19 @@
+import { CardData } from 'providers/card-provider';
 import React from 'react';
-import SearchBar from '../components/searchbar';
-import { MainPageState } from './states';
-import CardShell from '../components/card-shell';
-import { AppContext } from '../providers/app-context-provider';
+import CardShell from '../../components/card-shell';
+import SearchBar from '../../components/searchbar';
+import { AppContext } from '../../providers/app-context-provider';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
 }
+export interface MainPageState {
+  cards?: CardData[];
+  filteringBy?: string;
+  ready: boolean;
+}
 
-class MainPage extends React.Component<MainPageProps, MainPageState> {
+export class MainPage extends React.Component<MainPageProps, MainPageState> {
   static contextType = AppContext;
   declare context: React.ContextType<typeof AppContext>;
 
@@ -62,5 +67,3 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     );
   }
 }
-
-export default MainPage;

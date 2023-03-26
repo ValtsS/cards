@@ -1,9 +1,9 @@
-import CardShell from '../components/card-shell';
-import { CardData } from '../providers/card-provider';
 import React from 'react';
-import CardCreator from '../components/card-creator';
+import CardCreator from '../../components/card-creator';
+import CardShell from '../../components/card-shell';
+import { AppContext } from '../../providers/app-context-provider';
+import { CardData } from '../../providers/card-provider';
 import './former-page.css';
-import { AppContext } from '../providers/app-context-provider';
 
 interface FormerPageState {
   cards: CardData[];
@@ -18,7 +18,7 @@ export const ConfirmationMessage: React.FC<MessageProps> = ({ message }) => {
   return message ? <p className="confirmation">{message}</p> : null;
 };
 
-class FormerPage extends React.Component<object, FormerPageState> {
+export class FormerPage extends React.Component<object, FormerPageState> {
   static contextType = AppContext;
   declare context: React.ContextType<typeof AppContext>;
 
@@ -59,5 +59,3 @@ class FormerPage extends React.Component<object, FormerPageState> {
     );
   }
 }
-
-export default FormerPage;

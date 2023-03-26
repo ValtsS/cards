@@ -4,7 +4,7 @@ import { CardProviderStore } from 'providers/card-provider';
 import { cardTestData } from 'providers/card-test-data';
 import { MemoryStorage } from 'providers/memory-storage';
 import React from 'react';
-import FormerPage, { ConfirmationMessage } from './former-page';
+import { ConfirmationMessage, FormerPage } from './former-page';
 
 describe('Former page component', () => {
   it('should render without crash', async () => {
