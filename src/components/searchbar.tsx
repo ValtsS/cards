@@ -1,4 +1,4 @@
-import { AppContext } from '../providers/app-context-provider';
+import { AppContext } from '@/providers';
 import React from 'react';
 import './searchbar.css';
 

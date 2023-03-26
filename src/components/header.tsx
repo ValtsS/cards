@@ -1,7 +1,7 @@
 import { LinkEx } from '@/components/link';
 import { defaultRoutes } from '@/routes/routes-config';
 import React from 'react';
-import AppState from '../appstate';
+import AppState from '@/appstate';
 import './header.css';
 import { withRouter, WithRouterProps } from './router-hoc';
 

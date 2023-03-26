@@ -1,7 +1,7 @@
 import React from 'react';
-import AppState from '../appstate';
+import AppState from '@/appstate';
 import './root-layout.css';
-import { Header } from '../components/header';
+import { Header } from '@/components/header';
 
 interface RootLayoutProps {
   children: React.ReactNode;

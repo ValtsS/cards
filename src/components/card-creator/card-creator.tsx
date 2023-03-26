@@ -1,7 +1,7 @@
 import { CardData, FormContextProvider } from '@/providers';
 import React, { FormEvent } from 'react';
 import { CardErrors, CardValidator } from './card-validator';
-import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from '../input';
+import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
 import Refs from './card-creator-refs';
 import './card-creator.css';
 
