@@ -1,7 +1,7 @@
+import { Rating } from '@/components/rating';
 import { CardData } from '@/providers';
 import React from 'react';
 import './card.css';
-import Rating from '@/components/rating';
 
 export interface CardProps {
   card: CardData;

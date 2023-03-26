@@ -1,5 +1,5 @@
 import { CardShell } from '@/components/card-shell';
-import SearchBar from '@/components/searchbar';
+import { SearchBar } from '@/components/searchbar';
 import { AppContext, CardData } from '@/providers';
 import React from 'react';
 

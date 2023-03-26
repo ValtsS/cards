@@ -1,8 +1,8 @@
-import { AppContextProvider } from '@/providers/app-context-provider';
 import { CardProviderStore, MemoryStorage } from '@/providers';
+import { AppContextProvider } from '@/providers/app-context-provider';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import SearchBar from './searchbar';
+import { SearchBar } from './searchbar';
 
 // Create a mock for the CardProviderStore class
 jest.mock('@/providers', () => {

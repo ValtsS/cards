@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import Rating from './rating';
+import { Rating } from './rating';
 
 describe('Rating component', () => {
   it('should display the correct number of stars based on the count prop', () => {

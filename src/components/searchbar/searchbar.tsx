@@ -14,7 +14,7 @@ interface LocalSearchState {
   contextReady: boolean;
 }
 
-class SearchBar extends React.Component<SearchProps, LocalSearchState> {
+export class SearchBar extends React.Component<SearchProps, LocalSearchState> {
   static contextType = AppContext;
   declare context: React.ContextType<typeof AppContext>;
 
@@ -102,5 +102,3 @@ class SearchBar extends React.Component<SearchProps, LocalSearchState> {
     );
   }
 }
-
-export default SearchBar;

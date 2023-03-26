@@ -4,7 +4,7 @@ interface RatingProps {
   count: number;
 }
 
-class Rating extends React.Component<RatingProps> {
+export class Rating extends React.Component<RatingProps> {
   render() {
     const { count } = this.props;
     const fullStars = '★'.repeat(count);
@@ -18,5 +18,3 @@ class Rating extends React.Component<RatingProps> {
     );
   }
 }
-
-export default Rating;
