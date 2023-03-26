@@ -1,6 +1,6 @@
 import { CardData } from '@/providers';
 import React from 'react';
-import Card from './card';
+import Card from '../card';
 import './card-shell.css';
 
 interface CardLoaderProps {
@@ -9,7 +9,7 @@ interface CardLoaderProps {
   hidequery?: boolean;
 }
 
-class CardShell extends React.Component<CardLoaderProps> {
+export class CardShell extends React.Component<CardLoaderProps> {
   constructor(props: CardLoaderProps) {
     super(props);
   }
@@ -41,5 +41,3 @@ class CardShell extends React.Component<CardLoaderProps> {
     );
   }
 }
-
-export default CardShell;

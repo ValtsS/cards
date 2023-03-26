@@ -1,10 +1,10 @@
 import { CardData } from '@/providers';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { CardProps } from './card';
-import CardShell from './card-shell';
+import { CardProps } from '../card';
+import { CardShell } from './card-shell';
 
-jest.mock('./card', () => {
+jest.mock('../card', () => {
   return function MockCard(props: CardProps) {
     return (
       <div className="mock-card">
