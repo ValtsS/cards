@@ -67,7 +67,7 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
         <FormContextProvider errors={this.state.errors}>
           <div className="flex-container">
             <div className="column">
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit} ref={this.R.refForm}>
                 <InputWithDecorator name="title" title="Title" type="text" ref={this.R.refTitle} />
 
                 <InputWithDecorator name="text" title="Text" type="text" ref={this.R.refText} />

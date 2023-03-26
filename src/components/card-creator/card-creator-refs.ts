@@ -7,13 +7,7 @@ export class RadioInfos {
 
   constructor(radioNames: string[]) {
     this.names = radioNames;
-    for (let i = 0; i < radioNames.length; i++) this.refs.push(createRef<HTMLInputElement>());
-  }
-
-  clear() {
-    this.refs.forEach((e) => {
-      if (e.current) e.current.checked = false;
-    });
+    this.refs = radioNames.map(() => createRef<HTMLInputElement>());
   }
 
   selectedIndex(): number | null {
@@ -33,6 +27,7 @@ export default class Refs {
   refSelect: React.RefObject<HTMLSelectElement> = createRef<HTMLSelectElement>();
   refGray: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
   refImg: React.RefObject<HTMLInputElement> = createRef<HTMLInputElement>();
+  refForm: React.RefObject<HTMLFormElement> = createRef<HTMLFormElement>();
 
   refRadios: RadioInfos;
 
@@ -43,14 +38,7 @@ export default class Refs {
   }
 
   reset() {
-    if (this.refTitle.current) this.refTitle.current.value = '';
-    if (this.refText.current) this.refText.current.value = '';
-    if (this.refPrice.current) this.refPrice.current.value = '';
-    if (this.refAdded.current) this.refAdded.current.value = '';
-    if (this.refSelect.current) this.refSelect.current.value = '';
-    if (this.refGray.current) this.refGray.current.checked = false;
-    if (this.refImg.current) this.refImg.current.value = '';
-    this.refRadios.clear();
+    this.refForm.current?.reset();
   }
 
   formImageURL(permanent: boolean): string | undefined {

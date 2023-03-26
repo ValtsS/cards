@@ -1,5 +1,5 @@
 import { CardData } from '@/providers';
-import { render } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import Refs from './card-creator-refs';
 import { CardValidator } from './card-validator';
@@ -58,7 +58,7 @@ describe('CardValidator', () => {
 
   const renderMode = (refs: Refs, mode: number) => {
     render(
-      <>
+      <form ref={refs.refForm}>
         <input type="text" ref={refs.refTitle} defaultValue="Test Title" />
         <input type="text" ref={refs.refText} defaultValue="Test Text" />
         <input type="number" ref={refs.refPrice} defaultValue={100} />
@@ -86,7 +86,7 @@ describe('CardValidator', () => {
           value="1"
           defaultChecked={mode === 1 ? true : undefined}
         />
-      </>
+      </form>
     );
   };
 
@@ -184,30 +184,39 @@ describe('CardValidator', () => {
     expect(card.flipimg).toBe(undefined);
   });
 
-  it('check if reset works', () => {
+  it('check if reset works', async () => {
     const refs = new Refs(['radio1', 'radio2']);
-
-    renderMode(refs, 0);
-    refs.reset();
-
-    const card = validator.prepareCard(refs);
-    expect(card.title).toBe('');
-    expect(card.text).toBe('');
-    expect(card.price).toBe('');
-    expect(card.addedat).toBeUndefined();
-    expect(card.rating).toBe(0);
-    expect(card.grayscale).toBe(false);
-    expect(card.flipimg).toBeUndefined();
-
-    expect(validator.isValid(card)).toBe(false);
-    expect(validator.errors).toEqual({
-      title: CardValidator.ERRORS.TITLE_REQUIRED,
-      text: CardValidator.ERRORS.TEXT_REQUIRED,
-      price: CardValidator.ERRORS.PRICE_REQUIRED,
-      addedat: CardValidator.ERRORS.ADDED_AT_REQUIRED,
-      rating: CardValidator.ERRORS.RATING_REQUIRED,
-      bigimagemage: CardValidator.ERRORS.IMAGE_REQUIRED,
-      radioflip: CardValidator.ERRORS.ORIENTATION_REQUIRED,
+    console.log('ref-reset-test');
+    act(() => {
+      renderMode(refs, 0);
+      refs.reset();
     });
+    // Working around the fact that DOM is not fully rendered yet
+    setTimeout(() => {
+      refs.reset();
+
+      const card = validator.prepareCard(refs);
+      expect(card.title).toBe('');
+      console.log(card);
+
+      expect(card.title).toBe('');
+      expect(card.text).toBe('');
+      expect(card.price).toBe('');
+      expect(card.addedat).toBeUndefined();
+      expect(card.rating).toBe(0);
+      expect(card.grayscale).toBe(false);
+      expect(card.flipimg).toBeUndefined();
+
+      expect(validator.isValid(card)).toBe(false);
+      expect(validator.errors).toEqual({
+        title: CardValidator.ERRORS.TITLE_REQUIRED,
+        text: CardValidator.ERRORS.TEXT_REQUIRED,
+        price: CardValidator.ERRORS.PRICE_REQUIRED,
+        addedat: CardValidator.ERRORS.ADDED_AT_REQUIRED,
+        rating: CardValidator.ERRORS.RATING_REQUIRED,
+        bigimagemage: CardValidator.ERRORS.IMAGE_REQUIRED,
+        radioflip: CardValidator.ERRORS.ORIENTATION_REQUIRED,
+      });
+    }, 0);
   });
 });
