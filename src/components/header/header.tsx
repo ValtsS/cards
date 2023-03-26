@@ -1,9 +1,9 @@
+import AppState from '@/appstate';
 import { LinkEx } from '@/components/link';
+import { WithRouterProps, withRouter } from '@/routes/router-hoc';
 import { defaultRoutes } from '@/routes/routes-config';
 import React from 'react';
-import AppState from '@/appstate';
 import './header.css';
-import { withRouter, WithRouterProps } from './router-hoc';
 
 interface HeaderProps extends WithRouterProps {
   fancyName: string;
