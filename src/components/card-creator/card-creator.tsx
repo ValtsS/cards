@@ -60,8 +60,6 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
   };
 
   render() {
-    const defaultDate = this.state.card.addedat?.toISOString().split('T')[0];
-
     return (
       <>
         <FormContextProvider errors={this.state.errors}>
