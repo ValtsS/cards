@@ -13,7 +13,7 @@ class LocalCardState {
   valid = false;
   card: CardData;
   errors: CardErrors;
-  previewimageurl?: string;
+  previewImageUrl?: string;
 
   constructor(defaultDate: Date) {
     this.card = new CardData();
@@ -27,7 +27,7 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
   validator: CardValidator = new CardValidator();
 
   radioNames: string[] = ['Normal', 'Flipped'];
-  R: Refs = new Refs(this.radioNames);
+  references: Refs = new Refs(this.radioNames);
 
   constructor(props: CardCreatorProps) {
     super(props);
@@ -37,7 +37,7 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const c = this.validator.prepareCard(this.R);
+    const c = this.validator.prepareCard(this.references);
     const isValid = this.validator.isValid(c);
 
     this.setState((prevState) => ({
@@ -45,17 +45,17 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
       card: c,
       valid: isValid,
       errors: this.validator.errors,
-      previewimageurl: isValid ? undefined : prevState.previewimageurl,
+      previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
     }));
 
     if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
-    if (isValid) this.R.reset();
+    if (isValid) this.references.reset();
   };
 
   handleImagePrview = () => {
     this.setState((prevState) => ({
       ...prevState,
-      previewimageurl: this.R.formImageURL(false),
+      previewImageUrl: this.references.formImageURL(false),
     }));
   };
 
@@ -67,23 +67,33 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
         <FormContextProvider errors={this.state.errors}>
           <div className="flex-container">
             <div className="column">
-              <form onSubmit={this.handleSubmit} ref={this.R.refForm}>
-                <InputWithDecorator name="title" title="Title" type="text" ref={this.R.refTitle} />
+              <form onSubmit={this.handleSubmit} ref={this.references.refForm}>
+                <InputWithDecorator
+                  name="title"
+                  title="Title"
+                  type="text"
+                  ref={this.references.refTitle}
+                />
 
-                <InputWithDecorator name="text" title="Text" type="text" ref={this.R.refText} />
+                <InputWithDecorator
+                  name="text"
+                  title="Text"
+                  type="text"
+                  ref={this.references.refText}
+                />
 
                 <InputWithDecorator
                   name="price"
                   title="Price"
                   type="number"
-                  ref={this.R.refPrice}
+                  ref={this.references.refPrice}
                 />
 
                 <InputWithDecorator
                   name="addedat"
                   title="Added at"
                   type="date"
-                  ref={this.R.refAdded}
+                  ref={this.references.refAdded}
                   defaultValue={defaultDate}
                 />
 
@@ -91,21 +101,21 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
                   name="rating"
                   title="Rating"
                   values={['', '1', '2', '3', '4', '5']}
-                  ref={this.R.refSelect}
+                  ref={this.references.refSelect}
                 />
 
                 <InputWithDecorator
                   name="grayscale"
                   title="Grayscale picture"
                   type="checkbox"
-                  ref={this.R.refGray}
+                  ref={this.references.refGray}
                 />
 
                 <InputWithDecorator
                   name="bigimagemage"
                   title="Upload picture"
                   type="file"
-                  ref={this.R.refImg}
+                  ref={this.references.refImg}
                   onChange={this.handleImagePrview}
                   accept={'image/*'}
                 />
@@ -114,17 +124,17 @@ export class CardCreator extends React.Component<CardCreatorProps, LocalCardStat
                   name="radioflip"
                   title="Image orientation"
                   values={this.radioNames}
-                  forwardedRefs={this.R.refRadios.refs}
+                  forwardedRefs={this.references.refRadios.refs}
                 />
 
                 <button type="submit">Submit</button>
               </form>
             </div>
             <div className="column bg-alt">
-              {this.state.previewimageurl && (
+              {this.state.previewImageUrl && (
                 <>
                   <p>Image preview:</p>
-                  <img className="preview" src={this.state.previewimageurl}></img>
+                  <img className="preview" src={this.state.previewImageUrl}></img>
                 </>
               )}
             </div>
