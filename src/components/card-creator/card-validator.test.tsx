@@ -186,7 +186,6 @@ describe('CardValidator', () => {
 
   it('check if reset works', async () => {
     const refs = new Refs(['radio1', 'radio2']);
-    console.log('ref-reset-test');
     act(() => {
       renderMode(refs, 0);
     });
@@ -196,8 +195,6 @@ describe('CardValidator', () => {
 
       const card = validator.prepareCard(refs);
       expect(card.title).toBe('');
-      console.log(card);
-
       expect(card.title).toBe('');
       expect(card.text).toBe('');
       expect(card.price).toBe('');
