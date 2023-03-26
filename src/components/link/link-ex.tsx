@@ -7,7 +7,7 @@ interface LinkExProps extends LinkProps {
   children: React.ReactNode;
 }
 
-class LinkEx extends React.Component<LinkExProps> {
+export class LinkEx extends React.Component<LinkExProps> {
   render() {
     const to = this.props.to.valueOf().toString().toLowerCase();
     const className = this.props.path.toLowerCase() === to ? 'active' : '';
@@ -18,5 +18,3 @@ class LinkEx extends React.Component<LinkExProps> {
     );
   }
 }
-
-export default LinkEx;
