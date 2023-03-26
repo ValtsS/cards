@@ -1,20 +1,7 @@
 import { CardData } from '@/providers';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { CardProps } from '../card';
 import { CardShell } from './card-shell';
-
-jest.mock('../card', () => {
-  return function MockCard(props: CardProps) {
-    return (
-      <div className="mock-card">
-        <span className="mock-card-title">{props.card.title}</span>
-        <span className="mock-card-price">{props.card.price}</span>
-        <span className="mock-card-text">{props.card.text}</span>
-      </div>
-    );
-  };
-});
 
 describe('Card Shell component', () => {
   it('should not crash', () => {

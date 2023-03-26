@@ -1,13 +1,13 @@
 import { CardData } from '@/providers';
 import React from 'react';
 import './card.css';
-import Rating from './rating';
+import Rating from '@/components/rating';
 
 export interface CardProps {
   card: CardData;
 }
 
-class Card extends React.Component<CardProps> {
+export class Card extends React.Component<CardProps> {
   render() {
     const imgclass =
       'bigpic' +
@@ -32,5 +32,3 @@ class Card extends React.Component<CardProps> {
     );
   }
 }
-
-export default Card;

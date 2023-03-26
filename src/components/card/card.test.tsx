@@ -1,7 +1,7 @@
 import { CardData } from '@/providers';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import Card from './card';
+import { Card } from './card';
 
 describe('Card component', () => {
   it('should not crash', () => {
