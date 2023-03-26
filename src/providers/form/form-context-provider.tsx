@@ -1,4 +1,4 @@
-import { CardErrors } from 'components/card-validator';
+import { CardErrors } from '@/components/card-creator/card-validator';
 import React from 'react';
 
 type FormContextValue = {

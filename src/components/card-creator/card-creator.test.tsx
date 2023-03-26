@@ -1,8 +1,8 @@
 import { CardData } from '@/providers';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import CardCreator from './card-creator';
 import { CardValidator } from './card-validator';
+import { CardCreator } from './card-creator';
 
 describe('Card Shell component', () => {
   it('should not crash', () => {

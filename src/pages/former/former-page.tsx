@@ -1,4 +1,4 @@
-import CardCreator from '@/components/card-creator';
+import { CardCreator } from '@/components/card-creator';
 import CardShell from '@/components/card-shell';
 import { AppContext, CardData } from '@/providers';
 import React from 'react';

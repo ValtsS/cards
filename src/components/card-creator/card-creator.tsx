@@ -1,9 +1,9 @@
 import { CardData, FormContextProvider } from '@/providers';
 import React, { FormEvent } from 'react';
+import { CardErrors, CardValidator } from './card-validator';
+import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from '../input';
 import Refs from './card-creator-refs';
 import './card-creator.css';
-import { CardErrors, CardValidator } from './card-validator';
-import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from './input';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
@@ -23,7 +23,7 @@ class LocalCardState {
   }
 }
 
-class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
+export class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
   validator: CardValidator = new CardValidator();
 
   radioNames: string[] = ['Normal', 'Flipped'];
@@ -134,5 +134,3 @@ class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
     );
   }
 }
-
-export default CardCreator;

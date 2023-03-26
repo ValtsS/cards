@@ -1,4 +1,4 @@
-import { CardErrors } from 'components/card-validator';
+import { CardErrors } from '@/components/card-creator/card-validator';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FormContext, FormContextProvider } from './form-context-provider';
