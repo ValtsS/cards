@@ -4,7 +4,7 @@ import ThrowsError from 'components/throws-error';
 import React from 'react';
 
 describe('App component', () => {
-  const error_text = 'Something went wrong!!';
+  const errorText = 'Something went wrong!!';
 
   it('should render without crash', async () => {
     render(
@@ -21,18 +21,16 @@ describe('App component', () => {
   it('should catch and handle errors', async () => {
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    try {
-      render(
-        <App>
-          <ThrowsError />
-        </App>
-      );
-    } catch {}
+    render(
+      <App>
+        <ThrowsError />
+      </App>
+    );
 
-    expect(spy).toHaveBeenCalledWith('error caught: ', new Error(error_text));
+    expect(spy).toHaveBeenCalledWith('error caught: ', new Error(errorText));
 
     await waitFor(() => {
-      expect(screen.getByText(new RegExp(error_text, 'i'))).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(errorText, 'i'))).toBeInTheDocument();
     });
 
     spy.mockRestore();
