@@ -1,5 +1,5 @@
 import React, { ForwardedRef, forwardRef, HTMLAttributes } from 'react';
-import InputDecorator from './input-decorator';
+import { InputDecorator } from './input-decorator';
 
 interface SelectProps extends HTMLAttributes<HTMLSelectElement> {
   name: string;

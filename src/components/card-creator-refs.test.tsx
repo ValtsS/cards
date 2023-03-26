@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import Refs, { RadioInfos } from './card-creator-refs';
-import { InputWithDecorator } from './input-component';
+import { InputWithDecorator } from './input';
 
 describe('Card creator refs', () => {
   it('should not crash', () => {

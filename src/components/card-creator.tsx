@@ -3,9 +3,7 @@ import React, { FormEvent } from 'react';
 import Refs from './card-creator-refs';
 import './card-creator.css';
 import { CardErrors, CardValidator } from './card-validator';
-import { InputWithDecorator } from './input-component';
-import { RadioWithDecorator } from './radio-component';
-import { SelectWithDecorator } from './select-component';
+import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from './input';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;

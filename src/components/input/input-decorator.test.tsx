@@ -1,7 +1,7 @@
 import { FormContext } from '@/providers';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import InputDecorator from './input-decorator';
+import { InputDecorator } from './input-decorator';
 
 describe('InputDecorator', () => {
   const title = 'Test Input';
