@@ -70,7 +70,8 @@ describe('Card Shell component', () => {
 
     const dateadd = screen.getByLabelText('Added at');
     expect(dateadd).toBeInTheDocument();
-    fireEvent.change(dateadd, { target: { value: '2012-12-15' } });
+    const dateToTest = '2012-12-15';
+    fireEvent.change(dateadd, { target: { value: dateToTest } });
 
     const sumbit = screen.getByRole('button');
     fireEvent.click(sumbit);
@@ -78,7 +79,7 @@ describe('Card Shell component', () => {
     expect(fn).toBeCalledTimes(1);
 
     const expected: CardData = {
-      addedat: new Date('2012-12-15'),
+      addedat: new Date(dateToTest),
       flipimg: false,
       grayscale: true,
       imageUrl: 'mock-url',
@@ -103,6 +104,6 @@ describe('Card Shell component', () => {
 
     const receivedDate = new Date(actual.addedat ?? 0);
 
-    expect(receivedDate.getTime()).toEqual(new Date('2012-12-15').getTime());
+    expect(receivedDate.getTime()).toEqual(new Date(dateToTest).getTime());
   });
 });
