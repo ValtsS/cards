@@ -7,7 +7,7 @@ interface ErrorPageProps {
 
 export const unkErrorText = 'Unknown error';
 
-class ErrorPage extends React.Component<ErrorPageProps> {
+export class ErrorPage extends React.Component<ErrorPageProps> {
   render() {
     return (
       <>
@@ -20,5 +20,3 @@ class ErrorPage extends React.Component<ErrorPageProps> {
     );
   }
 }
-
-export default ErrorPage;

@@ -1,4 +1,4 @@
-import { Queue } from '../core/queue';
+import { Queue } from '@/core/queue';
 import { createRef } from 'react';
 
 export class RadioInfos {

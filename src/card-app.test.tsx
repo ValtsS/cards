@@ -1,8 +1,8 @@
-import React from 'react';
+import { RouteConfig } from '@/routes/';
 import { act, render, screen } from '@testing-library/react';
-import CardsApp from './cards-app';
+import React from 'react';
 import { RootLayout } from 'routes/root-layout';
-import { RouteConfig } from './routes/routes-config';
+import CardsApp from './cards-app';
 import { AboutPage } from './pages';
 
 describe('CardsApp', () => {

@@ -1,8 +1,8 @@
-import './App.css';
+import { ErrorPage } from '@/routes';
 import React from 'react';
-import AppState from './appstate';
-import ErrorPage from './routes/error-page';
 import { BrowserRouter } from 'react-router-dom';
+import './App.css';
+import AppState from './appstate';
 
 interface AppProps {
   children?: React.ReactNode;
