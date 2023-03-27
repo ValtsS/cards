@@ -1,0 +1,9 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3rem;
+}
+
+p.filtertext {
+  margin-left: 3rem;
+}
