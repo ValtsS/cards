@@ -18,6 +18,7 @@ export class CardValidator {
     RATING_REQUIRED: 'At least one star rating is required',
     IMAGE_REQUIRED: 'Please provide a pretty picture',
     ORIENTATION_REQUIRED: 'Need to pick orientation',
+    GRAYSCALE_REQUIRED: 'Need to agree to have grayscale set',
   };
 
   isValid(card: CardData): boolean {
@@ -37,6 +38,8 @@ export class CardValidator {
 
     if (!card.rating || card.rating < 1)
       this.errors['rating'] = CardValidator.ERRORS.RATING_REQUIRED;
+
+    if (!card.grayscale) this.errors['grayscale'] = CardValidator.ERRORS.GRAYSCALE_REQUIRED;
 
     if (!card.imageUrl) this.errors['bigimagemage'] = CardValidator.ERRORS.IMAGE_REQUIRED;
 

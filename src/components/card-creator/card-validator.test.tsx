@@ -21,6 +21,7 @@ describe('CardValidator', () => {
       card.rating = 3;
       card.imageUrl = 'http://example.com/image.png';
       card.flipimg = false;
+      card.grayscale = true;
       expect(validator.isValid(card)).toBe(true);
       expect(validator.errors).toEqual({});
     });
@@ -36,6 +37,7 @@ describe('CardValidator', () => {
         rating: CardValidator.ERRORS.RATING_REQUIRED,
         bigimagemage: CardValidator.ERRORS.IMAGE_REQUIRED,
         radioflip: CardValidator.ERRORS.ORIENTATION_REQUIRED,
+        grayscale: CardValidator.ERRORS.GRAYSCALE_REQUIRED,
       });
     });
 
@@ -52,6 +54,7 @@ describe('CardValidator', () => {
       expect(validator.errors).toEqual({
         addedat: CardValidator.ERRORS.ADDED_AT_FUTURE,
         price: CardValidator.ERRORS.PRICE_VALID,
+        grayscale: CardValidator.ERRORS.GRAYSCALE_REQUIRED,
       });
     });
   });
