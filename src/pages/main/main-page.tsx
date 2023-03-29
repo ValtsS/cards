@@ -1,7 +1,7 @@
 import { CardShell } from '@/components/card-shell';
 import { SearchBar } from '@/components/searchbar';
-import { AppContext, CardData } from '@/providers';
-import React from 'react';
+import { CardData, useAppContext } from '@/providers';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
@@ -12,57 +12,45 @@ export interface MainPageState {
   ready: boolean;
 }
 
-export class MainPage extends React.Component<MainPageProps, MainPageState> {
-  static contextType = AppContext;
-  declare context: React.ContextType<typeof AppContext>;
+const mainpageLastQuery = `mainpage_lastquery`;
 
-  constructor(props: MainPageProps) {
-    super(props);
+export const MainPage = (props: MainPageProps): ReactElement => {
+  const { localStore, cardProvider } = useAppContext();
 
-    const initialState: MainPageState = {
-      ready: false,
-    };
-    this.state = initialState;
-  }
-
-  getKey(): string {
-    return `mainpage_lastquery`;
-  }
-
-  componentDidMount(): void {
-    if (!this.context) {
-      throw new Error('AppContext provider is not present');
-    }
-    const searched = this.context.localStore.getItem(this.getKey());
-    this.handleQueryChange(searched ?? '');
-  }
-
-  componentWillUnmount(): void {
-    if (this.state.ready)
-      this.context.localStore.setItem(this.getKey(), this.state.filteringBy ?? '');
-  }
-
-  handleQueryChange = async (searchQuery: string) => {
-    this.setState({
-      cards: await this.context.cardProvider.loadTestData(searchQuery),
-      filteringBy: searchQuery,
-      ready: true,
-    });
-    if (this.props.onSearch) this.props.onSearch(searchQuery);
+  const initialState: MainPageState = {
+    ready: false,
   };
 
-  render() {
-    return (
-      <>
-        <SearchBar
-          id={'bar01'}
-          onQueryChange={this.handleQueryChange}
-          testId="search-bar-test-id"
-          title="Enter search query"
-        />
+  const [state, setState] = useState(initialState);
 
-        <CardShell data={this.state.cards} query={this.state.filteringBy} />
-      </>
-    );
-  }
-}
+  const handleQueryChange = useCallback(
+    async (searchQuery: string) => {
+      setState({
+        cards: await cardProvider.loadTestData(searchQuery),
+        filteringBy: searchQuery,
+        ready: true,
+      });
+      localStore.setItem(mainpageLastQuery, searchQuery);
+      if (props.onSearch) props.onSearch(searchQuery);
+    },
+    [localStore, cardProvider, props]
+  );
+
+  useEffect(() => {
+    const searched = localStore.getItem(mainpageLastQuery);
+    handleQueryChange(searched ?? '');
+  }, [localStore, handleQueryChange]);
+
+  return (
+    <>
+      <SearchBar
+        id={'bar01'}
+        onQueryChange={handleQueryChange}
+        testId="search-bar-test-id"
+        title="Enter search query"
+      />
+
+      <CardShell data={state.cards} query={state.filteringBy} />
+    </>
+  );
+};
