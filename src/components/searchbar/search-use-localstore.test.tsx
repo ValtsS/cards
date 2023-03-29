@@ -43,7 +43,7 @@ describe('useLocalStore', () => {
   it('should update query state and return new value when handleChange is called', () => {
     const { result } = renderHook(() => useLocalStore(key));
 
-    let newState: string = '';
+    let newState = '';
     act(() => {
       newState = result.current.handleChange(value, false);
     });
@@ -55,7 +55,7 @@ describe('useLocalStore', () => {
   it('should update query state and return new value when search is triggered', () => {
     const { result } = renderHook(() => useLocalStore(key));
 
-    let newState: string = '';
+    let newState = '';
     act(() => {
       newState = result.current.handleChange(value, true);
     });

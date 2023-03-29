@@ -22,14 +22,15 @@ export const useLocalStore = (key: string): UseLocalStoreResult => {
 
   const [state, setState] = useState(initialState);
 
-  const getFromStore = (): string => {
-    return localStore.getItem(key) ?? '';
-  };
-
   const saveToStore = (val: string) => localStore.setItem(key, val);
 
   useEffect(() => {
+    const getFromStore = (): string => {
+      return localStore.getItem(key) ?? '';
+    };
+
     const loaded = getFromStore();
+
     if (loaded) {
       lastQueryRef.current = loaded;
       setState({
@@ -38,9 +39,9 @@ export const useLocalStore = (key: string): UseLocalStoreResult => {
       });
     }
     return () => {
-      if (lastQueryRef.current) saveToStore(lastQueryRef.current);
+      if (lastQueryRef.current) localStore.setItem(key, lastQueryRef.current);
     };
-  }, [localStore]);
+  }, [localStore, key]);
 
   const handleChange = (filter: string | undefined, search: boolean): string => {
     const last = state.query;
