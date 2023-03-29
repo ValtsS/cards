@@ -9,32 +9,23 @@ interface CardLoaderProps {
   hidequery?: boolean;
 }
 
-export const CardShell = (props:CardLoaderProps):ReactElement => {
-
-  const getQuery  = (): string  => {
-    return props.hidequery
-      ? ''
-      : 'no cards found for your search query: ' + (props.query ?? '');
-  }
+export const CardShell = (props: CardLoaderProps): ReactElement => {
+  const getQuery = (): string => {
+    return props.hidequery ? '' : 'no cards found for your search query: ' + (props.query ?? '');
+  };
 
   const found = props.data && props.data.length > 0;
 
-  return(
+  return (
     <>
-    {found && !props.hidequery ? (
-      <p className="filtertext">Filter: {props.query}</p>
-    ) : (
-      ''
-    )}
-    <div className="card-container">
-      {(found && props.data)
-        ? props.data.map((carddata, index) => (
-            <Card card={carddata} key={'CardNr' + index.toString()} />
-          ))
-        : getQuery()}
-    </div>
-  </>
+      {found && !props.hidequery ? <p className="filtertext">Filter: {props.query}</p> : ''}
+      <div className="card-container">
+        {found && props.data
+          ? props.data.map((carddata, index) => (
+              <Card card={carddata} key={'CardNr' + index.toString()} />
+            ))
+          : getQuery()}
+      </div>
+    </>
   );
-
-
-}
+};
