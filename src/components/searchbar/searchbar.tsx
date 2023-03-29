@@ -1,5 +1,5 @@
-import { AppContext } from '@/providers';
-import React from 'react';
+import { useAppContext } from '@/providers/app-context-provider';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import './searchbar.css';
 
 interface SearchProps {
@@ -10,95 +10,97 @@ interface SearchProps {
 }
 
 interface LocalSearchState {
-  lastquery: string;
+  query: string;
   contextReady: boolean;
 }
 
-export class SearchBar extends React.Component<SearchProps, LocalSearchState> {
-  static contextType = AppContext;
-  declare context: React.ContextType<typeof AppContext>;
+export const SearchBar = (props: SearchProps): ReactElement => {
+  const { localStore } = useAppContext();
 
-  constructor(props: SearchProps) {
-    super(props);
-    const initialState: LocalSearchState = {
-      contextReady: false,
-      lastquery: '',
-    };
-    this.state = initialState;
-  }
+  const getKey = (): string => {
+    return `searchbar_${props.id}_lastquery`;
+  };
 
-  getLastValue(): string {
-    return this.context.localStore.getItem(this.getKey()) ?? '';
-  }
+  const initialState: LocalSearchState = {
+    contextReady: false,
+    query: '',
+  };
 
-  getKey(): string {
-    return `searchbar_${this.props.id}_lastquery`;
-  }
+  const lastQueryRef = useRef<string>('');
 
-  componentDidMount(): void {
-    if (!this.context) {
-      throw new Error('AppContext provider is not present');
-    }
-    const lastquery = this.getLastValue();
-    this.setState({
-      lastquery: lastquery,
-      contextReady: true,
-    });
-  }
+  const [state, setState] = useState(initialState);
 
-  saveSearch(): void {
-    if (this.state.contextReady)
-      this.context.localStore.setItem(this.getKey(), this.state.lastquery);
-  }
+  const getFromStore = (): string => {
+    return localStore.getItem(getKey()) ?? '';
+  };
 
-  componentWillUnmount(): void {
-    this.saveSearch();
-  }
+  const saveToStore = (val: string) => localStore.setItem(getKey(), val);
 
-  handleChange = (filter: string | undefined, search: boolean) => {
-    const apply = filter === undefined ? this.state.lastquery : filter;
-
-    if (apply != this.state.lastquery)
-      this.setState({
-        lastquery: apply,
+  useEffect(() => {
+    const loaded = getFromStore();
+    if (loaded) {
+      lastQueryRef.current = loaded;
+      setState({
+        contextReady: true,
+        query: loaded,
       });
-    if (search) this.props.onQueryChange(apply);
-  };
+    }
+    return () => {
+      if (lastQueryRef.current) saveToStore(lastQueryRef.current);
+    };
+  }, [localStore]);
 
-  handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.handleChange(event.target.value, false);
-  };
+  const handleChange = (filter: string | undefined, search: boolean) => {
+    const last = state.query;
+    const apply = filter === undefined ? last : filter;
 
-  handleSearch = () => {
-    this.saveSearch();
-    this.handleChange(undefined, true);
-  };
+    if (apply != last) {
+      lastQueryRef.current = apply;
+      setState({
+        ...state,
+        query: apply,
+      });
+    }
 
-  handleKeyPress = (event: React.KeyboardEvent): void => {
-    if (event.key === 'Enter') {
-      this.handleSearch();
+    if (search) {
+      saveToStore(apply);
+      props.onQueryChange(apply);
     }
   };
 
-  render() {
-    return (
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event.target.value, false);
+  };
+
+  const handleSearch = () => {
+    handleChange(undefined, true);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent): void => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  return (
+    <>
       <div className="search-container">
         <div>
-          {this.props.title && <div>{this.props.title}</div>}
+          {props.title && <div>{props.title}</div>}
           {
             <>
               <input
                 type="text"
-                value={this.state.lastquery}
-                onChange={this.handleQueryChange}
-                data-testid={this.props.testId}
-                onKeyDown={this.handleKeyPress}
+                value={state.query}
+                onChange={handleQueryChange}
+                data-testid={props.testId}
+                onKeyDown={handleKeyPress}
               />
-              <button onClick={this.handleSearch}>Search</button>
+              <button onClick={handleSearch}>Search</button>
             </>
           }
         </div>
       </div>
-    );
-  }
-}
+    </>
+  );
+};
