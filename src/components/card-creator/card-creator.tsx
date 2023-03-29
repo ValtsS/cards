@@ -38,7 +38,9 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
 
     setState((prevState) => ({
       ...prevState,
-      card: c,      valid: isValid,      errors: validator.errors,
+      card: c,
+      valid: isValid,
+      errors: validator.errors,
       previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
     }));
 
