@@ -19,7 +19,7 @@ describe('App component', () => {
   });
 
   it('should catch and handle errors', async () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const spiedOnError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <App>
@@ -27,12 +27,12 @@ describe('App component', () => {
       </App>
     );
 
-    expect(spy).toHaveBeenCalledWith('error caught: ', new Error(errorText));
+    expect(spiedOnError).toHaveBeenCalledWith('error caught: ', new Error(errorText));
 
     await waitFor(() => {
       expect(screen.getByText(new RegExp(errorText, 'i'))).toBeInTheDocument();
     });
 
-    spy.mockRestore();
+    spiedOnError.mockRestore();
   });
 });
