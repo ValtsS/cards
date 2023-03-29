@@ -1,5 +1,5 @@
 import { CardData, FormContextProvider } from '@/providers';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, ReactElement, useState } from 'react';
 import { CardErrors, CardValidator } from './card-validator';
 import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
 import Refs from './card-creator-refs';
@@ -23,121 +23,110 @@ class LocalCardState {
   }
 }
 
-export class CardCreator extends React.Component<CardCreatorProps, LocalCardState> {
-  validator: CardValidator = new CardValidator();
+export const CardCreator = (props: CardCreatorProps): ReactElement => {
+  const validator = new CardValidator();
+  const radioNames: string[] = ['Normal', 'Flipped'];
+  const references: Refs = new Refs(radioNames);
 
-  radioNames: string[] = ['Normal', 'Flipped'];
-  references: Refs = new Refs(this.radioNames);
+  const [state, setState] = useState(new LocalCardState(new Date()));
 
-  constructor(props: CardCreatorProps) {
-    super(props);
-    this.state = new LocalCardState(new Date());
-  }
-
-  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const c = this.validator.prepareCard(this.references);
-    const isValid = this.validator.isValid(c);
+    const c = validator.prepareCard(references);
+    const isValid = validator.isValid(c);
 
-    this.setState((prevState) => ({
+    setState((prevState) => ({
       ...prevState,
       card: c,
       valid: isValid,
-      errors: this.validator.errors,
+      errors: validator.errors,
       previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
     }));
 
-    if (isValid && this.props.onCardCreate) this.props.onCardCreate(c);
-    if (isValid) this.references.reset();
+    if (isValid && props.onCardCreate) props.onCardCreate(c);
+    if (isValid) references.reset();
   };
 
-  handleImagePrview = () => {
-    this.setState((prevState) => ({
+  const handleImagePrview = () => {
+    setState((prevState) => ({
       ...prevState,
-      previewImageUrl: this.references.formImageURL(false),
+      previewImageUrl: references.formImageURL(false),
     }));
   };
 
-  render() {
-    return (
-      <>
-        <FormContextProvider errors={this.state.errors}>
-          <div className="flex-container">
-            <div className="column">
-              <form onSubmit={this.handleSubmit} ref={this.references.refForm}>
-                <InputWithDecorator
-                  name="title"
-                  title="Title"
-                  type="text"
-                  ref={this.references.refTitle}
-                />
+  return (
+    <>
+      <FormContextProvider errors={state.errors}>
+        <div className="flex-container">
+          <div className="column">
+            <form onSubmit={handleSubmit} ref={references.refForm}>
+              <InputWithDecorator
+                name="title"
+                title="Title"
+                type="text"
+                ref={references.refTitle}
+              />
 
-                <InputWithDecorator
-                  name="text"
-                  title="Text"
-                  type="text"
-                  ref={this.references.refText}
-                />
+              <InputWithDecorator name="text" title="Text" type="text" ref={references.refText} />
 
-                <InputWithDecorator
-                  name="price"
-                  title="Price"
-                  type="number"
-                  ref={this.references.refPrice}
-                />
+              <InputWithDecorator
+                name="price"
+                title="Price"
+                type="number"
+                ref={references.refPrice}
+              />
 
-                <InputWithDecorator
-                  name="addedat"
-                  title="Added at"
-                  type="date"
-                  ref={this.references.refAdded}
-                />
+              <InputWithDecorator
+                name="addedat"
+                title="Added at"
+                type="date"
+                ref={references.refAdded}
+              />
 
-                <SelectWithDecorator
-                  name="rating"
-                  title="Rating"
-                  values={['', '1', '2', '3', '4', '5']}
-                  ref={this.references.refSelect}
-                />
+              <SelectWithDecorator
+                name="rating"
+                title="Rating"
+                values={['', '1', '2', '3', '4', '5']}
+                ref={references.refSelect}
+              />
 
-                <InputWithDecorator
-                  name="grayscale"
-                  title="Grayscale picture"
-                  type="checkbox"
-                  ref={this.references.refGray}
-                />
+              <InputWithDecorator
+                name="grayscale"
+                title="Grayscale picture"
+                type="checkbox"
+                ref={references.refGray}
+              />
 
-                <InputWithDecorator
-                  name="bigimagemage"
-                  title="Upload picture"
-                  type="file"
-                  ref={this.references.refImg}
-                  onChange={this.handleImagePrview}
-                  accept={'image/*'}
-                />
+              <InputWithDecorator
+                name="bigimagemage"
+                title="Upload picture"
+                type="file"
+                ref={references.refImg}
+                onChange={handleImagePrview}
+                accept={'image/*'}
+              />
 
-                <RadioWithDecorator
-                  name="radioflip"
-                  title="Image orientation"
-                  values={this.radioNames}
-                  forwardedRefs={this.references.refRadios.refs}
-                />
+              <RadioWithDecorator
+                name="radioflip"
+                title="Image orientation"
+                values={radioNames}
+                forwardedRefs={references.refRadios.refs}
+              />
 
-                <button type="submit">Submit</button>
-              </form>
-            </div>
-            <div className="column bg-alt">
-              {this.state.previewImageUrl && (
-                <>
-                  <p>Image preview:</p>
-                  <img className="preview" src={this.state.previewImageUrl}></img>
-                </>
-              )}
-            </div>
+              <button type="submit">Submit</button>
+            </form>
           </div>
-        </FormContextProvider>
-      </>
-    );
-  }
-}
+          <div className="column bg-alt">
+            {state.previewImageUrl && (
+              <>
+                <p>Image preview:</p>
+                <img className="preview" src={state.previewImageUrl}></img>
+              </>
+            )}
+          </div>
+        </div>
+      </FormContextProvider>
+    </>
+  );
+};
