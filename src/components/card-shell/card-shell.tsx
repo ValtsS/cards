@@ -1,5 +1,5 @@
 import { CardData } from '@/providers';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Card } from '@/components/card';
 import './card-shell.css';
 
@@ -9,35 +9,32 @@ interface CardLoaderProps {
   hidequery?: boolean;
 }
 
-export class CardShell extends React.Component<CardLoaderProps> {
-  constructor(props: CardLoaderProps) {
-    super(props);
-  }
+export const CardShell = (props:CardLoaderProps):ReactElement => {
 
-  getQuery(): string {
-    return this.props.hidequery
+  const getQuery  = (): string  => {
+    return props.hidequery
       ? ''
-      : 'no cards found for your search query: ' + (this.props.query ?? '');
+      : 'no cards found for your search query: ' + (props.query ?? '');
   }
 
-  render() {
-    const found = this.props.data && this.props.data.length > 0;
+  const found = props.data && props.data.length > 0;
 
-    return (
-      <>
-        {found && !this.props.hidequery ? (
-          <p className="filtertext">Filter: {this.props.query}</p>
-        ) : (
-          ''
-        )}
-        <div className="card-container">
-          {found && this.props.data
-            ? this.props.data.map((carddata, index) => (
-                <Card card={carddata} key={'CardNr' + index.toString()} />
-              ))
-            : this.getQuery()}
-        </div>
-      </>
-    );
-  }
+  return(
+    <>
+    {found && !props.hidequery ? (
+      <p className="filtertext">Filter: {props.query}</p>
+    ) : (
+      ''
+    )}
+    <div className="card-container">
+      {(found && props.data)
+        ? props.data.map((carddata, index) => (
+            <Card card={carddata} key={'CardNr' + index.toString()} />
+          ))
+        : getQuery()}
+    </div>
+  </>
+  );
+
+
 }
