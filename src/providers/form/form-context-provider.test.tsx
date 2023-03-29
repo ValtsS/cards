@@ -1,7 +1,7 @@
 import { CardErrors } from '@/components/card-creator/card-validator';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { FormContext, FormContextProvider } from './form-context-provider';
+import { FormContext, FormContextProvider, useFormContext } from './form-context-provider';
 
 describe('FormContextProvider', () => {
   it('provides errors to the child components', () => {
@@ -19,12 +19,8 @@ describe('FormContextProvider', () => {
   });
 });
 
-export default class ChildComponent extends React.Component {
-  static contextType = FormContext;
-  declare context: React.ContextType<typeof FormContext>;
+const ChildComponent = () => {
+  const {errors} = useFormContext();
+  return <p>{errors['title']}</p>;
 
-  render() {
-    const errormessage = this.context.errors['title'];
-    return <p>{errormessage}</p>;
-  }
 }
