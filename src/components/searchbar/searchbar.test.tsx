@@ -20,11 +20,10 @@ jest.mock('@/providers', () => {
 
 describe('Searchbar component', () => {
   const memory = new MemoryStorage();
+  const pattern = 'sweetsearch';
+  const qcFunc = jest.fn();
 
-  it('should render without crash', async () => {
-    const qcFunc = jest.fn();
-    const pattern = 'sweetsearch';
-
+  const TestRender = async () => {
     act(() => {
       render(
         <AppContextProvider
@@ -40,6 +39,10 @@ describe('Searchbar component', () => {
     await waitFor(() => {
       expect(screen.getByText(pattern)).toBeInTheDocument();
     });
+  };
+
+  it('should render without crash', async () => {
+    TestRender();
 
     expect(qcFunc).toBeCalledTimes(0);
     expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
@@ -66,24 +69,7 @@ describe('Searchbar component', () => {
   });
 
   it('should Trigger querychange', async () => {
-    const qcFunc = jest.fn();
-    const pattern = 'sweetsearch';
-
-    act(() => {
-      render(
-        <AppContextProvider
-          localStoreProvider={memory}
-          cardProvider={new CardProviderStore()}
-          formCardProvider={new CardProviderStore()}
-        >
-          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
-        </AppContextProvider>
-      );
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(pattern)).toBeInTheDocument();
-    });
+    TestRender();
 
     const searchBar = screen.getByTestId('sb-test');
     expect(searchBar).toBeInTheDocument();
@@ -95,24 +81,7 @@ describe('Searchbar component', () => {
   });
 
   it('should Trigger querychange via Enter', async () => {
-    const qcFunc = jest.fn();
-    const pattern = 'sweetsearch';
-
-    act(() => {
-      render(
-        <AppContextProvider
-          localStoreProvider={memory}
-          cardProvider={new CardProviderStore()}
-          formCardProvider={new CardProviderStore()}
-        >
-          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
-        </AppContextProvider>
-      );
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(pattern)).toBeInTheDocument();
-    });
+    TestRender();
 
     const searchBar = screen.getByTestId('sb-test');
     expect(searchBar).toBeInTheDocument();
