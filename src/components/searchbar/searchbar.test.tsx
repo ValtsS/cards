@@ -19,9 +19,15 @@ jest.mock('@/providers', () => {
 });
 
 describe('Searchbar component', () => {
-  const memory = new MemoryStorage();
+  let memory:MemoryStorage;
+  let qcFunc:typeof jest.fn;
+
   const pattern = 'sweetsearch';
-  const qcFunc = jest.fn();
+
+  beforeEach (() => {
+     memory = new MemoryStorage();
+     qcFunc = jest.fn();
+  });
 
   const TestRender = async () => {
     act(() => {
