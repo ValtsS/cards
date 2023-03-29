@@ -12,7 +12,8 @@
     "test": "cross-env BABEL_ENV=test NODE_ENV=test jest",
     "watch-tests": "cross-env BABEL_ENV=test NODE_ENV=test jest --watch",
     "coverage": "cross-env BABEL_ENV=test NODE_ENV=test jest --coverage",
-    "sonar": "/sonar/runsonar.sh"
+    "sonar": "/sonar/runsonar.sh",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "react": "^18.2.0",
