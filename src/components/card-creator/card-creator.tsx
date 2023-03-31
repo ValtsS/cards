@@ -91,6 +91,7 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
                     validate: validator.onPriceValidate,
                   })}
                   type="number"
+                  step=".01"
                 />
               </InputDecorator2>
 

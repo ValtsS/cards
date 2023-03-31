@@ -9,7 +9,7 @@ export interface CardErrors {
 export type CardFormValues = {
   title: string;
   text: string;
-  price: string;
+  price: number;
   addedat: string;
   rating: string;
   grayscale: boolean;
@@ -38,7 +38,7 @@ export class CardValidator {
     FLIPPED: 'Flipped',
   };
 
-  onPriceValidate = (value: string): Message | boolean => {
+  onPriceValidate = (value: number): Message | boolean => {
     if (!value) return CardValidator.ERRORS.PRICE_REQUIRED;
     if (+value <= 0) return CardValidator.ERRORS.PRICE_VALID;
 
@@ -54,7 +54,7 @@ export class CardValidator {
   };
 
   onRatingValidate = (value: string): Message | boolean => {
-    const rating = +(value ?? 0);
+    const rating = +value;
     if (!rating || rating < 1) return CardValidator.ERRORS.RATING_REQUIRED;
 
     return true;
@@ -118,7 +118,7 @@ export class CardValidator {
     const c = new CardData();
     c.title = vals.title;
     c.text = vals.text;
-    c.price = vals.price;
+    c.price = vals.price.toString();
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
     c.rating = +(vals.rating ?? 0);
     c.grayscale = vals.grayscale;

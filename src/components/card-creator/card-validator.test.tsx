@@ -62,5 +62,28 @@ describe('CardValidator', () => {
       expect(validator.onDateValidate('2000-01-13')).toBe(true);
       expect(validator.onDateValidate('2999-01-13')).toBe(CardValidator.ERRORS.ADDED_AT_FUTURE);
     });
+
+    it('check price validation rules', () => {
+      expect(validator.onPriceValidate(0.01)).toBe(true);
+      expect(validator.onPriceValidate(-0.01)).toBe(CardValidator.ERRORS.PRICE_VALID);
+    });
+
+    it('check rating validation rules', () => {
+      expect(validator.onRatingValidate('')).toBe(CardValidator.ERRORS.RATING_REQUIRED);
+      expect(validator.onRatingValidate('x')).toBe(CardValidator.ERRORS.RATING_REQUIRED);
+      expect(validator.onRatingValidate('5')).toBe(true);
+    });
+
+    it('check flip validation rules', () => {
+      expect(validator.onFlipValidate('')).toBe(CardValidator.ERRORS.ORIENTATION_REQUIRED);
+      expect(validator.onFlipValidate('-=DUMMY=-')).toBe(CardValidator.ERRORS.ORIENTATION_REQUIRED);
+    });
+
+    it.each(Object.values(CardValidator.IMAGE_ORIENTATION))(
+      'returns true for valid flip orientation: %s',
+      (orientation) => {
+        expect(validator.onFlipValidate(orientation)).toBe(true);
+      }
+    );
   });
 });
