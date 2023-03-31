@@ -1,5 +1,5 @@
 import { CardData } from '@/providers';
-import ImageCache from './card-creator-refs';
+import ImageCache from '@/core/ImageCache';
 import { CardFormValues, CardValidator } from './card-validator';
 
 const mockFile = (type: string, size: number): File => {

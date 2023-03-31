@@ -1,6 +1,6 @@
 import { CardData } from '@/providers';
 import { Message } from 'react-hook-form';
-import ImageCache from './card-creator-refs';
+import ImageCache from '@/core/ImageCache';
 
 export interface CardErrors {
   [key: string]: string;

@@ -2,7 +2,7 @@ import { InputDecorator2, RadioWithDecorator2, SelectWithDecorator2 } from '@/co
 import { CardData } from '@/providers';
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import ImageCache from './card-creator-refs';
+import ImageCache from '@/core/ImageCache';
 import './card-creator.css';
 import { CardFormValues, CardValidator } from './card-validator';
 

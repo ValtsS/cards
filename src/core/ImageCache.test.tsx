@@ -1,4 +1,4 @@
-import ImageCache from './card-creator-refs';
+import ImageCache from './ImageCache';
 
 describe('ImageCache', () => {
   let imageCache: ImageCache;
