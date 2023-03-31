@@ -2,6 +2,7 @@ import React from 'react';
 import { FormProvider, Message, useForm } from 'react-hook-form';
 import { InputDecorator } from './input-decorator';
 import { RadioWithDecorator } from './radio-component';
+import { SelectWithDecorator } from './select-component';
 
 type TestForm = {
   testField: string;
@@ -41,6 +42,18 @@ export const TestHelper = (props: { mode: string }) => {
             <RadioWithDecorator
               name="radioflip"
               title="Image orientation"
+              values={['GOOD', 'BAD']}
+              validator={require}
+            />
+          </>
+        )}
+
+        {props.mode == 'select' && (
+          <>
+            <p>{props.mode}</p>
+            <SelectWithDecorator
+              name="rating"
+              title="Rating"
               values={['GOOD', 'BAD']}
               validator={require}
             />
