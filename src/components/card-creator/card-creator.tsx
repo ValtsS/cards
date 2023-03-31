@@ -1,4 +1,4 @@
-import { InputDecorator2, RadioWithDecorator2, SelectWithDecorator2 } from '@/components/input';
+import { InputDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
 import { CardData } from '@/providers';
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -69,23 +69,23 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
         <div className="column">
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <InputDecorator2 title="Title" name="title">
+              <InputDecorator title="Title" name="title">
                 <input
                   {...register('title', {
                     required: { value: true, message: CardValidator.ERRORS.TITLE_REQUIRED },
                   })}
                   type="text"
                 />
-              </InputDecorator2>
-              <InputDecorator2 title="Text" name="text">
+              </InputDecorator>
+              <InputDecorator title="Text" name="text">
                 <input
                   {...register('text', {
                     required: { value: true, message: CardValidator.ERRORS.TEXT_REQUIRED },
                   })}
                   type="text"
                 />
-              </InputDecorator2>
-              <InputDecorator2 title="Price" name="price">
+              </InputDecorator>
+              <InputDecorator title="Price" name="price">
                 <input
                   {...register('price', {
                     validate: validator.onPriceValidate,
@@ -93,34 +93,34 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
                   type="number"
                   step=".01"
                 />
-              </InputDecorator2>
+              </InputDecorator>
 
-              <InputDecorator2 title="Added at" name="addedat">
+              <InputDecorator title="Added at" name="addedat">
                 <input
                   {...register('addedat', {
                     validate: validator.onDateValidate,
                   })}
                   type="date"
                 />
-              </InputDecorator2>
+              </InputDecorator>
 
-              <SelectWithDecorator2
+              <SelectWithDecorator
                 name="rating"
                 title="Rating"
                 values={['', '1', '2', '3', '4', '5']}
                 validator={validator.onRatingValidate}
               />
 
-              <InputDecorator2 title="Grayscale picture" name="grayscale">
+              <InputDecorator title="Grayscale picture" name="grayscale">
                 <input
                   {...register('grayscale', {
                     required: { value: true, message: CardValidator.ERRORS.GRAYSCALE_REQUIRED },
                   })}
                   type="checkbox"
                 />
-              </InputDecorator2>
+              </InputDecorator>
 
-              <InputDecorator2 title="Upload picture" name="bigimagemage">
+              <InputDecorator title="Upload picture" name="bigimagemage">
                 <input
                   {...register('bigimagemage', {
                     validate: validator.onImageValidate,
@@ -129,9 +129,9 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
                   accept={'image/*'}
                   onInput={handleImagePrview}
                 />
-              </InputDecorator2>
+              </InputDecorator>
 
-              <RadioWithDecorator2
+              <RadioWithDecorator
                 name="radioflip"
                 title="Image orientation"
                 values={radioNames}

@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const InputDecorator2 = (props: Props) => {
+export const InputDecorator = (props: Props) => {
   const { formState } = useFormContext();
 
   const { title, name } = props;
@@ -31,29 +31,3 @@ export const InputDecorator2 = (props: Props) => {
     </div>
   );
 };
-
-export class InputDecorator extends React.Component<Props> {
-  static contextType = FormContext;
-  declare context: React.ContextType<typeof FormContext>;
-
-  render() {
-    const { title, name } = this.props;
-    const errormessage = this.context.errors[name];
-
-    return (
-      <div className="input-wrapper">
-        <label>
-          {title}
-          {this.props.children}
-        </label>
-        {errormessage && (
-          <>
-            <br />
-            <div className="validation-error">{errormessage}</div>
-          </>
-        )}
-        <br />
-      </div>
-    );
-  }
-}
