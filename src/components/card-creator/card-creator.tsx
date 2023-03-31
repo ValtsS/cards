@@ -35,12 +35,13 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
 
     let url: string | undefined = undefined;
 
-    if (fileList && fileList.length > 0)
-      (url = imageCache.formImageURL(false, fileList[0])),
-        setState((prevState) => ({
-          ...prevState,
-          previewImageUrl: url,
-        }));
+    if (fileList && validator.onImageValidate(fileList))
+      url = imageCache.formImageURL(false, fileList[0]);
+
+    setState((prevState) => ({
+      ...prevState,
+      previewImageUrl: url,
+    }));
   };
 
   const methods = useForm<CardFormValues>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });

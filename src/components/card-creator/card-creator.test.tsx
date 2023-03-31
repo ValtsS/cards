@@ -58,11 +58,12 @@ describe('Card Shell component', () => {
     expect(input).toBeInTheDocument();
 
     await act(async () => {
+      fireEvent.input(input, { target: { files: [file] } });
       fireEvent.change(input, { target: { files: [file] } });
     });
 
     expect(input.files?.[0]).toBe(file);
-    //    expect(screen.getByRole('img')).toHaveAttribute('src', 'mock-url');
+    expect(screen.getByRole('img')).toHaveAttribute('src', 'mock-url');
 
     const texts = screen.queryAllByRole('textbox');
     expect(screen.queryAllByRole('textbox').length).toBe(2);
