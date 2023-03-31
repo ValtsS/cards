@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from 'App';
-import ThrowsError from 'components/throws-error';
 import React from 'react';
+import { ThrowsError } from './components/throws-error';
 
 describe('App component', () => {
   const errorText = 'Something went wrong!!';
