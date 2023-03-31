@@ -46,16 +46,10 @@ export class CardValidator {
   };
 
   onDateValidate = (value: string): Message | boolean => {
+    if (!value) return CardValidator.ERRORS.ADDED_AT_REQUIRED;
     const raw = Date.parse(value);
     if (isNaN(raw)) return CardValidator.ERRORS.ADDED_AT_REQUIRED;
-
-    const parsed = new Date(raw);
-
-    if (!value) return CardValidator.ERRORS.ADDED_AT_REQUIRED;
-    else {
-      if (parsed > new Date()) return CardValidator.ERRORS.ADDED_AT_FUTURE;
-    }
-
+    if (new Date(raw) > new Date()) return CardValidator.ERRORS.ADDED_AT_FUTURE;
     return true;
   };
 
