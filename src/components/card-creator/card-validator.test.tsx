@@ -54,5 +54,13 @@ describe('CardValidator', () => {
         grayscale: CardValidator.ERRORS.GRAYSCALE_REQUIRED,
       });
     });
+
+    it('check date validation rules', () => {
+      expect(validator.onDateValidate('')).toBe(CardValidator.ERRORS.ADDED_AT_REQUIRED);
+      expect(validator.onDateValidate('garbled')).toBe(CardValidator.ERRORS.ADDED_AT_REQUIRED);
+      expect(validator.onDateValidate('2000-13-01')).toBe(CardValidator.ERRORS.ADDED_AT_REQUIRED);
+      expect(validator.onDateValidate('2000-01-13')).toBe(true);
+      expect(validator.onDateValidate('2999-01-13')).toBe(CardValidator.ERRORS.ADDED_AT_FUTURE);
+    });
   });
 });
