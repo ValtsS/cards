@@ -1,6 +1,6 @@
+import { ErrorPage, RootLayout, RouteConfig } from '@/routes';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { RouteConfig, defaultRoutes, ErrorPage, RootLayout } from '@/routes';
 
 export interface CardsAppProps {
   routesConfig: RouteConfig[];
