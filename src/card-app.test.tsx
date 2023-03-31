@@ -2,7 +2,7 @@ import { RouteConfig } from '@/routes/';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { RootLayout } from 'routes/root-layout';
-import CardsApp from './cards-app';
+import { CardsApp } from './cards-app';
 import { AboutPage } from './pages';
 
 describe('CardsApp', () => {
