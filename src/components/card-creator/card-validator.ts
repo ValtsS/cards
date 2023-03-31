@@ -1,9 +1,21 @@
 import { CardData } from '@/providers';
-import Refs from './card-creator-refs';
+import { Message } from 'react-hook-form';
+import ImageCache from './card-creator-refs';
 
 export interface CardErrors {
   [key: string]: string;
 }
+
+export type CardFormValues = {
+  title: string;
+  text: string;
+  price: string;
+  addedat: string;
+  rating: string;
+  grayscale: boolean;
+  bigimagemage: FileList;
+  radioflip: string;
+};
 
 export class CardValidator {
   errors: CardErrors = {};
@@ -19,6 +31,60 @@ export class CardValidator {
     IMAGE_REQUIRED: 'Please provide a pretty picture',
     ORIENTATION_REQUIRED: 'Need to pick orientation',
     GRAYSCALE_REQUIRED: 'Need to agree to have grayscale set',
+  };
+
+  static IMAGE_ORIENTATION = {
+    NORMAL: 'Normal',
+    FLIPPED: 'Flipped',
+  };
+
+  onPriceValidate = (value: string): Message | boolean => {
+    if (!value) return CardValidator.ERRORS.PRICE_REQUIRED;
+    if (+value <= 0) return CardValidator.ERRORS.PRICE_VALID;
+
+    return true;
+  };
+
+  onDateValidate = (value: string): Message | boolean => {
+    const parsed = new Date(Date.parse(value));
+
+    if (!value) return CardValidator.ERRORS.ADDED_AT_REQUIRED;
+    else {
+      if (parsed > new Date()) return CardValidator.ERRORS.ADDED_AT_FUTURE;
+    }
+
+    return true;
+  };
+
+  onRatingValidate = (value: string): Message | boolean => {
+    const rating = +(value ?? 0);
+    if (!rating || rating < 1) return CardValidator.ERRORS.RATING_REQUIRED;
+
+    return true;
+  };
+
+  onFlipValidate = (value: string): Message | boolean => {
+    if (!value) return CardValidator.ERRORS.ORIENTATION_REQUIRED;
+
+    if (
+      value != CardValidator.IMAGE_ORIENTATION.NORMAL &&
+      value != CardValidator.IMAGE_ORIENTATION.FLIPPED
+    )
+      return CardValidator.ERRORS.ORIENTATION_REQUIRED;
+
+    return true;
+  };
+
+  isFileValid = (file: File) => {
+    return file && file.type.startsWith('image/');
+  };
+
+  onImageValidate = (value: FileList): Message | boolean => {
+    if (!value || value.length < 1) return CardValidator.ERRORS.IMAGE_REQUIRED;
+    const file = value[0];
+    if (!file) return CardValidator.ERRORS.IMAGE_REQUIRED;
+    if (!this.isFileValid(file)) return CardValidator.ERRORS.IMAGE_REQUIRED;
+    return true;
   };
 
   isValid(card: CardData): boolean {
@@ -49,25 +115,25 @@ export class CardValidator {
     return Object.keys(this.errors).length === 0;
   }
 
-  prepareCard(refs: Refs): CardData {
-    const parsed = Date.parse(refs.refAdded.current?.value ?? '');
+  prepareCard(vals: CardFormValues, cache: ImageCache): CardData {
+    const parsed = Date.parse(vals.addedat);
 
     const c = new CardData();
-    c.title = refs.refTitle.current?.value;
-    c.text = refs.refText.current?.value;
-    c.price = refs.refPrice.current?.value;
+    c.title = vals.title;
+    c.text = vals.text;
+    c.price = vals.price;
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
-    c.rating = +(refs.refSelect.current?.value ?? 0);
-    c.grayscale = refs.refGray.current?.checked;
-    c.imageUrl = refs.formImageURL(true);
+    c.rating = +(vals.rating ?? 0);
+    c.grayscale = vals.grayscale;
+    c.imageUrl = cache.formImageURL(true, vals.bigimagemage[0]);
 
-    const selected = refs.refRadios.selectedIndex();
+    const selected = vals.radioflip;
 
     switch (selected) {
-      case 0:
+      case CardValidator.IMAGE_ORIENTATION.NORMAL:
         c.flipimg = false;
         break;
-      case 1:
+      case CardValidator.IMAGE_ORIENTATION.FLIPPED:
         c.flipimg = true;
         break;
       default:

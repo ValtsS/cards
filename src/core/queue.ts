@@ -24,4 +24,8 @@ export class Queue<T> {
   size(): number {
     return this.items.length;
   }
+
+  toArray(): T[] {
+    return [...this.items];
+  }
 }

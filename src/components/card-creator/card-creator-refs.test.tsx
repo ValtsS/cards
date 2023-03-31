@@ -1,96 +1,61 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
-import { InputWithDecorator } from '@/components/input';
-import Refs, { RadioInfos } from './card-creator-refs';
+import ImageCache from './card-creator-refs';
 
-describe('Card creator refs', () => {
-  it('should not crash', () => {
-    const refs = new Refs(['Radio']);
+describe('ImageCache', () => {
+  let imageCache: ImageCache;
 
-    expect(refs.refAdded).toBeTruthy();
-    expect(refs.refGray).toBeTruthy();
-    expect(refs.refImg).toBeTruthy();
-    expect(refs.refPrice).toBeTruthy();
-    expect(refs.refSelect).toBeTruthy();
-    expect(refs.refText).toBeTruthy();
-    expect(refs.refTitle).toBeTruthy();
-    expect(refs.refRadios).toBeTruthy();
-
-    expect(refs.refRadios).toBeInstanceOf(RadioInfos);
-  });
-
-  it('should reset with no crash', () => {
-    const refs = new Refs(['Radio']);
-    refs.reset();
-  });
-
-  it('should not create iamges', () => {
-    const refs = new Refs(['Radio']);
-
-    const props = {
-      name: 'test-input',
-      title: 'Upload picture',
-      type: 'file',
-      accept: '.jpg,.png,.gif',
-      placeholder: 'Enter a value',
-      onChange: jest.fn(),
-      ref: refs.refImg,
-    };
-
-    render(<InputWithDecorator {...props} />);
-
-    expect(refs.formImageURL(true)).toBe(undefined);
-  });
-
-  it('should create images', () => {
-    const mockCreateObjectURL = jest.fn(() => 'mock-url');
+  beforeEach(() => {
+    jest.clearAllMocks();
+    imageCache = new ImageCache();
+    const mockCreateObjectURL = jest.fn(() => 'blob: HAHA');
     global.URL.createObjectURL = mockCreateObjectURL;
+    global.URL.revokeObjectURL = jest.fn();
+  });
 
-    const mockrevokeObjectURL = jest.fn();
-    global.URL.revokeObjectURL = mockrevokeObjectURL;
+  describe('formImageURL', () => {
+    it('returns undefined if file type is not an image', () => {
+      const file = new File(['file content'], 'file.pdf', { type: 'application/pdf' });
+      const url = imageCache.formImageURL(true, file);
+      expect(url).toBeUndefined();
+    });
 
-    const refs = new Refs(['Radio']);
+    it('returns a valid URL for a valid image file', () => {
+      const file = new File(['file content'], 'file.jpg', { type: 'image/jpeg' });
+      const url = imageCache.formImageURL(true, file);
+      expect(url).toMatch(/^blob:/);
+    });
 
-    const props = {
-      name: 'test-input',
-      title: 'Upload picture',
-      type: 'file',
-      accept: '.jpg,.png,.gif',
-      placeholder: 'Enter a value',
-      onChange: jest.fn(),
-      ref: refs.refImg,
-    };
+    it('returns undefined if file type is not an image', () => {
+      const file = new File(['file content'], 'file.pdf', { type: 'application/pdf' });
+      const url = imageCache.formImageURL(true, file);
+      expect(url).toBeUndefined();
+    });
 
-    render(<InputWithDecorator {...props} />);
+    it('stores a maximum of 8 images', () => {
+      const files: File[] = [];
 
-    expect(refs.oldimages.isEmpty()).toBe(true);
-    expect(mockCreateObjectURL).toBeCalledTimes(0);
-    expect(mockrevokeObjectURL).toBeCalledTimes(0);
+      for (let i = 0; i < ImageCache.CACHED_IMAGES + 5; i++)
+        files.push(
+          new File(['file' + i.toString() + ' content'], 'file' + i.toString() + '.jpg', {
+            type: 'image/jpeg',
+          })
+        );
 
-    const file = new File(['test image'], 'test.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Upload picture') as HTMLInputElement;
+      files.forEach((file) => imageCache.formImageURL(false, file));
 
-    expect(input).toBeInTheDocument();
-    fireEvent.change(input, { target: { files: [file] } });
-    expect(input.files?.[0]).toBe(file);
+      const oldImages = imageCache.oldimages.toArray();
+      expect(oldImages.length).toBe(ImageCache.CACHED_IMAGES);
+      expect(oldImages.every((url) => url.startsWith('blob:'))).toBe(true);
 
-    expect(refs.formImageURL(true)).toBe('mock-url');
-    expect(refs.oldimages.isEmpty()).toBe(true);
-    expect(mockCreateObjectURL).toBeCalledTimes(1);
-    expect(mockrevokeObjectURL).toBeCalledTimes(0);
+      expect(imageCache.oldimages.size()).toBe(ImageCache.CACHED_IMAGES);
+    });
 
-    for (let i = 0; i <= Refs.CACHED_IMAGES + 1; i++) {
-      expect(refs.formImageURL(false)).toBe('mock-url');
-
-      expect(mockCreateObjectURL).toBeCalledTimes(2 + i);
-
-      if (i < Refs.CACHED_IMAGES) {
-        expect(refs.oldimages.size()).toBe(1 + i);
-        expect(mockrevokeObjectURL).toBeCalledTimes(0);
-      } else {
-        expect(refs.oldimages.size()).toBe(Refs.CACHED_IMAGES);
-        expect(mockrevokeObjectURL).toBeCalledTimes(i - Refs.CACHED_IMAGES + 1);
+    it('does not store image URLs when permanent is false', () => {
+      const file = new File(['file content'], 'file.jpg', { type: 'image/jpeg' });
+      for (let i = 0; i < ImageCache.CACHED_IMAGES + 1; i++) {
+        const url = imageCache.formImageURL(true, file);
+        expect(url).toMatch(/^blob:/);
       }
-    }
+      expect(imageCache.oldimages.size()).toBe(0);
+    });
   });
 });

@@ -1,132 +1,154 @@
-import { CardData, FormContextProvider } from '@/providers';
-import React, { FormEvent, ReactElement, useState } from 'react';
-import { CardErrors, CardValidator } from './card-validator';
-import { InputWithDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
-import Refs from './card-creator-refs';
+import { InputDecorator2, RadioWithDecorator2, SelectWithDecorator2 } from '@/components/input';
+import { CardData } from '@/providers';
+import React, { ChangeEvent, ReactElement, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import ImageCache from './card-creator-refs';
 import './card-creator.css';
+import { CardFormValues, CardValidator } from './card-validator';
 
 export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
 }
 
-class LocalCardState {
-  valid = false;
+class LocalCardState2 {
   card: CardData;
-  errors: CardErrors;
   previewImageUrl?: string;
 
   constructor(defaultDate: Date) {
     this.card = new CardData();
     this.card.addedat = defaultDate;
-    this.errors = {};
-    this.valid = false;
   }
 }
 
 export const CardCreator = (props: CardCreatorProps): ReactElement => {
   const validator = new CardValidator();
-  const radioNames: string[] = ['Normal', 'Flipped'];
-  const references: Refs = new Refs(radioNames);
+  const radioNames: string[] = [
+    CardValidator.IMAGE_ORIENTATION.NORMAL,
+    CardValidator.IMAGE_ORIENTATION.FLIPPED,
+  ];
+  const imageCache = new ImageCache();
 
-  const [state, setState] = useState(new LocalCardState(new Date()));
+  const [state, setState] = useState(new LocalCardState2(new Date()));
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleImagePrview = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
 
-    const c = validator.prepareCard(references);
+    let url: string | undefined = undefined;
+
+    if (fileList && fileList.length > 0)
+      (url = imageCache.formImageURL(false, fileList[0])),
+        setState((prevState) => ({
+          ...prevState,
+          previewImageUrl: url,
+        }));
+  };
+
+  const methods = useForm<CardFormValues>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
+  const register = methods.register;
+
+  const onSubmit = (data: CardFormValues) => {
+    const c = validator.prepareCard(data, imageCache);
     const isValid = validator.isValid(c);
+
+    if (!isValid) throw Error('Invalid data passed, should be cleaned in prevalidation. ');
 
     setState((prevState) => ({
       ...prevState,
       card: c,
-      valid: isValid,
-      errors: validator.errors,
       previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
     }));
 
     if (isValid && props.onCardCreate) props.onCardCreate(c);
-    if (isValid) references.reset();
-  };
-
-  const handleImagePrview = () => {
-    setState((prevState) => ({
-      ...prevState,
-      previewImageUrl: references.formImageURL(false),
-    }));
+    if (isValid) methods.reset();
   };
 
   return (
     <>
-      <FormContextProvider errors={state.errors}>
-        <div className="flex-container">
-          <div className="column">
-            <form onSubmit={handleSubmit} ref={references.refForm}>
-              <InputWithDecorator
-                name="title"
-                title="Title"
-                type="text"
-                ref={references.refTitle}
-              />
+      <div className="flex-container">
+        <div className="column">
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <InputDecorator2 title="Title" name="title">
+                <input
+                  {...register('title', {
+                    required: { value: true, message: CardValidator.ERRORS.TITLE_REQUIRED },
+                  })}
+                  type="text"
+                />
+              </InputDecorator2>
+              <InputDecorator2 title="Text" name="text">
+                <input
+                  {...register('text', {
+                    required: { value: true, message: CardValidator.ERRORS.TEXT_REQUIRED },
+                  })}
+                  type="text"
+                />
+              </InputDecorator2>
+              <InputDecorator2 title="Price" name="price">
+                <input
+                  {...register('price', {
+                    validate: validator.onPriceValidate,
+                  })}
+                  type="number"
+                />
+              </InputDecorator2>
 
-              <InputWithDecorator name="text" title="Text" type="text" ref={references.refText} />
+              <InputDecorator2 title="Added at" name="addedat">
+                <input
+                  {...register('addedat', {
+                    validate: validator.onDateValidate,
+                  })}
+                  type="date"
+                />
+              </InputDecorator2>
 
-              <InputWithDecorator
-                name="price"
-                title="Price"
-                type="number"
-                ref={references.refPrice}
-              />
-
-              <InputWithDecorator
-                name="addedat"
-                title="Added at"
-                type="date"
-                ref={references.refAdded}
-              />
-
-              <SelectWithDecorator
+              <SelectWithDecorator2
                 name="rating"
                 title="Rating"
                 values={['', '1', '2', '3', '4', '5']}
-                ref={references.refSelect}
+                validator={validator.onRatingValidate}
               />
 
-              <InputWithDecorator
-                name="grayscale"
-                title="Grayscale picture"
-                type="checkbox"
-                ref={references.refGray}
-              />
+              <InputDecorator2 title="Grayscale picture" name="grayscale">
+                <input
+                  {...register('grayscale', {
+                    required: { value: true, message: CardValidator.ERRORS.GRAYSCALE_REQUIRED },
+                  })}
+                  type="checkbox"
+                />
+              </InputDecorator2>
 
-              <InputWithDecorator
-                name="bigimagemage"
-                title="Upload picture"
-                type="file"
-                ref={references.refImg}
-                onChange={handleImagePrview}
-                accept={'image/*'}
-              />
+              <InputDecorator2 title="Upload picture" name="bigimagemage">
+                <input
+                  {...register('bigimagemage', {
+                    validate: validator.onImageValidate,
+                  })}
+                  type="file"
+                  accept={'image/*'}
+                  onInput={handleImagePrview}
+                />
+              </InputDecorator2>
 
-              <RadioWithDecorator
+              <RadioWithDecorator2
                 name="radioflip"
                 title="Image orientation"
                 values={radioNames}
-                forwardedRefs={references.refRadios.refs}
+                validator={validator.onFlipValidate}
               />
 
-              <button type="submit">Submit</button>
+              <input type="submit" />
             </form>
-          </div>
-          <div className="column bg-alt">
-            {state.previewImageUrl && (
-              <>
-                <p>Image preview:</p>
-                <img className="preview" src={state.previewImageUrl}></img>
-              </>
-            )}
-          </div>
+          </FormProvider>
         </div>
-      </FormContextProvider>
+        <div className="column bg-alt">
+          {state.previewImageUrl && (
+            <>
+              <p>Image preview:</p>
+              <img className="preview" src={state.previewImageUrl}></img>
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 };
