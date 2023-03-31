@@ -1,22 +1,19 @@
-import React from 'react';
-import AppState from '@/appstate';
-import './root-layout.css';
 import { Header } from '@/components/header';
+import React from 'react';
+import './root-layout.css';
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export class RootLayout extends React.Component<RootLayoutProps, AppState> {
-  render(): React.ReactNode {
-    return (
-      <>
-        <Header fancyName="CompanyName"></Header>
-        <main>{this.props.children}</main>
-        <footer>
-          <p>(c) Valts</p>
-        </footer>
-      </>
-    );
-  }
-}
+export const RootLayout = (props: RootLayoutProps) => {
+  return (
+    <>
+      <Header fancyName="CompanyName"></Header>
+      <main>{props.children}</main>
+      <footer>
+        <p>(c) Valts</p>
+      </footer>
+    </>
+  );
+};
