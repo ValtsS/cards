@@ -79,7 +79,6 @@ export class CardValidator {
   onImageValidate = (value: FileList): Message | boolean => {
     if (!value || value.length < 1) return CardValidator.ERRORS.IMAGE_REQUIRED;
     const file = value[0];
-    if (!file) return CardValidator.ERRORS.IMAGE_REQUIRED;
     if (!this.isFileValid(file)) return CardValidator.ERRORS.IMAGE_REQUIRED;
     return true;
   };
@@ -120,7 +119,7 @@ export class CardValidator {
     c.text = vals.text;
     c.price = vals.price.toString();
     c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
-    c.rating = +(vals.rating ?? 0);
+    c.rating = +(vals.rating ? vals.rating : 0);
     c.grayscale = vals.grayscale;
     c.imageUrl = cache.formImageURL(true, vals.bigimagemage[0]);
 

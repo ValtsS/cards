@@ -1,5 +1,25 @@
 import { CardData } from '@/providers';
-import { CardValidator } from './card-validator';
+import ImageCache from './card-creator-refs';
+import { CardFormValues, CardValidator } from './card-validator';
+
+const mockFile = (type: string, size: number): File => {
+  const fileName = (Math.random() * 1000).toString().replace('.', '') + type.toLowerCase();
+  const file = new File([''], fileName, { type: type });
+  Object.defineProperty(file, 'size', { value: size });
+  return file;
+};
+const mockFileList = (files: File[]): FileList => {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('name', 'file-upload');
+  input.multiple = true;
+  const fileList: FileList = Object.create(input.files);
+  for (let i = 0; i < files.length; i++) {
+    fileList[i] = files[i];
+  }
+  Object.defineProperty(fileList, 'length', { value: files.length });
+  return fileList;
+};
 
 describe('CardValidator', () => {
   let validator: CardValidator;
@@ -44,7 +64,7 @@ describe('CardValidator', () => {
       card.text = 'Test Text';
       card.price = '-100';
       card.addedat = new Date(new Date().getFullYear() + 100, 1, 1);
-      card.rating = 3;
+      card.rating = undefined;
       card.imageUrl = 'http://example.com/image.png';
       card.flipimg = false;
       expect(validator.isValid(card)).toBe(false);
@@ -52,6 +72,25 @@ describe('CardValidator', () => {
         addedat: CardValidator.ERRORS.ADDED_AT_FUTURE,
         price: CardValidator.ERRORS.PRICE_VALID,
         grayscale: CardValidator.ERRORS.GRAYSCALE_REQUIRED,
+        rating: CardValidator.ERRORS.RATING_REQUIRED,
+      });
+    });
+
+    it('returns false and sets errors for an invalid card data #2', () => {
+      const card = new CardData();
+      card.title = 'Test Title';
+      card.text = 'Test Text';
+      card.price = '-100';
+      card.addedat = undefined;
+      card.rating = undefined;
+      card.imageUrl = 'http://example.com/image.png';
+      card.flipimg = false;
+      expect(validator.isValid(card)).toBe(false);
+      expect(validator.errors).toEqual({
+        addedat: CardValidator.ERRORS.ADDED_AT_REQUIRED,
+        price: CardValidator.ERRORS.PRICE_VALID,
+        grayscale: CardValidator.ERRORS.GRAYSCALE_REQUIRED,
+        rating: CardValidator.ERRORS.RATING_REQUIRED,
       });
     });
 
@@ -85,5 +124,83 @@ describe('CardValidator', () => {
         expect(validator.onFlipValidate(orientation)).toBe(true);
       }
     );
+
+    it('check image validation rules with no upload', () => {
+      const fileList = mockFileList([]);
+      expect(fileList.length).toBe(0);
+      expect(validator.onImageValidate(fileList)).toBe(CardValidator.ERRORS.IMAGE_REQUIRED);
+    });
+
+    it('check image validation rules with non image file', () => {
+      const fileList = mockFileList([mockFile('PDF', 1024)]);
+      expect(fileList.length).toBe(1);
+      expect(validator.onImageValidate(fileList)).toBe(CardValidator.ERRORS.IMAGE_REQUIRED);
+    });
+  });
+});
+
+describe('CardValidator Prepare Card', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    const mockCreateObjectURL = jest.fn(() => 'blob: HAHA');
+    global.URL.createObjectURL = mockCreateObjectURL;
+    global.URL.revokeObjectURL = jest.fn();
+  });
+
+  describe('prepareCard', () => {
+    const cache = new ImageCache();
+    const validator = new CardValidator();
+    const validValues: CardFormValues = {
+      title: 'Test Card',
+      text: 'This is a test card.',
+      price: 9.99,
+      addedat: '2022-01-01',
+      rating: '3',
+      grayscale: true,
+      bigimagemage: mockFileList([mockFile('image/jpg', 1024)]),
+      radioflip: 'Normal',
+    };
+
+    it('should prepare card data with valid input', () => {
+      const card = validator.prepareCard(validValues, cache);
+      expect(card.title).toBe('Test Card');
+      expect(card.text).toBe('This is a test card.');
+      expect(card.price).toBe('9.99');
+      expect(card.addedat).toEqual(new Date('2022-01-01'));
+      expect(card.rating).toBe(3);
+      expect(card.grayscale).toBe(true);
+      expect(card.imageUrl).toBe('blob: HAHA');
+      expect(card.flipimg).toBe(false);
+    });
+
+    it('should prepare card data with flipped image', () => {
+      const values: CardFormValues = {
+        ...validValues,
+        radioflip: 'Flipped',
+      };
+      const card = validator.prepareCard(values, cache);
+      expect(card.flipimg).toBe(true);
+    });
+
+    it('should fail due to missing orientation', () => {
+      const values: CardFormValues = {
+        ...validValues,
+        radioflip: '',
+      };
+      const card = validator.prepareCard(values, cache);
+      expect(card).toBeTruthy();
+      expect(card.flipimg).toBe(undefined);
+    });
+    it('should fail due to missing rating', () => {
+      const values: CardFormValues = {
+        ...validValues,
+        rating: '',
+        addedat: 'trash',
+      };
+      const card = validator.prepareCard(values, cache);
+      expect(card).toBeTruthy();
+      expect(card.rating).toBe(0);
+      expect(card.addedat).toBe(undefined);
+    });
   });
 });
