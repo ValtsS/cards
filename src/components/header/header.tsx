@@ -1,10 +1,10 @@
 import { LinkEx } from '@/components/link';
 import { defaultRoutes } from '@/routes/routes-config';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import './header.css';
 
-export const Header = ({ fancyName }: { fancyName: string }) => {
+export const Header = ({ fancyName }: { fancyName: string }): ReactElement => {
   const location = useLocation();
 
   return (

@@ -1,12 +1,12 @@
 import { Header } from '@/components/header';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import './root-layout.css';
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export const RootLayout = (props: RootLayoutProps) => {
+export const RootLayout = (props: RootLayoutProps): ReactElement => {
   return (
     <>
       <Header fancyName="CompanyName"></Header>

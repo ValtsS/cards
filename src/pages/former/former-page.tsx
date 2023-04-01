@@ -13,7 +13,7 @@ interface MessageProps {
   message?: string;
 }
 
-export const ConfirmationMessage: React.FC<MessageProps> = ({ message }) => {
+export const ConfirmationMessage = ({ message }: MessageProps) => {
   return message ? <p className="confirmation">{message}</p> : null;
 };
 

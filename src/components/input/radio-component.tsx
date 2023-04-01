@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactElement } from 'react';
 import { Message, useFormContext } from 'react-hook-form';
 import { InputDecorator } from './input-decorator';
 
@@ -9,7 +9,7 @@ interface RadioProps extends HTMLAttributes<HTMLInputElement> {
   validator: (value: string) => Message | boolean;
 }
 
-export const RadioWithDecorator = (props: RadioProps) => {
+export const RadioWithDecorator = (props: RadioProps): ReactElement => {
   const { name, title, values } = props;
   const methods = useFormContext();
   return (

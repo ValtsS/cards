@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useFormContext } from 'react-hook-form';
 import './input-decorator.css';
 
@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const InputDecorator = (props: Props) => {
+export const InputDecorator = (props: Props): ReactElement => {
   const { formState } = useFormContext();
 
   const { title, name } = props;

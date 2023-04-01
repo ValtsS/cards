@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { FormProvider, Message, useForm } from 'react-hook-form';
 import { InputDecorator } from './input-decorator';
 import { RadioWithDecorator } from './radio-component';
@@ -8,7 +8,7 @@ type TestForm = {
   testField: string;
 };
 
-export const TestHelper = (props: { mode: string }) => {
+export const TestHelper = (props: { mode: string }): ReactElement => {
   const methods = useForm<TestForm>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
   const require = (value: string): Message | boolean => {
     if (value == 'BAD') return '[' + value + ']';
