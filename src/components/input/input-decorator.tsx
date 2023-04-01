@@ -1,5 +1,5 @@
-import { FormContext } from '@/providers';
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { useFormContext } from 'react-hook-form';
 import './input-decorator.css';
 
 interface Props {
@@ -8,28 +8,25 @@ interface Props {
   children: React.ReactNode;
 }
 
-export class InputDecorator extends React.Component<Props> {
-  static contextType = FormContext;
-  declare context: React.ContextType<typeof FormContext>;
+export const InputDecorator = (props: Props): ReactElement => {
+  const { formState } = useFormContext();
 
-  render() {
-    const { title, name } = this.props;
-    const errormessage = this.context.errors[name];
+  const { title, name } = props;
+  const errormessage = formState.errors[name];
 
-    return (
-      <div className="input-wrapper">
-        <label>
-          {title}
-          {this.props.children}
-        </label>
-        {errormessage && (
-          <>
-            <br />
-            <div className="validation-error">{errormessage}</div>
-          </>
-        )}
-        <br />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="input-wrapper">
+      <label>
+        {title}
+        {props.children}
+      </label>
+      {errormessage && (
+        <>
+          <br />
+          <div className="validation-error">{errormessage.message as string}</div>
+        </>
+      )}
+      <br />
+    </div>
+  );
+};

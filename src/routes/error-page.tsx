@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 interface ErrorPageProps {
@@ -7,16 +7,14 @@ interface ErrorPageProps {
 
 export const unkErrorText = 'Unknown error';
 
-export class ErrorPage extends React.Component<ErrorPageProps> {
-  render() {
-    return (
-      <>
-        <div>
-          <h1>Oops! Something went wrong.</h1>
-          <p>{this.props.error?.message || unkErrorText}</p>
-          <Link to="/">Go back to the main page</Link>
-        </div>
-      </>
-    );
-  }
-}
+export const ErrorPage = (props: ErrorPageProps): ReactElement => {
+  return (
+    <>
+      <div>
+        <h1>Oops! Something went wrong.</h1>
+        <p>{props.error?.message || unkErrorText}</p>
+        <Link to="/">Go back to the main page</Link>
+      </div>
+    </>
+  );
+};

@@ -1,39 +1,53 @@
 import { CardData } from '@/providers';
+import { cardTestData } from '@/providers/card/card-test-data';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { Card } from './card';
+import { Card, IMGCLS_FLIP, IMGCLS_GRAY } from './card';
 
 describe('Card component', () => {
-  it('should not crash', () => {
-    const test: CardData[] = [
-      {
-        uuid: '9999999X',
-        title: 'Luxury Suite at Marriott',
-        imageUrl: '',
-        text: 'Experience the ultimate comfort and relaxation in our spacious luxury suite at Marriott.',
-        price: '$800',
-        addedat: new Date('2024-06-11'),
-        minipic: '',
-      },
-      {
-        uuid: '9999999Y',
-        title: 'Standard Room at Hilton',
-        imageUrl: '',
-        text: 'Enjoy a comfortable stay in our standard room at Hilton, perfect for business or leisure.',
-        price: '$250',
-        addedat: new Date('2024-03-05'),
-        minipic: '',
-        grayscale: true,
-        flipimg: true,
-        rating: 3,
-      },
-    ];
+  it.each(cardTestData)('should render the card data correctly for $title', (card) => {
+    render(<Card card={card} />);
+    expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
+    expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
+    expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+  });
 
-    test.forEach(function (card: CardData) {
-      render(<Card card={card} />);
-      expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
-      expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
-      expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
-    });
+  const flipsGrays: CardData[] = [
+    {
+      uuid: 'AA',
+      flipimg: false,
+    },
+    {
+      uuid: 'BB',
+      grayscale: false,
+    },
+    {
+      uuid: 'CC',
+      flipimg: true,
+    },
+    {
+      uuid: 'DD',
+      grayscale: true,
+    },
+    {
+      uuid: 'EE',
+    },
+    {
+      uuid: 'EE',
+    },
+  ];
+
+  it.each(flipsGrays)('should render the cards flips/grays correctly $uuid', (card) => {
+    render(<Card card={card} />);
+    expect(screen.getByText('☆☆☆☆☆')).toBeInTheDocument();
+    const image = screen.getByRole('img', { name: /full picture/i });
+
+    expect(image).toBeInTheDocument();
+
+    if (card.grayscale) expect(image).toHaveClass(IMGCLS_GRAY);
+    else expect(image).not.toHaveClass(IMGCLS_GRAY);
+
+    if (card.flipimg) expect(image).toHaveClass(IMGCLS_FLIP);
+    else expect(image).not.toHaveClass(IMGCLS_FLIP);
   });
 });

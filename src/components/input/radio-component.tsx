@@ -1,37 +1,36 @@
-import React, { ForwardedRef, forwardRef, HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactElement } from 'react';
+import { Message, useFormContext } from 'react-hook-form';
 import { InputDecorator } from './input-decorator';
 
 interface RadioProps extends HTMLAttributes<HTMLInputElement> {
   name: string;
   title: string;
   values: string[];
-  forwardedRefs?: ForwardedRef<HTMLInputElement>[];
+  validator: (value: string) => Message | boolean;
 }
 
-export const RadioWithDecorator = forwardRef(
-  (props: RadioProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { name, title, values, forwardedRefs } = props;
-    return (
-      <InputDecorator name={name} title={title}>
-        <fieldset>
-          <legend ref={ref}>{title}</legend>
+export const RadioWithDecorator = (props: RadioProps): ReactElement => {
+  const { name, title, values } = props;
+  const methods = useFormContext();
+  return (
+    <InputDecorator name={name} title={title}>
+      <fieldset>
+        <legend>{title}</legend>
 
-          {values.map((val, index) => (
-            <div key={'RadioDiv' + val}>
-              <label>
-                <input
-                  type={'radio'}
-                  name={name}
-                  key={'Radio' + val}
-                  value={val}
-                  ref={forwardedRefs ? forwardedRefs[index] : null}
-                />
-                {val}
-              </label>
-            </div>
-          ))}
-        </fieldset>
-      </InputDecorator>
-    );
-  }
-);
+        {values.map((val) => (
+          <div key={'RadioDiv' + val}>
+            <label>
+              <input
+                type={'radio'}
+                key={'Radio' + val}
+                value={val}
+                {...methods.register(name, { validate: props.validator })}
+              />
+              {val}
+            </label>
+          </div>
+        ))}
+      </fieldset>
+    </InputDecorator>
+  );
+};

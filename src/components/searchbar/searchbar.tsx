@@ -1,5 +1,5 @@
-import { AppContext } from '@/providers';
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { useLocalStore } from './searchbar-use-localstore';
 import './searchbar.css';
 
 interface SearchProps {
@@ -9,96 +9,43 @@ interface SearchProps {
   title?: string;
 }
 
-interface LocalSearchState {
-  lastquery: string;
-  contextReady: boolean;
-}
+export const SearchBar = (props: SearchProps): ReactElement => {
+  const { state, handleChange } = useLocalStore(`searchbar_${props.id}_lastquery`);
 
-export class SearchBar extends React.Component<SearchProps, LocalSearchState> {
-  static contextType = AppContext;
-  declare context: React.ContextType<typeof AppContext>;
-
-  constructor(props: SearchProps) {
-    super(props);
-    const initialState: LocalSearchState = {
-      contextReady: false,
-      lastquery: '',
-    };
-    this.state = initialState;
-  }
-
-  getLastValue(): string {
-    return this.context.localStore.getItem(this.getKey()) ?? '';
-  }
-
-  getKey(): string {
-    return `searchbar_${this.props.id}_lastquery`;
-  }
-
-  componentDidMount(): void {
-    if (!this.context) {
-      throw new Error('AppContext provider is not present');
-    }
-    const lastquery = this.getLastValue();
-    this.setState({
-      lastquery: lastquery,
-      contextReady: true,
-    });
-  }
-
-  saveSearch(): void {
-    if (this.state.contextReady)
-      this.context.localStore.setItem(this.getKey(), this.state.lastquery);
-  }
-
-  componentWillUnmount(): void {
-    this.saveSearch();
-  }
-
-  handleChange = (filter: string | undefined, search: boolean) => {
-    const apply = filter === undefined ? this.state.lastquery : filter;
-
-    if (apply != this.state.lastquery)
-      this.setState({
-        lastquery: apply,
-      });
-    if (search) this.props.onQueryChange(apply);
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event.target.value, false);
   };
 
-  handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.handleChange(event.target.value, false);
+  const handleSearch = () => {
+    const query = handleChange(undefined, true);
+    props.onQueryChange(query);
   };
 
-  handleSearch = () => {
-    this.saveSearch();
-    this.handleChange(undefined, true);
-  };
-
-  handleKeyPress = (event: React.KeyboardEvent): void => {
+  const handleKeyPress = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter') {
-      this.handleSearch();
+      handleSearch();
     }
   };
 
-  render() {
-    return (
+  return (
+    <>
       <div className="search-container">
         <div>
-          {this.props.title && <div>{this.props.title}</div>}
+          {props.title && <div>{props.title}</div>}
           {
             <>
               <input
                 type="text"
-                value={this.state.lastquery}
-                onChange={this.handleQueryChange}
-                data-testid={this.props.testId}
-                onKeyDown={this.handleKeyPress}
+                value={state.query}
+                onChange={handleQueryChange}
+                data-testid={props.testId}
+                onKeyDown={handleKeyPress}
               />
-              <button onClick={this.handleSearch}>Search</button>
+              <button onClick={handleSearch}>Search</button>
             </>
           }
         </div>
       </div>
-    );
-  }
-}
+    </>
+  );
+};

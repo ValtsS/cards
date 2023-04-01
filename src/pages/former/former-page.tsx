@@ -1,7 +1,7 @@
 import { CardCreator } from '@/components/card-creator';
 import { CardShell } from '@/components/card-shell';
-import { AppContext, CardData } from '@/providers';
-import React from 'react';
+import { CardData, useAppContext } from '@/providers';
+import React, { ReactElement, useEffect, useState } from 'react';
 import './former-page.css';
 
 interface FormerPageState {
@@ -13,48 +13,40 @@ interface MessageProps {
   message?: string;
 }
 
-export const ConfirmationMessage: React.FC<MessageProps> = ({ message }) => {
+export const ConfirmationMessage = ({ message }: MessageProps) => {
   return message ? <p className="confirmation">{message}</p> : null;
 };
 
-export class FormerPage extends React.Component<object, FormerPageState> {
-  static contextType = AppContext;
-  declare context: React.ContextType<typeof AppContext>;
+export const FormerPage = (): ReactElement => {
+  const { formCardProvider } = useAppContext();
 
-  constructor(props: object) {
-    super(props);
+  const initialState: FormerPageState = {
+    cards: [],
+  };
+  const [state, setState] = useState(initialState);
 
-    const initialState: FormerPageState = {
-      cards: [],
-    };
-    this.state = initialState;
-  }
-
-  componentDidMount(): void {
-    if (!this.context.formCardProvider) throw new Error('formCardProvider not set');
-    this.setState((prevState) => ({
+  useEffect(() => {
+    setState((prevState) => ({
       ...prevState,
-      cards: this.context.formCardProvider.data,
+      cards: formCardProvider.data,
       message: '',
     }));
-  }
+  }, [formCardProvider]);
 
-  new = (newCard: CardData) => {
-    this.setState((prevState) => ({
+  const newCard = (newCard: CardData) => {
+    setState((prevState) => ({
       ...prevState,
-      cards: this.context.formCardProvider.insert(newCard),
+      cards: formCardProvider.insert(newCard),
       message: 'Card (Id = ' + newCard.uuid + ') has been saved',
     }));
   };
 
-  render() {
-    return (
-      <>
-        <br />
-        <CardCreator onCardCreate={this.new} />
-        <ConfirmationMessage message={this.state.message} />
-        <CardShell data={this.state.cards} hidequery={true} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <br />
+      <CardCreator onCardCreate={newCard} />
+      <ConfirmationMessage message={state.message} />
+      <CardShell data={state.cards} hidequery={true} />
+    </>
+  );
+};

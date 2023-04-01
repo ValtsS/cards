@@ -1,8 +1,8 @@
 import { CardData } from '@/providers';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { CardValidator } from './card-validator';
 import { CardCreator } from './card-creator';
+import { CardValidator } from './card-validator';
 
 describe('Card Shell component', () => {
   it('should not crash', () => {
@@ -17,12 +17,23 @@ describe('Card Shell component', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('should Trigger all the validation errors', () => {
+  it('should Trigger all the validation errors', async () => {
     render(<CardCreator />);
 
-    const sumbit = screen.getByRole('button');
+    const submit = screen.getByRole('button');
 
-    fireEvent.click(sumbit);
+    expect(submit).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.mouseDown(submit);
+      fireEvent.click(submit);
+      fireEvent.mouseUp(submit);
+    });
+
+    // wait for the component to re-render
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
     screen.getByText(CardValidator.ERRORS.ORIENTATION_REQUIRED);
     screen.getByText(CardValidator.ERRORS.IMAGE_REQUIRED);
@@ -33,7 +44,7 @@ describe('Card Shell component', () => {
     screen.getByText(CardValidator.ERRORS.TITLE_REQUIRED);
   });
 
-  it('should handle creation', () => {
+  it('should handle creation', async () => {
     const fn = jest.fn();
 
     const mockCreateObjectURL = jest.fn(() => 'mock-url');
@@ -45,7 +56,12 @@ describe('Card Shell component', () => {
     const input = screen.getByLabelText('Upload picture') as HTMLInputElement;
 
     expect(input).toBeInTheDocument();
-    fireEvent.change(input, { target: { files: [file] } });
+
+    await act(async () => {
+      fireEvent.input(input, { target: { files: [file] } });
+      fireEvent.change(input, { target: { files: [file] } });
+    });
+
     expect(input.files?.[0]).toBe(file);
     expect(screen.getByRole('img')).toHaveAttribute('src', 'mock-url');
 
@@ -73,8 +89,15 @@ describe('Card Shell component', () => {
     const dateToTest = '2012-12-15';
     fireEvent.change(dateadd, { target: { value: dateToTest } });
 
-    const sumbit = screen.getByRole('button');
-    fireEvent.click(sumbit);
+    const submit = screen.getByRole('button');
+
+    // wait for the component to re-render
+    await act(async () => {
+      fireEvent.mouseDown(submit);
+      fireEvent.click(submit);
+      fireEvent.mouseUp(submit);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
 
     expect(fn).toBeCalledTimes(1);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import './link-ex.css'; // import CSS file
 
@@ -7,14 +7,13 @@ interface LinkExProps extends LinkProps {
   children: React.ReactNode;
 }
 
-export class LinkEx extends React.Component<LinkExProps> {
-  render() {
-    const to = this.props.to.valueOf().toString().toLowerCase();
-    const className = this.props.path.toLowerCase() === to ? 'active' : '';
-    return (
-      <>
-        <Link className={className} {...(this.props as LinkProps)}></Link>
-      </>
-    );
-  }
-}
+export const LinkEx = (props: LinkExProps): ReactElement => {
+  const to = props.to.valueOf().toString().toLowerCase();
+  const className = props.path.toLowerCase() === to ? 'active' : '';
+
+  return (
+    <>
+      <Link className={className} {...(props as LinkProps)}></Link>
+    </>
+  );
+};

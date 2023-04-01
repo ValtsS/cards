@@ -16,7 +16,8 @@ class App extends React.Component<AppProps, AppState> {
       error: null,
     };
   }
-
+  // There is currently no exception catching hook implementation in React
+  // https://legacy.reactjs.org/docs/hooks-faq.html#do-hooks-cover-all-use-cases-for-classes
   componentDidCatch(error: Error) {
     console.error('error caught: ', error);
     this.setState({
