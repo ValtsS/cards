@@ -35,7 +35,7 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
 
     let url: string | undefined = undefined;
 
-    if (fileList && validator.onImageValidate(fileList))
+    if (fileList && validator.onImageValidate(fileList) === true)
       url = imageCache.formImageURL(false, fileList[0]);
 
     setState((prevState) => ({
