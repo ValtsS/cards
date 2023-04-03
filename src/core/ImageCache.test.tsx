@@ -3,13 +3,26 @@ import ImageCache from './ImageCache';
 describe('ImageCache', () => {
   let imageCache: ImageCache;
 
+  let originalCreate: (obj: Blob | MediaSource) => string;
+  let originalRevoke: (url: string) => void;
+
+
   beforeEach(() => {
     jest.clearAllMocks();
     imageCache = new ImageCache();
+    originalCreate = global.URL.createObjectURL;
+    originalRevoke = global.URL.revokeObjectURL;
+
     const mockCreateObjectURL = jest.fn(() => 'blob: HAHA');
     global.URL.createObjectURL = mockCreateObjectURL;
     global.URL.revokeObjectURL = jest.fn();
   });
+
+  afterEach(() => {
+    global.URL.createObjectURL = originalCreate;
+    global.URL.revokeObjectURL = originalRevoke;
+  });
+
 
   describe('formImageURL', () => {
     it('returns undefined if file type is not an image', () => {

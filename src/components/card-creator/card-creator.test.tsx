@@ -5,6 +5,18 @@ import { CardCreator } from './card-creator';
 import { CardValidator } from './card-validator';
 
 describe('Card Shell component', () => {
+
+
+  let originalCreate: (obj: Blob | MediaSource) => string;
+
+  beforeEach(() => {
+    originalCreate = global.URL.createObjectURL;
+  });
+
+  afterEach(() => {
+    global.URL.createObjectURL = originalCreate;
+  });
+
   it('should not crash', () => {
     render(<CardCreator />);
     expect(screen.queryAllByRole('textbox').length).toBe(2);

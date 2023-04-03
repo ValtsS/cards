@@ -140,11 +140,18 @@ describe('CardValidator', () => {
 });
 
 describe('CardValidator Prepare Card', () => {
+  const originalCreate = global.URL.createObjectURL;
+  const originalRevoke = global.URL.revokeObjectURL;
   beforeEach(() => {
     jest.clearAllMocks();
     const mockCreateObjectURL = jest.fn(() => 'blob: HAHA');
     global.URL.createObjectURL = mockCreateObjectURL;
     global.URL.revokeObjectURL = jest.fn();
+  });
+
+  afterEach(() => {
+    global.URL.createObjectURL = originalCreate;
+    global.URL.revokeObjectURL = originalRevoke;
   });
 
   describe('prepareCard', () => {
