@@ -6,7 +6,6 @@ describe('ImageCache', () => {
   let originalCreate: (obj: Blob | MediaSource) => string;
   let originalRevoke: (url: string) => void;
 
-
   beforeEach(() => {
     jest.clearAllMocks();
     imageCache = new ImageCache();
@@ -22,7 +21,6 @@ describe('ImageCache', () => {
     global.URL.createObjectURL = originalCreate;
     global.URL.revokeObjectURL = originalRevoke;
   });
-
 
   describe('formImageURL', () => {
     it('returns undefined if file type is not an image', () => {

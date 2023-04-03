@@ -5,8 +5,6 @@ import { CardCreator } from './card-creator';
 import { CardValidator } from './card-validator';
 
 describe('Card Shell component', () => {
-
-
   let originalCreate: (obj: Blob | MediaSource) => string;
 
   beforeEach(() => {
