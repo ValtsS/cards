@@ -14,7 +14,7 @@ describe('Former page component', () => {
     render(
       <AppContextProvider
         localStoreProvider={new MemoryStorage()}
-        cardProvider={new CardProviderStore()}
+        apolloClient={null}
         formCardProvider={testCardProvider}
       >
         <FormerPage />

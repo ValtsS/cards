@@ -22,7 +22,7 @@ describe('Main page component', () => {
     act(() => {
       render(
         <AppContextProvider
-          cardProvider={new CardProviderStore()}
+          apolloClient={null}
           localStoreProvider={new MemoryStorage()}
           formCardProvider={new CardProviderStore()}
         >
@@ -44,7 +44,7 @@ describe('Main page component', () => {
     act(() => {
       render(
         <AppContextProvider
-          cardProvider={new CardProviderStore()}
+          apolloClient={null}
           localStoreProvider={new MemoryStorage()}
           formCardProvider={new CardProviderStore()}
         >
@@ -74,9 +74,9 @@ describe('Main page component', () => {
   it('test slow propogation due to unmount', async () => {
     const { unmount } = render(
       <AppContextProvider
-        cardProvider={new CardProviderStore()}
         localStoreProvider={new MemoryStorage()}
         formCardProvider={new CardProviderStore()}
+        apolloClient={null}
       >
         <MainPage />
       </AppContextProvider>
