@@ -7,6 +7,11 @@ const config: CodegenConfig = {
   generates: {
     './src/__generated__/': {
       preset: 'client',
+      presetConfig: {
+        fragmentMasking: false,
+        strictScalars: true,
+        defaultScalarType: false,
+      },
     },
   },
   hooks: { afterAllFileWrite: ['prettier --write'] },
