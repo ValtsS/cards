@@ -49,10 +49,10 @@ export const useLocalStore = (key: string): UseLocalStoreResult => {
 
     if (apply != last) {
       lastQueryRef.current = apply;
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         query: apply,
-      });
+      }));
     }
 
     if (search) saveToStore(apply);

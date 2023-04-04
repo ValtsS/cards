@@ -41,7 +41,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
   const { apolloClient } = useAppContext();
 
   const loadCards = async (query: string) => {
-    setState({ ...state, loading: true });
+    setState( (prevState) => ({ ...prevState, loading: true }));
 
     console.log('Loadcards ', query);
     console.log('aplollo', apolloClient);
