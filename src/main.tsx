@@ -12,7 +12,7 @@ const cardProvider2 = new CardProviderStore();
 const localStoreProvider = new LocalStorage();
 
 const client = new ApolloClient({
-  uri: 'http://module04.velns.org:8000/graphql',
+  uri: 'http://lyra.velns.org:8000/graphql',
   cache: new InMemoryCache(),
 });
 

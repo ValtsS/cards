@@ -1,8 +1,8 @@
-import React from 'react';
-import { createContext, useState } from 'react';
+import * as Schema from '@/__generated__/graphql';
+import { ApolloClient } from '@apollo/client';
+import React, { createContext, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
 import { CardData } from './card-provider';
-import { cardTestData } from './card-test-data';
 
 interface ProviderState {
   cards: CardData[];
@@ -30,6 +30,20 @@ interface CardsApiProviderProps {
   children: React.ReactNode;
 }
 
+const getCards = async (
+  client: ApolloClient<unknown>,
+  params: Schema.CardFilterInput
+): Promise<Schema.Card[]> => {
+  const response = await client.query<Schema.GetCardsQuery>({
+    query: Schema.GetCardsDocument,
+    variables: {
+      filter: params,
+    },
+  });
+
+  return response.data.getCards?.items as Schema.Card[];
+};
+
 export function CardsApiProvider(props: CardsApiProviderProps) {
   const [state, setState] = useState<ProviderState>({
     cards: [],
@@ -41,7 +55,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
   const { apolloClient } = useAppContext();
 
   const loadCards = async (query: string) => {
-    setState( (prevState) => ({ ...prevState, loading: true }));
+    setState((prevState) => ({ ...prevState, loading: true }));
 
     console.log('Loadcards ', query);
     console.log('aplollo', apolloClient);
@@ -49,16 +63,18 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     try {
       setState((prevState) => ({ ...prevState, loading: true, exception: null }));
 
-      setTimeout(() => {
-        setState((prevState) => ({
-          ...prevState,
-          cards: cardTestData,
-          errorcounter: 0,
-          loading: false,
-          exception: null,
-        }));
-        console.log('Loaded!');
-      }, 500);
+      if (!apolloClient) throw new Error('client is not set');
+
+      const data = (await getCards(apolloClient, { searchQuery: query })) as CardData[];
+
+      setState((prevState) => ({
+        ...prevState,
+        cards: data,
+        errorcounter: 0,
+        loading: false,
+        exception: null,
+      }));
+      console.log('Loaded!');
     } catch (error) {
       if (error instanceof Error)
         setState((prevState) => ({

@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -86,3 +87,145 @@ export enum SortEnumType {
   Asc = 'ASC',
   Desc = 'DESC',
 }
+
+export type GetCardsQueryVariables = Exact<{
+  filter: CardFilterInput;
+  order?: InputMaybe<Array<CardSortInput> | CardSortInput>;
+  take?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+export type GetCardsQuery = {
+  __typename?: 'Query';
+  getCards?: {
+    __typename?: 'GetCardsCollectionSegment';
+    totalCount: number;
+    pageInfo: {
+      __typename?: 'CollectionSegmentInfo';
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+    };
+    items?: Array<{
+      __typename?: 'Card';
+      uuid: string;
+      title: string;
+      imageUrl: string;
+      text: string;
+      price: string;
+      addedat?: any | null;
+      minipic: string;
+      rating?: number | null;
+      flipimg: boolean;
+      grayscale: boolean;
+    }> | null;
+  } | null;
+};
+
+export const GetCardsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getCards' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CardFilterInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'order' } },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: { kind: 'NamedType', name: { kind: 'Name', value: 'CardSortInput' } },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getCards' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'order' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'order' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'uuid' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'addedat' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'minipic' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rating' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'flipimg' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'grayscale' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetCardsQuery, GetCardsQueryVariables>;
