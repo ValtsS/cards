@@ -21,23 +21,27 @@ export const MainPage = (props: MainPageProps): ReactElement => {
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
-      console.log('changed', searchQuery);
-      setState({
-        ...state,
-        filteringBy: searchQuery,
-      });
-      await loadCards(searchQuery);
+      if (state?.filteringBy !== searchQuery) {
+        console.log('changed', searchQuery);
 
-      localStore.setItem(mainpageLastQuery, searchQuery);
-      if (props.onSearch) props.onSearch(searchQuery);
+        setState((prevState) => ({
+          ...prevState,
+          filteringBy: searchQuery,
+        }));
+
+        await loadCards(searchQuery);
+
+        localStore.setItem(mainpageLastQuery, searchQuery);
+        if (props.onSearch) props.onSearch(searchQuery);
+      }
     },
-    [localStore, props]
+    [localStore, props, loadCards, state?.filteringBy]
   );
 
   useEffect(() => {
     const searched = localStore.getItem(mainpageLastQuery);
     handleQueryChange(searched ?? '');
-  }, [localStore, handleQueryChange]);
+  }, [localStore, loadCards, handleQueryChange]);
 
   return (
     <>

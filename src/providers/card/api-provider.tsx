@@ -47,33 +47,33 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     console.log('aplollo', apolloClient);
 
     try {
-      setState({ ...state, loading: true, exception: null });
+      setState((prevState) => ({ ...prevState, loading: true, exception: null }));
 
       setTimeout(() => {
-        setState({
-          ...state,
+        setState((prevState) => ({
+          ...prevState,
           cards: cardTestData,
           errorcounter: 0,
           loading: false,
           exception: null,
-        });
+        }));
         console.log('Loaded!');
       }, 500);
     } catch (error) {
       if (error instanceof Error)
-        setState({
-          ...state,
-          exception: error,
+        setState((prevState) => ({
+          ...prevState,
           loading: false,
-          errorcounter: state.errorcounter + 1,
-        });
+          errorcounter: prevState.errorcounter + 1,
+          exception: new Error(),
+        }));
       else
-        setState({
-          ...state,
-          exception: new Error('unknown type exception'),
+        setState((prevState) => ({
+          ...prevState,
           loading: false,
-          errorcounter: state.errorcounter + 1,
-        });
+          errorcounter: prevState.errorcounter + 1,
+          exception: new Error('unknown type exception'),
+        }));
     }
   };
 
