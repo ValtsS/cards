@@ -6,18 +6,25 @@ import { AppContextProvider } from '@/providers/app-context-provider';
 import { CardsApp } from './cards-app';
 import { defaultRoutes } from '@/routes/routes-config';
 import { CardsApiProvider } from './providers/card/api-provider';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
-const cardProvider = new CardProviderStore();
 const cardProvider2 = new CardProviderStore();
 const localStoreProvider = new LocalStorage();
+
+const client = new ApolloClient({
+  uri: 'http://module04.velns.org:8000/graphql',
+  cache: new InMemoryCache(),
+});
+
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App>
       <AppContextProvider
-        cardProvider={cardProvider}
         localStoreProvider={localStoreProvider}
         formCardProvider={cardProvider2}
+        apolloClient={client}
       >
         <CardsApiProvider>
           <CardsApp routesConfig={defaultRoutes} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { createContext, useState } from 'react';
+import { useAppContext } from '../app-context-provider';
 import { CardData } from './card-provider';
 import { cardTestData } from './card-test-data';
 
@@ -37,10 +38,13 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     exception: null,
   });
 
+  const {apolloClient} = useAppContext();
+
   const loadCards = async (query: string) => {
     setState({ ...state, loading: true });
 
     console.log('Loadcards ', query);
+    console.log('aplollo', apolloClient);
 
     try {
       setState({ ...state, loading: true, exception: null });

@@ -1,7 +1,7 @@
 import { CardShell } from '@/components/card-shell';
 import { SearchBar } from '@/components/searchbar';
-import { CardData, useAppContext } from '@/providers';
-import { CardsApiProvider, useCardsApiContext } from '@/providers/card/api-provider';
+import { useAppContext } from '@/providers';
+import { useCardsApiContext } from '@/providers/card/api-provider';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 interface MainPageProps {
@@ -50,7 +50,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
       <>
         <span>
           <>Loading:</>
-          {cardsState.loading}
+          {cardsState.loading ? "Loading" : "Ready"}
         </span>
         <CardShell data={cardsState.cards} query={state?.filteringBy ?? ''} />
       </>
