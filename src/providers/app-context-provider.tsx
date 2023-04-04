@@ -12,7 +12,7 @@ type AppContextValue = {
 export const AppContext = React.createContext<AppContextValue>({
   localStore: new LocalStorage(),
   formCardProvider: new CardProviderStore(),
-  apolloClient: null
+  apolloClient: null,
 });
 
 type AppContextProviderProps = {
@@ -26,14 +26,14 @@ export const AppContextProvider = ({
   children,
   localStoreProvider,
   formCardProvider: cardProvider,
-  apolloClient
+  apolloClient,
 }: AppContextProviderProps) => {
   return (
     <AppContext.Provider
       value={{
         localStore: localStoreProvider,
         formCardProvider: cardProvider,
-        apolloClient
+        apolloClient,
       }}
     >
       {children}

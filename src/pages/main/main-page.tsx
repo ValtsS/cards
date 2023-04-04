@@ -50,7 +50,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
       <>
         <span>
           <>Loading:</>
-          {cardsState.loading ? "Loading" : "Ready"}
+          {cardsState.loading ? 'Loading' : 'Ready'}
         </span>
         <CardShell data={cardsState.cards} query={state?.filteringBy ?? ''} />
       </>
