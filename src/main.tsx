@@ -5,6 +5,7 @@ import { CardProviderStore, LocalStorage } from '@/providers';
 import { AppContextProvider } from '@/providers/app-context-provider';
 import { CardsApp } from './cards-app';
 import { defaultRoutes } from '@/routes/routes-config';
+import { CardsApiProvider } from './providers/card/api-provider';
 
 const cardProvider = new CardProviderStore();
 const cardProvider2 = new CardProviderStore();
@@ -18,7 +19,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         localStoreProvider={localStoreProvider}
         formCardProvider={cardProvider2}
       >
-        <CardsApp routesConfig={defaultRoutes} />
+        <CardsApiProvider>
+          <CardsApp routesConfig={defaultRoutes} />
+        </CardsApiProvider>
       </AppContextProvider>
     </App>
   </React.StrictMode>

@@ -11,10 +11,6 @@ describe('Card provider', () => {
     expect(prov.data.length).toBe(1);
     prov.insert(new CardData());
     expect(prov.data.length).toBe(2);
-
-    prov.loadTestData('').then((data) => expect(data.length).toBeGreaterThan(0));
-
-    prov.loadTestData('!@#@%@@#%@#%@#^@').then((data) => expect(data.length).toEqual(0));
   });
 
   it('should generate guids', () => {
