@@ -30,7 +30,6 @@ export type Card = {
   uuid: Scalars['String'];
 };
 
-
 export type CardMatchesArgs = {
   query: Scalars['String'];
 };
@@ -76,7 +75,6 @@ export type Query = {
   getCards?: Maybe<GetCardsCollectionSegment>;
 };
 
-
 export type QueryGetCardsArgs = {
   filter: CardFilterInput;
   order?: InputMaybe<Array<CardSortInput>>;
@@ -86,5 +84,5 @@ export type QueryGetCardsArgs = {
 
 export enum SortEnumType {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }

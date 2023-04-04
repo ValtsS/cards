@@ -23,7 +23,7 @@ const CardsApiContext = createContext<ContextValue>({
     errorcounter: 0,
     exception: null,
   },
-  loadCards: async (query: string) => {},
+  loadCards: async () => {},
 });
 
 interface CardsApiProviderProps {
@@ -65,7 +65,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           ...prevState,
           loading: false,
           errorcounter: prevState.errorcounter + 1,
-          exception: new Error(),
+          exception: error as Error,
         }));
       else
         setState((prevState) => ({
