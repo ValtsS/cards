@@ -7,41 +7,39 @@ import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
 }
-export interface MainPageState {
-  filteringBy?: string;
-}
-
 const mainpageLastQuery = `mainpage_lastquery`;
 
 export const MainPage = (props: MainPageProps): ReactElement => {
   const { localStore } = useAppContext();
   const { state: cardsState, loadCards } = useCardsApiContext();
 
-  const [state, setState] = useState<MainPageState>();
+  const [filteringBy, setFilteringBy] = useState('');
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
-      if (state?.filteringBy !== searchQuery) {
-        console.log('changed', searchQuery);
+      console.log('changed', searchQuery);
+      localStore.setItem(mainpageLastQuery, searchQuery);
+      setFilteringBy(searchQuery);
 
-        setState((prevState) => ({
-          ...prevState,
-          filteringBy: searchQuery,
-        }));
-
-        await loadCards(searchQuery);
-
-        localStore.setItem(mainpageLastQuery, searchQuery);
-        if (props.onSearch) props.onSearch(searchQuery);
+      try {
+        if (cardsState.errorcounter < 5) {
+          await loadCards(searchQuery);
+        } else {
+          console.error('giving up due to error');
+        }
+      } catch (error) {
+        console.error('API call failed:', error);
       }
+
+      if (props.onSearch) props.onSearch(searchQuery);
     },
-    [localStore, props, loadCards, state?.filteringBy]
+    [localStore, props, loadCards, cardsState.errorcounter]
   );
 
   useEffect(() => {
     const searched = localStore.getItem(mainpageLastQuery);
-    handleQueryChange(searched ?? '');
-  }, [localStore, loadCards, handleQueryChange]);
+    setFilteringBy(searched || '');
+  }, [localStore]);
 
   return (
     <>
@@ -56,7 +54,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
           <>Loading:</>
           {cardsState.loading ? 'Loading' : 'Ready'}
         </span>
-        <CardShell data={cardsState.cards} query={state?.filteringBy ?? ''} />
+        <CardShell data={cardsState.cards} query={filteringBy} />
       </>
     </>
   );

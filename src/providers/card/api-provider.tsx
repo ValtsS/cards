@@ -33,7 +33,7 @@ interface CardsApiProviderProps {
 const getCards = async (
   client: ApolloClient<unknown>,
   params: Schema.CardFilterInput
-): Promise<Schema.Card[]> => {
+): Promise<CardData[]> => {
   const response = await client.query<Schema.GetCardsQuery>({
     query: Schema.GetCardsDocument,
     variables: {
@@ -41,7 +41,18 @@ const getCards = async (
     },
   });
 
-  return response.data.getCards?.items as Schema.Card[];
+  const data = response.data.getCards?.items as Schema.Card[];
+  const patched: CardData[] = [];
+
+  data.forEach((e) => {
+    const { addedat, ...otherProps } = e;
+    const c = new CardData();
+    Object.assign(c, otherProps);
+    c.addedat = new Date(addedat);
+    patched.push(c);
+  });
+
+  return patched;
 };
 
 export function CardsApiProvider(props: CardsApiProviderProps) {
@@ -61,11 +72,11 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     console.log('aplollo', apolloClient);
 
     try {
-      setState((prevState) => ({ ...prevState, loading: true, exception: null }));
+      setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
 
       if (!apolloClient) throw new Error('client is not set');
 
-      const data = (await getCards(apolloClient, { searchQuery: query })) as CardData[];
+      const data = await getCards(apolloClient, { searchQuery: query });
 
       setState((prevState) => ({
         ...prevState,
