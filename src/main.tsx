@@ -1,12 +1,12 @@
-import App from './App';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import { CardProviderStore, LocalStorage } from '@/providers';
 import { AppContextProvider } from '@/providers/app-context-provider';
-import { CardsApp } from './cards-app';
 import { defaultRoutes } from '@/routes/routes-config';
-import { CardsApiProvider } from './providers/card/api-provider';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { CardsApp } from './cards-app';
+import { CardsApiProvider } from './providers/card/api-provider';
 
 const cardProvider2 = new CardProviderStore();
 const localStoreProvider = new LocalStorage();

@@ -1,6 +1,6 @@
 import * as Schema from '@/__generated__/graphql';
 import { ApolloClient } from '@apollo/client';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
 import { CardData } from './card-provider';
 
@@ -9,6 +9,7 @@ interface ProviderState {
   loading: boolean;
   exception: Error | null;
   errorcounter: number;
+  filteringBy: string;
 }
 
 interface ContextValue {
@@ -22,6 +23,7 @@ const CardsApiContext = createContext<ContextValue>({
     loading: false,
     errorcounter: 0,
     exception: null,
+    filteringBy: '',
   },
   loadCards: async () => {},
 });
@@ -61,53 +63,63 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     loading: false,
     errorcounter: 0,
     exception: null,
+    filteringBy: '',
   });
 
   const { apolloClient } = useAppContext();
 
-  const loadCards = async (query: string) => {
-    setState((prevState) => ({ ...prevState, loading: true }));
+  const loadCards = useCallback(
+    async (query: string) => {
+      setState((prevState) => ({ ...prevState, loading: true }));
 
-    console.log('Loadcards ', query);
-    console.log('aplollo', apolloClient);
+      console.log('Loadcards ', query);
+      console.log('aplollo', apolloClient);
 
-    try {
-      setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
+      try {
+        setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
 
-      if (!apolloClient) throw new Error('client is not set');
+        if (!apolloClient) throw new Error('client is not set');
 
-      const data = await getCards(apolloClient, { searchQuery: query });
+        const data = await getCards(apolloClient, { searchQuery: query });
 
-      setState((prevState) => ({
-        ...prevState,
-        cards: data,
-        errorcounter: 0,
-        loading: false,
-        exception: null,
-      }));
-      console.log('Loaded!');
-    } catch (error) {
-      if (error instanceof Error)
         setState((prevState) => ({
           ...prevState,
+          cards: data,
+          errorcounter: 0,
           loading: false,
-          errorcounter: prevState.errorcounter + 1,
-          exception: error as Error,
+          exception: null,
+          filteringBy: query,
         }));
-      else
-        setState((prevState) => ({
-          ...prevState,
-          loading: false,
-          errorcounter: prevState.errorcounter + 1,
-          exception: new Error('unknown type exception'),
-        }));
-    }
-  };
+        console.log('Loaded!');
+      } catch (error) {
+        if (error instanceof Error)
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            errorcounter: prevState.errorcounter + 1,
+            exception: error as Error,
+            filteringBy: '',
+          }));
+        else
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            errorcounter: prevState.errorcounter + 1,
+            exception: new Error('unknown type exception'),
+            filteringBy: '',
+          }));
+      }
+    },
+    [apolloClient]
+  );
 
-  const contextValue: ContextValue = {
-    state,
-    loadCards,
-  };
+  const contextValue: ContextValue = useMemo(
+    () => ({
+      state,
+      loadCards,
+    }),
+    [state, loadCards]
+  );
 
   return <CardsApiContext.Provider value={contextValue}>{props.children}</CardsApiContext.Provider>;
 }
