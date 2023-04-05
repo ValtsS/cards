@@ -8,10 +8,8 @@ query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, 
       uuid
       title
       imageUrl
-      text
       price
       addedat
-      minipic
       rating
       flipimg
       grayscale

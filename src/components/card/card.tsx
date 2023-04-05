@@ -10,10 +10,12 @@ export interface CardProps {
 export const IMGCLS_FLIP = 'flip';
 export const IMGCLS_GRAY = 'grayscale';
 export const IMGCLS_BIGPIC = 'bigpic';
+export const IMGCLS_HOVER = 'bigpichover';
 
 export const Card = (props: CardProps): ReactElement => {
   const imgclass =
     IMGCLS_BIGPIC +
+    (!props.card.text ? ' ' + IMGCLS_HOVER : '') +
     (props.card.flipimg && props.card.flipimg.valueOf() ? ' ' + IMGCLS_FLIP : '') +
     (props.card.grayscale && props.card.grayscale.valueOf() ? ' ' + IMGCLS_GRAY : '');
 

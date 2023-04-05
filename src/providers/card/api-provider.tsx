@@ -7,6 +7,9 @@ import { CardData } from './card-provider';
 
 interface ProviderState {
   cards: CardData[];
+  offset?: number;
+  total?: number;
+  limit?: number;
   loading: boolean;
   exception: Error | null;
   errorcounter: number;
@@ -35,11 +38,15 @@ interface CardsApiProviderProps {
 
 const getCards = async (
   client: ApolloClient<unknown>,
-  params: Schema.CardFilterInput
-): Promise<CardData[]> => {
+  params: Schema.CardFilterInput,
+  limit: number,
+  offset: number
+): Promise<{ cards: CardData[]; totalcount: number }> => {
   const response = await client.query<Schema.GetCardsQuery>({
     query: Schema.GetCardsDocument,
     variables: {
+      skip: offset,
+      take: limit,
       filter: params,
     },
   });
@@ -55,7 +62,7 @@ const getCards = async (
     patched.push(c);
   });
 
-  return patched;
+  return { cards: patched, totalcount: response.data.getCards?.totalCount ?? 0 };
 };
 
 export function CardsApiProvider(props: CardsApiProviderProps) {
@@ -78,16 +85,26 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
       console.log('Loadcards ', query);
       console.log('aplollo', apolloClient);
 
+      const limit = 25;
+      const offset = 0;
+
       try {
         setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
 
         if (!apolloClient) throw new Error('client is not set');
 
-        const data = await getCards(apolloClient, { searchQuery: query });
+        const searchparams: Schema.CardFilterInput = {
+          searchQuery: query,
+        };
+
+        const data = await getCards(apolloClient, searchparams, limit, offset);
 
         setState((prevState) => ({
           ...prevState,
-          cards: data,
+          cards: data.cards,
+          total: data.totalcount,
+          limit,
+          offset,
           errorcounter: 0,
           loading: false,
           exception: null,
@@ -100,6 +117,9 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
             ...prevState,
             loading: false,
             errorcounter: prevState.errorcounter + 1,
+            limit: limit,
+            offset,
+            total: 0,
             exception: error as Error,
             filteringBy: '',
           }));
@@ -108,6 +128,9 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           setState((prevState) => ({
             ...prevState,
             loading: false,
+            limit: limit,
+            offset,
+            total: 0,
             errorcounter: prevState.errorcounter + 1,
             exception: new Error('unknown type exception'),
             filteringBy: '',

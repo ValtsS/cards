@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  'query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      text\n      price\n      addedat\n      minipic\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}':
+  'query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      price\n      addedat\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}':
     types.GetCardsDocument,
 };
 
@@ -35,8 +35,8 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: 'query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      text\n      price\n      addedat\n      minipic\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}'
-): (typeof documents)['query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      text\n      price\n      addedat\n      minipic\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}'];
+  source: 'query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      price\n      addedat\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}'
+): (typeof documents)['query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, $skip: Int) {\n  getCards(skip: $skip, take: $take, filter: $filter, order: $order) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n    }\n    items {\n      uuid\n      title\n      imageUrl\n      price\n      addedat\n      rating\n      flipimg\n      grayscale\n    }\n    totalCount\n  }\n}'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

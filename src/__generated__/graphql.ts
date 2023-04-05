@@ -110,10 +110,8 @@ export type GetCardsQuery = {
       uuid: string;
       title: string;
       imageUrl: string;
-      text: string;
       price: string;
       addedat?: any | null;
-      minipic: string;
       rating?: number | null;
       flipimg: boolean;
       grayscale: boolean;
@@ -210,10 +208,8 @@ export const GetCardsDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'uuid' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'price' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'addedat' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'minipic' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'rating' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'flipimg' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'grayscale' } },

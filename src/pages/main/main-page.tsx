@@ -50,12 +50,23 @@ export const MainPage = (props: MainPageProps): ReactElement => {
         title="Enter search query"
       />
       <>
-        <span>
-          <p>
-            <>API Status:</>
-            {state.loading ? 'Loading' : 'Ready'}
-          </p>
-        </span>
+        <p>
+          <>API Status:</>
+          {state.loading ? 'Loading' : 'Ready'}
+        </p>
+        <p>
+          <> Total results:</>
+          <span>{state.total}</span>
+        </p>
+        <p>
+          <> Offset:</>
+          <span>{state.offset}</span>
+        </p>
+        <p>
+          <> Limit:</>
+          <span>{state.limit}</span>
+        </p>
+
         <FloatNotification message={notify.message} error={notify.error} />
         <CardShell data={state.cards} query={state.filteringBy} />
       </>
