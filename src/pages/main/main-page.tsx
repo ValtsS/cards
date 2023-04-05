@@ -1,16 +1,18 @@
-import { CardShell } from '@/components/card-shell';
-import { SearchBar } from '@/components/searchbar';
+import { CardShell, FloatNotification, SearchBar } from '@/components';
 import { useAppContext } from '@/providers';
 import { useCardsApiContext } from '@/providers/card/api-provider';
+import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
 import React, { ReactElement, useCallback, useEffect } from 'react';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
 }
-const mainpageLastQuery = `mainpage_lastquery`;
+const mainpageLastQuery = 'mainpage_lastquery_key';
 
 export const MainPage = (props: MainPageProps): ReactElement => {
   const { localStore } = useAppContext();
+
+  const { setMessage } = useNotifications();
 
   const { state, loadCards } = useCardsApiContext();
 
@@ -19,17 +21,18 @@ export const MainPage = (props: MainPageProps): ReactElement => {
       console.log('changed', searchQuery);
       try {
         if (state.errorcounter < 5) {
-          await loadCards(searchQuery);
           localStore.setItem(mainpageLastQuery, searchQuery);
+
+          await loadCards(searchQuery);
         } else {
-          console.error('giving up due to error');
+          setMessage('giving up due to multiple API server errors :-(', true);
         }
       } catch (error) {
-        console.error('API call failed:', error);
+        setMessage('API call failed', true);
       }
       if (props.onSearch) props.onSearch(searchQuery);
     },
-    [localStore, props, loadCards, state.errorcounter]
+    [localStore, props, loadCards, state.errorcounter, setMessage]
   );
 
   useEffect(() => {
@@ -37,6 +40,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
     handleQueryChange(prevQuery);
   }, [localStore, handleQueryChange]);
 
+  const { state: notify } = useNotifications();
   return (
     <>
       <SearchBar
@@ -47,9 +51,12 @@ export const MainPage = (props: MainPageProps): ReactElement => {
       />
       <>
         <span>
-          <>Loading:</>
-          {state.loading ? 'Loading' : 'Ready'}
+          <p>
+            <>API Status:</>
+            {state.loading ? 'Loading' : 'Ready'}
+          </p>
         </span>
+        <FloatNotification message={notify.message} error={notify.error} />
         <CardShell data={state.cards} query={state.filteringBy} />
       </>
     </>

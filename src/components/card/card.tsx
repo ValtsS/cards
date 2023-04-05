@@ -1,4 +1,4 @@
-import { Rating } from '@/components/rating';
+import { Rating } from '@/components';
 import { CardData } from '@/providers';
 import React, { ReactElement } from 'react';
 import './card.css';

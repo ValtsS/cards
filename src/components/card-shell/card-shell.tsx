@@ -1,6 +1,6 @@
 import { CardData } from '@/providers';
 import React, { ReactElement } from 'react';
-import { Card } from '@/components/card';
+import { Card } from '@/components';
 import './card-shell.css';
 
 interface CardLoaderProps {

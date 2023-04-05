@@ -1,4 +1,4 @@
-import { Header } from '@/components/header';
+import { Header } from '@/components';
 import React, { ReactElement } from 'react';
 import './root-layout.css';
 

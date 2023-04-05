@@ -1,5 +1,4 @@
-import { CardCreator } from '@/components/card-creator';
-import { CardShell } from '@/components/card-shell';
+import { CardCreator, CardShell } from '@/components';
 import { CardData, useAppContext } from '@/providers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import './former-page.css';

@@ -1,4 +1,4 @@
-import { LinkEx } from '@/components/link';
+import { LinkEx } from '@/components';
 import { defaultRoutes } from '@/routes/routes-config';
 import React, { ReactElement } from 'react';
 import { useLocation } from 'react-router-dom';

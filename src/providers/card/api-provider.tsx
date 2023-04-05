@@ -2,6 +2,7 @@ import * as Schema from '@/__generated__/graphql';
 import { ApolloClient } from '@apollo/client';
 import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
+import { useNotifications } from '../shell-notifcations/shell-notifications';
 import { CardData } from './card-provider';
 
 interface ProviderState {
@@ -66,6 +67,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     filteringBy: '',
   });
 
+  const { setMessage } = useNotifications();
+
   const { apolloClient } = useAppContext();
 
   const loadCards = useCallback(
@@ -92,7 +95,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
         }));
         console.log('Loaded!');
       } catch (error) {
-        if (error instanceof Error)
+        if (error instanceof Error) {
           setState((prevState) => ({
             ...prevState,
             loading: false,
@@ -100,7 +103,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
             exception: error as Error,
             filteringBy: '',
           }));
-        else
+          setMessage((error as Error).message, true);
+        } else {
           setState((prevState) => ({
             ...prevState,
             loading: false,
@@ -108,9 +112,11 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
             exception: new Error('unknown type exception'),
             filteringBy: '',
           }));
+          setMessage('Unknown API server error', true);
+        }
       }
     },
-    [apolloClient]
+    [apolloClient, setMessage]
   );
 
   const contextValue: ContextValue = useMemo(
