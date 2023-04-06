@@ -26,9 +26,7 @@ describe('Card component', () => {
     fireEvent.click(image);
 
     expect(fn).toBeCalledTimes(1);
-
   });
-
 
   const flipsGrays: CardData[] = [
     {
@@ -49,11 +47,11 @@ describe('Card component', () => {
     },
     {
       uuid: 'EE',
-      rating: 0
+      rating: 0,
     },
     {
       uuid: 'EE',
-      rating: 3
+      rating: 3,
     },
   ];
 
@@ -63,8 +61,7 @@ describe('Card component', () => {
     const image = screen.getByRole('img', { name: /full picture/i });
     expect(image).toBeInTheDocument();
 
-    if (card.rating)
-    {
+    if (card.rating) {
       expect(screen.getByText('★'.repeat(card.rating ?? 0))).toBeInTheDocument();
       expect(screen.getByText('☆'.repeat(5 - (card.rating ?? 0)))).toBeInTheDocument();
     } else {
