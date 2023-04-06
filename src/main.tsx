@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { CardsApp } from './cards-app';
 import { CardsApiProvider } from './providers/card/api-provider';
-import { NotificationsProvider } from './providers/shell-notifcations/shell-notifications';
+import { NotificationsProvider } from './providers/notifications-provider/notifications-provider';
 
 const cardProvider2 = new CardProviderStore();
 const localStoreProvider = new LocalStorage();

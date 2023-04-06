@@ -1,6 +1,6 @@
 import { CardData } from '@/providers';
 import { useCardsApiContext } from '@/providers/card/api-provider';
-import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
+import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
 import React, { useEffect, useState } from 'react';
 import { Card } from '../card';
 import { Spinner } from '../spinner/spinner';

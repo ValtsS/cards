@@ -2,7 +2,7 @@ import * as Schema from '@/__generated__/graphql';
 import { ApolloClient } from '@apollo/client';
 import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
-import { useNotifications } from '../shell-notifcations/shell-notifications';
+import { useNotifications } from '../notifications-provider/notifications-provider';
 import { CardData } from './card-provider';
 
 export interface ProviderState {
