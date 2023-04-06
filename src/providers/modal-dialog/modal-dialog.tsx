@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useCallback, useContext, useState } from 'react';
+import React, { ReactElement, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 
 export type DialogState = {
   show: boolean;
@@ -40,11 +40,14 @@ export const ModalDialogProvider = ({ children }: { children: ReactElement }) =>
     }));
   }, [setState]);
 
-  const values = {
-    state,
-    showDialog,
-    hide,
-  };
+  const values: DialogConextValue = useMemo(
+    () => ({
+      state,
+      showDialog,
+      hide,
+    }),
+    [state, showDialog, hide]
+  );
 
   return <DialogContext.Provider value={values}>{children}</DialogContext.Provider>;
 };
