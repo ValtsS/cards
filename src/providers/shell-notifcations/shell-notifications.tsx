@@ -1,5 +1,5 @@
 import { Queue } from '@/core/queue';
-import React, { ReactElement, useCallback, useContext, useReducer } from 'react';
+import React, { ReactElement, useCallback, useContext, useMemo, useReducer } from 'react';
 
 type NotificationState = {
   message?: string;
@@ -56,10 +56,14 @@ export const NotificationsProvider = ({ children }: { children: ReactElement }) 
     },
     [dispatch]
   );
-  const value = {
-    state,
-    setMessage,
-  };
+
+  const value: NotificationsContextValue = useMemo(
+    () => ({
+      state,
+      setMessage,
+    }),
+    [state, setMessage]
+  );
 
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
 };
