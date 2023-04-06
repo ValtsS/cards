@@ -23,6 +23,7 @@ export const Card = (props: CardProps): ReactElement => {
   const card = props.card;
   const dateSet = card.addedat && card.addedat.getFullYear() > 0;
   const ratingSet = card.rating && card.rating > 0;
+  const priceSet = Boolean(card.price);
 
   return (
     <div className="card">
@@ -37,12 +38,10 @@ export const Card = (props: CardProps): ReactElement => {
           }}
         ></img>
 
-        {ratingSet && (
-          <div className="price">
-            <span>{card.price}</span>
-            <Rating count={card.rating ?? 0} />
-          </div>
-        )}
+        <div className="price">
+          {priceSet && <span>{card.price}</span>}
+          {ratingSet && <Rating count={card.rating ?? 0} />}
+        </div>
 
         <p className="smalltitle">{card.text}</p>
         <img src={card.minipic} className="minipic"></img>

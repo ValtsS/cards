@@ -39,7 +39,7 @@ describe('Card component', () => {
 
   it.each(flipsGrays)('should render the cards flips/grays correctly $uuid', (card) => {
     render(<Card card={card} />);
-    expect(screen.getByText('☆☆☆☆☆')).toBeInTheDocument();
+    expect(screen.queryByText('☆☆☆☆☆')).not.toBeInTheDocument();
     const image = screen.getByRole('img', { name: /full picture/i });
 
     expect(image).toBeInTheDocument();
