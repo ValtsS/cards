@@ -1,6 +1,5 @@
 import { Queue } from '@/core/queue';
-import React, { ReactElement, useCallback, useContext } from 'react';
-import { useReducer } from 'react';
+import React, { ReactElement, useCallback, useContext, useReducer } from 'react';
 
 type NotificationState = {
   message?: string;
