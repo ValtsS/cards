@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { APIState } from '../api-state-indicator';
 import { CardShell } from '@/components/card-shell';
 import { FloatNotification } from '../float-notification';
-import Spinner from '../spinner/spinner';
+import { Spinner } from '../spinner/spinner';
 import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
 import { useCardsApiContext } from '@/providers/card/api-provider';
 
