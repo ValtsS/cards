@@ -5,7 +5,7 @@ import { useAppContext } from '../app-context-provider';
 import { useNotifications } from '../shell-notifcations/shell-notifications';
 import { CardData } from './card-provider';
 
-interface ProviderState {
+export interface ProviderState {
   cards: CardData[];
   offset?: number;
   total?: number;

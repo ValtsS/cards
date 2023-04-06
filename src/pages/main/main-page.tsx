@@ -1,8 +1,9 @@
-import { CardShell, FloatNotification, SearchBar } from '@/components';
+import { APIState, CardShell, FloatNotification, SearchBar } from '@/components';
+import Overlay from '@/components/overlay/overlay';
 import { useAppContext } from '@/providers';
 import { useCardsApiContext } from '@/providers/card/api-provider';
 import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
-import React, { ReactElement, useCallback, useEffect } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
@@ -15,6 +16,8 @@ export const MainPage = (props: MainPageProps): ReactElement => {
   const { setMessage } = useNotifications();
 
   const { state, loadCards } = useCardsApiContext();
+
+  const [modal, setModal] = useState<boolean>(false);
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
@@ -41,35 +44,29 @@ export const MainPage = (props: MainPageProps): ReactElement => {
   }, [localStore, handleQueryChange]);
 
   const { state: notify } = useNotifications();
+
+  const showModal = useCallback(() => {
+    console.log('!!');
+
+    setModal(true);
+  }, []);
+
   return (
     <>
+      <Overlay isOpen={modal} onClose={() => setModal(false)}>
+        HAHA
+      </Overlay>
       <SearchBar
         id={'bar01'}
         onQueryChange={handleQueryChange}
         testId="search-bar-test-id"
         title="Enter search query"
       />
-      <>
-        <p>
-          <>API Status:</>
-          {state.loading ? 'Loading' : 'Ready'}
-        </p>
-        <p>
-          <> Total results:</>
-          <span>{state.total}</span>
-        </p>
-        <p>
-          <> Offset:</>
-          <span>{state.offset}</span>
-        </p>
-        <p>
-          <> Limit:</>
-          <span>{state.limit}</span>
-        </p>
+      <APIState {...state} />
+      <button onClick={showModal}>Test</button>
 
-        <FloatNotification message={notify.message} error={notify.error} />
-        <CardShell data={state.cards} query={state.filteringBy} />
-      </>
+      <FloatNotification message={notify.message} error={notify.error} />
+      <CardShell data={state.cards} query={state.filteringBy} />
     </>
   );
 };
