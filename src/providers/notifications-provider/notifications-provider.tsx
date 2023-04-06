@@ -21,7 +21,7 @@ function reducer(state: NotificationState, action: NotificationAction): Notifica
   switch (action.type) {
     case 'SET_MESSAGE':
       state.queue.enqueue({ message: action.message, error: action.error });
-      return { ...state, message: action.message };
+      return { ...state, message: action.message, error: action.error };
     case 'CLEAR_MESSAGE':
       state.queue.dequeue();
       const next = state.queue.isEmpty() ? undefined : state.queue.peek();

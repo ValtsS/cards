@@ -16,7 +16,7 @@ describe('Notifications provider', () => {
     expect(childComponent).toBeInTheDocument();
   });
 
-  test('should return context value when used within ModalDialogProvider', () => {
+  test('should work with info message', () => {
     const wrapper = ({ children }: { children: React.ReactElement }) => (
       <NotificationsProvider>{children}</NotificationsProvider>
     );
@@ -35,7 +35,34 @@ describe('Notifications provider', () => {
     expect(result.current.state.queue.isEmpty()).toBe(false);
 
     act(() => {
-      jest.advanceTimersByTime(10000);
+      jest.advanceTimersByTime(7000);
+    });
+
+    expect(result.current.state.error).toBe(false);
+    expect(result.current.state.message).toBeUndefined();
+    expect(result.current.state.queue.isEmpty()).toBe(true);
+  });
+
+  test('should work with error message', () => {
+    const wrapper = ({ children }: { children: React.ReactElement }) => (
+      <NotificationsProvider>{children}</NotificationsProvider>
+    );
+    const { result } = renderHook(() => useNotifications(), { wrapper });
+
+    // Initial state
+    expect(result.current.state.error).toBe(false);
+    expect(result.current.state.queue.isEmpty()).toBe(true);
+
+    act(() => {
+      result.current.setMessage('Error', true);
+    });
+
+    expect(result.current.state.error).toBe(true);
+    expect(result.current.state.message).toBe('Error');
+    expect(result.current.state.queue.isEmpty()).toBe(false);
+
+    act(() => {
+      jest.advanceTimersByTime(15000);
     });
 
     expect(result.current.state.error).toBe(false);
