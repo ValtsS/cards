@@ -3,6 +3,7 @@ import { useCardsApiContext } from '@/providers/card/api-provider';
 import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
 import React, { useEffect, useState } from 'react';
 import { Card } from '../card';
+import Spinner from '../spinner/spinner';
 
 export const LoadSingleCard = ({ uuid }: { uuid: string }) => {
   const { getSingleCard } = useCardsApiContext();
@@ -21,5 +22,10 @@ export const LoadSingleCard = ({ uuid }: { uuid: string }) => {
     }
   }, [getSingleCard, uuid, setMessage]);
 
-  return <>{card && <Card card={card} />}</>;
+  return (
+    <>
+      {!card && <Spinner />}
+      {card && <Card card={card} />}
+    </>
+  );
 };

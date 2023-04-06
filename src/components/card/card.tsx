@@ -1,5 +1,5 @@
 import { Rating } from '@/components';
-import { CardData, useModalDialog } from '@/providers';
+import { CardData } from '@/providers';
 import React, { ReactElement } from 'react';
 import './card.css';
 

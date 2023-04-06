@@ -1,7 +1,6 @@
-import { Card } from '@/components';
+import { Card, LoadSingleCard } from '@/components';
 import { CardData, useModalDialog } from '@/providers';
 import React, { ReactElement, useCallback } from 'react';
-import { LoadSingleCard } from '../load-single-card/load-single-card';
 import './card-shell.css';
 
 interface CardLoaderProps {
@@ -20,9 +19,12 @@ export const CardShell = (props: CardLoaderProps): ReactElement => {
 
   const { showDialog } = useModalDialog();
 
-  const onclick = useCallback(async (uuid: string) => {
-    showDialog(<LoadSingleCard uuid={uuid} />, {});
-  }, []);
+  const onclick = useCallback(
+    async (uuid: string) => {
+      showDialog(<LoadSingleCard uuid={uuid} />, {});
+    },
+    [showDialog]
+  );
 
   return (
     <>
