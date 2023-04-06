@@ -1,4 +1,4 @@
-import { APIState, CardShell, FloatNotification, SearchBar } from '@/components';
+import { APIState, CardOverlay, CardShell, FloatNotification, SearchBar } from '@/components';
 import Overlay from '@/components/overlay/overlay';
 import { useAppContext } from '@/providers';
 import { useCardsApiContext } from '@/providers/card/api-provider';
@@ -56,6 +56,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
       <Overlay isOpen={modal} onClose={() => setModal(false)}>
         HAHA
       </Overlay>
+      <CardOverlay card={state.cards[0]} enabled={modal} />
       <SearchBar
         id={'bar01'}
         onQueryChange={handleQueryChange}

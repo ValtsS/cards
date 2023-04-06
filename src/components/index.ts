@@ -9,3 +9,4 @@ export * from './rating';
 export * from './searchbar';
 export * from './api-state-indicator';
 export * from './overlay';
+export * from './card-overlay';
