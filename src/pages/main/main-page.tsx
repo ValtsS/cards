@@ -1,4 +1,4 @@
-import { SearchBar } from '@/components';
+import { SearchBar } from '@/components/searchbar';
 import { CardShellLoader } from '@/components/card-shell-loader';
 import { useAppContext } from '@/providers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';

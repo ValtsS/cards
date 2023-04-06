@@ -7,7 +7,7 @@ interface OverlayProps {
   onClose: () => void;
 }
 
-const Overlay = ({ isOpen, children, onClose }: OverlayProps) => {
+export const Overlay = ({ isOpen, children, onClose }: OverlayProps) => {
   if (isOpen)
     return (
       <div
@@ -32,5 +32,3 @@ const Overlay = ({ isOpen, children, onClose }: OverlayProps) => {
 
   return <></>;
 };
-
-export default Overlay;

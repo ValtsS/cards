@@ -1,4 +1,5 @@
-import { Card, LoadSingleCard } from '@/components';
+import { Card } from '@/components/card';
+import { LoadSingleCard } from '@/components/load-single-card';
 import { CardData, useModalDialog } from '@/providers';
 import React, { ReactElement, useCallback } from 'react';
 import './card-shell.css';

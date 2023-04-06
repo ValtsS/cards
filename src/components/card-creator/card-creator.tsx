@@ -1,4 +1,4 @@
-import { InputDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components';
+import { InputDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
 import { CardData } from '@/providers';
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

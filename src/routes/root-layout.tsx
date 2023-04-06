@@ -1,5 +1,5 @@
-import { Header } from '@/components';
-import Overlay from '@/components/overlay/overlay';
+import { Header } from '@/components/header';
+import { Overlay } from '@/components/overlay';
 import { useModalDialog } from '@/providers';
 import React, { ReactElement } from 'react';
 import './root-layout.css';
