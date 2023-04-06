@@ -27,7 +27,6 @@ export const ModalDialogProvider = ({ children }: { children: ReactElement }) =>
 
   const showDialog = useCallback(
     (control: ReactNode, parameters: object) => {
-      console.log('set', control);
       setState({ show: true, control, parameters });
     },
 

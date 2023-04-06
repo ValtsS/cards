@@ -17,7 +17,6 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
-      console.log('changed', searchQuery);
       try {
         if (state.errorcounter < 5) {
           await loadCards(searchQuery);

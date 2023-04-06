@@ -21,11 +21,9 @@ const initialState: NotificationState = {
 function reducer(state: NotificationState, action: NotificationAction): NotificationState {
   switch (action.type) {
     case 'SET_MESSAGE':
-      console.log('Mesasge set', action.message);
       state.queue.enqueue({ message: action.message, error: action.error });
       return { ...state, message: action.message };
     case 'CLEAR_MESSAGE':
-      console.log('Mesasge cleared');
       state.queue.dequeue();
       const next = state.queue.isEmpty() ? undefined : state.queue.peek();
       return { ...state, message: next?.message, error: next?.error ?? false };

@@ -128,9 +128,6 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     async (query: string) => {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      console.log('Loadcards ', query);
-      console.log('aplollo', apolloClient);
-
       const limit = 25;
       const offset = 0;
 
@@ -157,7 +154,6 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           exception: null,
           filteringBy: query,
         }));
-        console.log('Loaded!');
       } catch (error) {
         if (error instanceof Error) {
           setState((prevState) => ({

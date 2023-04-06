@@ -14,7 +14,6 @@ export const MainPage = (props: MainPageProps): ReactElement => {
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
-      console.log('changed', searchQuery);
       if (props.onSearch) props.onSearch(searchQuery);
       localStore.setItem(mainpageLastQuery, searchQuery);
       setQuery(searchQuery);
