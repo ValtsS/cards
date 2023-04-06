@@ -20,27 +20,33 @@ export const Card = (props: CardProps): ReactElement => {
     (props.card.flipimg && props.card.flipimg.valueOf() ? ' ' + IMGCLS_FLIP : '') +
     (props.card.grayscale && props.card.grayscale.valueOf() ? ' ' + IMGCLS_GRAY : '');
 
+  const card = props.card;
+  const dateSet = card.addedat && card.addedat.getFullYear() > 0;
+  const ratingSet = card.rating && card.rating > 0;
+
   return (
     <div className="card">
       <div className="inner">
-        <div className="title">{props.card.title}</div>
+        <div className="title">{card.title}</div>
         <img
-          src={props.card.imageUrl}
+          src={card.imageUrl}
           className={imgclass}
           alt="full picture"
           onClick={() => {
-            if (props.clicked) props.clicked(props.card.uuid);
+            if (props.clicked) props.clicked(card.uuid);
           }}
         ></img>
 
-        <div className="price">
-          <span>{props.card.price}</span>
-          <Rating count={props.card.rating ?? 0} />
-        </div>
+        {ratingSet && (
+          <div className="price">
+            <span>{card.price}</span>
+            <Rating count={card.rating ?? 0} />
+          </div>
+        )}
 
-        <p className="smalltitle">{props.card.text}</p>
-        <img src={props.card.minipic} className="minipic"></img>
-        <p className="date">{props.card.addedat?.toDateString()}</p>
+        <p className="smalltitle">{card.text}</p>
+        <img src={card.minipic} className="minipic"></img>
+        {dateSet && <p className="date">{card.addedat?.toDateString()}</p>}
       </div>
     </div>
   );

@@ -109,11 +109,7 @@ export type GetCardsQuery = {
     items?: Array<{
       __typename?: 'Card';
       uuid: string;
-      title: string;
       imageUrl: string;
-      price: string;
-      addedat?: any | null;
-      rating?: number | null;
       flipimg: boolean;
       grayscale: boolean;
     }> | null;
@@ -232,11 +228,7 @@ export const GetCardsDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'uuid' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'addedat' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'rating' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'flipimg' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'grayscale' } },
                     ],

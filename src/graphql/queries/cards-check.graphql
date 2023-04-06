@@ -6,11 +6,7 @@ query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, 
     }
     items {
       uuid
-      title
       imageUrl
-      price
-      addedat
-      rating
       flipimg
       grayscale
     }
