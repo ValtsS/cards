@@ -20,6 +20,8 @@
   max-width: 96px;
   max-height: 96px;
   float: right;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .card .title {
@@ -44,4 +46,10 @@
 
 .card img.bigpichover:hover {
   box-shadow: 0 0 0 5px black; /* Add a blue shadow effect on hover */
+}
+
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
 }

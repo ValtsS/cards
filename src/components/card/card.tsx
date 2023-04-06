@@ -24,6 +24,7 @@ export const Card = (props: CardProps): ReactElement => {
   const dateSet = card.addedat && card.addedat.getFullYear() > 0;
   const ratingSet = card.rating && card.rating > 0;
   const priceSet = Boolean(card.price);
+  const miniSet = Boolean(card.minipic);
 
   return (
     <div className="card">
@@ -44,8 +45,9 @@ export const Card = (props: CardProps): ReactElement => {
         </div>
 
         <p className="smalltitle">{card.text}</p>
-        <img src={card.minipic} className="minipic"></img>
+        {miniSet && <img src={card.minipic} className="minipic"></img>}
         {dateSet && <p className="date">{card.addedat?.toDateString()}</p>}
+        <div className="clearfix"></div>
       </div>
     </div>
   );

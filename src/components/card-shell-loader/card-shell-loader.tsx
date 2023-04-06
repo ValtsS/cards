@@ -20,11 +20,9 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
       console.log('changed', searchQuery);
       try {
         if (state.errorcounter < 5) {
-          //              localStore.setItem(mainpageLastQuery, searchQuery);
-
           await loadCards(searchQuery);
         } else {
-          setMessage('giving up due to multiple API server errors :-(', true);
+          setMessage('giving up due to multiple API server errors :-( Is server down?', true);
         }
       } catch (error) {
         setMessage('API call failed', true);
