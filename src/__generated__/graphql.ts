@@ -37,6 +37,7 @@ export type CardMatchesArgs = {
 
 export type CardFilterInput = {
   searchQuery: Scalars['String'];
+  uuid: Scalars['String'];
 };
 
 export type CardSortInput = {
