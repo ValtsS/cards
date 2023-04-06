@@ -12,11 +12,16 @@ export const Overlay = ({ isOpen, children, onClose }: OverlayProps) => {
     return (
       <div
         className="overlay"
+        data-testid="overlay"
         onClick={() => {
           onClose();
         }}
       >
-        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="overlay-content"
+          data-testid="overlay-content"
+          onClick={(e) => e.stopPropagation()}
+        >
           <span
             className="close"
             onClick={() => {
