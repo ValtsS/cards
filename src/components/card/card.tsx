@@ -14,13 +14,14 @@ export const IMGCLS_BIGPIC = 'bigpic';
 export const IMGCLS_HOVER = 'bigpichover';
 
 export const Card = (props: CardProps): ReactElement => {
+  const card = props.card;
+
   const imgclass =
     IMGCLS_BIGPIC +
-    (!props.card.text ? ' ' + IMGCLS_HOVER : '') +
-    (props.card.flipimg && props.card.flipimg.valueOf() ? ' ' + IMGCLS_FLIP : '') +
-    (props.card.grayscale && props.card.grayscale.valueOf() ? ' ' + IMGCLS_GRAY : '');
+    (!card.text ? ' ' + IMGCLS_HOVER : '') +
+    (card.flipimg && card.flipimg.valueOf() ? ' ' + IMGCLS_FLIP : '') +
+    (card.grayscale && card.grayscale.valueOf() ? ' ' + IMGCLS_GRAY : '');
 
-  const card = props.card;
   const dateSet = card.addedat && card.addedat.getFullYear() > 0;
   const ratingSet = card.rating && card.rating > 0;
   const priceSet = Boolean(card.price);

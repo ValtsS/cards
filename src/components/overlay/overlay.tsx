@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import './Overlay.css';
+import './overlay.css';
 
 interface OverlayProps {
   isOpen: boolean;
@@ -8,16 +8,29 @@ interface OverlayProps {
 }
 
 const Overlay = ({ isOpen, children, onClose }: OverlayProps) => {
-  return (
-    <>
-      {isOpen && (
-        <div className="overlay">
-          <div className="overlay-content">{children}</div>
-          <div className="overlay-backdrop" onClick={onClose}></div>
+  if (isOpen)
+    return (
+      <div
+        className="overlay"
+        onClick={() => {
+          onClose();
+        }}
+      >
+        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+          <span
+            className="close"
+            onClick={() => {
+              onClose();
+            }}
+          >
+            &times;
+          </span>
+          <div>{children}</div>
         </div>
-      )}
-    </>
-  );
+      </div>
+    );
+
+  return <></>;
 };
 
 export default Overlay;
