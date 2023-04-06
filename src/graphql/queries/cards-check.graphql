@@ -18,3 +18,22 @@ query getCards($filter: CardFilterInput!, $order: [CardSortInput!], $take: Int, 
     totalCount
   }
 }
+
+query getCard($filter: CardFilterInput!) {
+  getCards(skip: 0, take: 1, filter: $filter) {
+    items {
+      uuid
+      title
+      text
+      imageUrl
+      minipic
+      price
+      addedat
+      rating
+      flipimg
+      grayscale
+    }
+
+    totalCount
+  }
+}

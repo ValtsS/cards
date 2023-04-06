@@ -19,6 +19,7 @@ interface ProviderState {
 interface ContextValue {
   state: ProviderState;
   loadCards: (query: string) => Promise<void>;
+  getSingleCard: (uuid: string) => Promise<CardData | null>;
 }
 
 const CardsApiContext = createContext<ContextValue>({
@@ -30,6 +31,7 @@ const CardsApiContext = createContext<ContextValue>({
     filteringBy: '',
   },
   loadCards: async () => {},
+  getSingleCard: async () => null,
 });
 
 interface CardsApiProviderProps {
@@ -65,6 +67,31 @@ const getCards = async (
   return { cards: patched, totalcount: response.data.getCards?.totalCount ?? 0 };
 };
 
+const getCard = async (
+  client: ApolloClient<unknown>,
+  params: Schema.CardFilterInput
+): Promise<CardData | null> => {
+  const response = await client.query<Schema.GetCardQuery>({
+    query: Schema.GetCardDocument,
+    variables: {
+      filter: params,
+    },
+  });
+
+  const data = response.data.getCards?.items as Schema.Card[];
+  const patched: CardData[] = [];
+
+  data.forEach((e) => {
+    const { addedat, ...otherProps } = e;
+    const c = new CardData();
+    Object.assign(c, otherProps);
+    c.addedat = new Date(addedat);
+    patched.push(c);
+  });
+
+  return patched.length > 0 ? patched[0] : null;
+};
+
 export function CardsApiProvider(props: CardsApiProviderProps) {
   const [state, setState] = useState<ProviderState>({
     cards: [],
@@ -77,6 +104,25 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
   const { setMessage } = useNotifications();
 
   const { apolloClient } = useAppContext();
+
+  const getSingleCard = useCallback(
+    async (uuid: string): Promise<CardData | null> => {
+      if (!apolloClient) throw new Error('client is not set');
+
+      const searchparams: Schema.CardFilterInput = {
+        searchQuery: '',
+        uuid,
+      };
+      try {
+        const data = await getCard(apolloClient, searchparams);
+        return data;
+      } catch (error) {
+        setMessage((error as Error).message, true);
+        return null;
+      }
+    },
+    [apolloClient, setMessage]
+  );
 
   const loadCards = useCallback(
     async (query: string) => {
@@ -95,6 +141,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
 
         const searchparams: Schema.CardFilterInput = {
           searchQuery: query,
+          uuid: '',
         };
 
         const data = await getCards(apolloClient, searchparams, limit, offset);
@@ -146,8 +193,9 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     () => ({
       state,
       loadCards,
+      getSingleCard,
     }),
-    [state, loadCards]
+    [state, loadCards, getSingleCard]
   );
 
   return <CardsApiContext.Provider value={contextValue}>{props.children}</CardsApiContext.Provider>;

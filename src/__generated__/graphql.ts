@@ -120,6 +120,31 @@ export type GetCardsQuery = {
   } | null;
 };
 
+export type GetCardQueryVariables = Exact<{
+  filter: CardFilterInput;
+}>;
+
+export type GetCardQuery = {
+  __typename?: 'Query';
+  getCards?: {
+    __typename?: 'GetCardsCollectionSegment';
+    totalCount: number;
+    items?: Array<{
+      __typename?: 'Card';
+      uuid: string;
+      title: string;
+      text: string;
+      imageUrl: string;
+      minipic: string;
+      price: string;
+      addedat?: any | null;
+      rating?: number | null;
+      flipimg: boolean;
+      grayscale: boolean;
+    }> | null;
+  } | null;
+};
+
 export const GetCardsDocument = {
   kind: 'Document',
   definitions: [
@@ -226,3 +251,74 @@ export const GetCardsDocument = {
     },
   ],
 } as unknown as DocumentNode<GetCardsQuery, GetCardsQueryVariables>;
+export const GetCardDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getCard' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'CardFilterInput' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getCards' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: { kind: 'IntValue', value: '0' },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: { kind: 'IntValue', value: '1' },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'items' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'uuid' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'minipic' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'addedat' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rating' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'flipimg' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'grayscale' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetCardQuery, GetCardQueryVariables>;
