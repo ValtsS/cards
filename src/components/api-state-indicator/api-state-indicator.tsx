@@ -1,25 +1,25 @@
 import { ProviderState } from '@/providers/card/api-provider';
 import React from 'react';
+import './api-state-indicator.css';
 
 export const APIState = (props: ProviderState) => {
   return (
-    <>
+    <div className="api-state-container">
       <p>
-        <>API Status:</>
-        {props.loading ? 'Loading' : 'Ready'}
+        <strong>API Status:</strong>
+        <span className={props.loading ? 'loading' : ''}>
+          {props.loading ? 'Loading' : 'Ready'}
+        </span>
       </p>
       <p>
-        <> Total results:</>
-        <span>{props.total}</span>
+        <strong>Total results:</strong> {props.total}
       </p>
       <p>
-        <> Offset:</>
-        <span>{props.offset}</span>
+        <strong>Offset:</strong> {props.offset}
       </p>
       <p>
-        <> Limit:</>
-        <span>{props.limit}</span>
+        <strong>Limit:</strong> {props.limit}
       </p>
-    </>
+    </div>
   );
 };

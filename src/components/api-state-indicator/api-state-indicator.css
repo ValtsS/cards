@@ -1,0 +1,14 @@
+.api-state-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.api-state-container p {
+  margin-right: 1rem;
+}
+
+.api-state-container .loading {
+  background-color: darkgreen;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+}
