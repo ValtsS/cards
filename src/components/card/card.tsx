@@ -1,10 +1,11 @@
 import { Rating } from '@/components';
-import { CardData } from '@/providers';
+import { CardData, useModalDialog } from '@/providers';
 import React, { ReactElement } from 'react';
 import './card.css';
 
 export interface CardProps {
   card: CardData;
+  clicked?: (uuid: string) => void;
 }
 
 export const IMGCLS_FLIP = 'flip';
@@ -23,7 +24,14 @@ export const Card = (props: CardProps): ReactElement => {
     <div className="card">
       <div className="inner">
         <div className="title">{props.card.title}</div>
-        <img src={props.card.imageUrl} className={imgclass} alt="full picture"></img>
+        <img
+          src={props.card.imageUrl}
+          className={imgclass}
+          alt="full picture"
+          onClick={() => {
+            if (props.clicked) props.clicked(props.card.uuid);
+          }}
+        ></img>
 
         <div className="price">
           <span>{props.card.price}</span>

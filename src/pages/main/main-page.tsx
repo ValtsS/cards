@@ -1,9 +1,8 @@
-import { APIState, CardOverlay, CardShell, FloatNotification, SearchBar } from '@/components';
-import Overlay from '@/components/overlay/overlay';
+import { APIState, CardShell, FloatNotification, SearchBar } from '@/components';
 import { useAppContext } from '@/providers';
 import { useCardsApiContext } from '@/providers/card/api-provider';
 import { useNotifications } from '@/providers/shell-notifcations/shell-notifications';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
@@ -16,8 +15,6 @@ export const MainPage = (props: MainPageProps): ReactElement => {
   const { setMessage } = useNotifications();
 
   const { state, loadCards } = useCardsApiContext();
-
-  const [modal, setModal] = useState<boolean>(false);
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
@@ -45,18 +42,8 @@ export const MainPage = (props: MainPageProps): ReactElement => {
 
   const { state: notify } = useNotifications();
 
-  const showModal = useCallback(() => {
-    console.log('!!');
-
-    setModal(true);
-  }, []);
-
   return (
     <>
-      <Overlay isOpen={modal} onClose={() => setModal(false)}>
-        HAHA
-      </Overlay>
-      <CardOverlay card={state.cards[0]} enabled={modal} />
       <SearchBar
         id={'bar01'}
         onQueryChange={handleQueryChange}
@@ -64,8 +51,6 @@ export const MainPage = (props: MainPageProps): ReactElement => {
         title="Enter search query"
       />
       <APIState {...state} />
-      <button onClick={showModal}>Test</button>
-
       <FloatNotification message={notify.message} error={notify.error} />
       <CardShell data={state.cards} query={state.filteringBy} />
     </>

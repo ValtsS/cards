@@ -1,4 +1,4 @@
-import { CardProviderStore, LocalStorage } from '@/providers';
+import { CardProviderStore, LocalStorage, ModalDialogProvider } from '@/providers';
 import { AppContextProvider } from '@/providers/app-context-provider';
 import { defaultRoutes } from '@/routes/routes-config';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
@@ -26,9 +26,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           formCardProvider={cardProvider2}
           apolloClient={client}
         >
-          <CardsApiProvider>
-            <CardsApp routesConfig={defaultRoutes} />
-          </CardsApiProvider>
+          <ModalDialogProvider>
+            <CardsApiProvider>
+              <CardsApp routesConfig={defaultRoutes} />
+            </CardsApiProvider>
+          </ModalDialogProvider>
         </AppContextProvider>
       </NotificationsProvider>
     </App>
