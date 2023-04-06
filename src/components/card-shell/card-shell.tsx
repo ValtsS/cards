@@ -1,8 +1,8 @@
+import { Card } from '@/components';
 import { CardData, useModalDialog } from '@/providers';
 import React, { ReactElement, useCallback } from 'react';
-import { Card } from '@/components';
+import { LoadSingleCard } from '../load-single-card/load-single-card';
 import './card-shell.css';
-import { cardTestData } from '@/providers/card/card-test-data';
 
 interface CardLoaderProps {
   data?: CardData[];
@@ -21,13 +21,7 @@ export const CardShell = (props: CardLoaderProps): ReactElement => {
   const { showDialog } = useModalDialog();
 
   const onclick = useCallback(async (uuid: string) => {
-    console.log('onclick', uuid);
-    showDialog(
-      <>
-        <Card card={cardTestData[0]} />
-      </>,
-      { data: uuid }
-    );
+    showDialog(<LoadSingleCard uuid={uuid} />, {});
   }, []);
 
   return (
