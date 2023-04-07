@@ -1,2 +1,2 @@
 **/setup-test.ts
-**/__mocks__/*
+__mocks__/*
