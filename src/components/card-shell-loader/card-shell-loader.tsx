@@ -6,6 +6,7 @@ import { Spinner } from '../spinner/spinner';
 import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
 import { SortBy, useCardsApiContext } from '@/providers/card/api-provider';
 import * as Schema from '@/__generated__/graphql';
+import './card-shell-loader.css';
 
 interface CardShellLoaderProps {
   query: string;
@@ -60,7 +61,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
   return (
     <>
       <APIState {...state} />
-      <span>
+      <span className="buttonland">
         <button onClick={() => setUseSort((prevState) => prevState + 1)}>
           Push to sort by price!
         </button>
