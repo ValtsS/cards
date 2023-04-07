@@ -1,7 +1,7 @@
 import { Queue } from '@/core/queue';
 import React, { ReactElement, useCallback, useContext, useMemo, useReducer } from 'react';
 
-type NotificationState = {
+export type NotificationState = {
   message?: string;
   error: boolean;
   queue: Queue<{ message: string; error: boolean }>;
@@ -31,7 +31,7 @@ function reducer(state: NotificationState, action: NotificationAction): Notifica
   }
 }
 
-type NotificationsContextValue = {
+export type NotificationsContextValue = {
   state: NotificationState;
   setMessage: (message: string, error: boolean) => void;
 };
