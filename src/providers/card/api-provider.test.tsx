@@ -1,6 +1,5 @@
 import { act, render, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
 import * as Schema from '../../__generated__/graphql';
 import { AppContextProvider } from '../app-context-provider';

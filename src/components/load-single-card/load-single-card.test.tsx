@@ -1,6 +1,6 @@
 import { ContextValue, ProviderState } from '@/providers/card/api-provider';
 import { mockCardTestData } from '@/providers/card/card-test-data';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { LoadSingleCard } from './load-single-card';
