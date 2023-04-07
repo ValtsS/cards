@@ -16,6 +16,16 @@ export interface ProviderState {
   filteringBy: string;
 }
 
+export class SortBy {
+  public static Price_ASC: Schema.CardSortInput = {
+    price: Schema.SortEnumType.Asc,
+  };
+
+  public static Price_DESC: Schema.CardSortInput = {
+    price: Schema.SortEnumType.Desc,
+  };
+}
+
 export interface ContextValue {
   state: ProviderState;
   loadCards: (query: string, ordering: Schema.CardSortInput[]) => Promise<void>;

@@ -17,7 +17,7 @@ const CardApiTester = () => {
   const { state: msg } = useNotifications();
 
   useEffect(() => {
-    loadCards('123');
+    loadCards('123', []);
     const promise = getSingleCard('321');
     promise
       .then((value) => {

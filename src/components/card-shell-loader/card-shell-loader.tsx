@@ -19,7 +19,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
     async (searchQuery: string) => {
       try {
         if (state.errorcounter < 5) {
-          await loadCards(searchQuery);
+          await loadCards(searchQuery, []);
         } else {
           setMessage('giving up due to multiple API server errors :-( Is server down?', true);
         }
