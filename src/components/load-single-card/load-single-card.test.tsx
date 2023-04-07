@@ -40,7 +40,8 @@ describe('Load Single card component', () => {
 
     expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
-    expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+    const price = card.price ? '$' + card.price : '';
+    expect(screen.getByText(price)).toBeInTheDocument();
     expect(screen.getAllByRole('img').length).toBe(2);
   });
 });

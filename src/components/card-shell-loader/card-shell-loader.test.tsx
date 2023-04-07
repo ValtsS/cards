@@ -38,7 +38,8 @@ describe('CardShellLoader component', () => {
 
     mockCardTestData.forEach((card) => {
       expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
-      expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+      const price = card.price ? '$' + card.price : '';
+      expect(screen.getByText(price)).toBeInTheDocument();
     });
 
     expect(screen.queryAllByRole('img').length).toBe(mockCardTestData.length * 2);

@@ -18,7 +18,7 @@ export interface ProviderState {
 
 export interface ContextValue {
   state: ProviderState;
-  loadCards: (query: string) => Promise<void>;
+  loadCards: (query: string, ordering: Schema.CardSortInput[]) => Promise<void>;
   getSingleCard: (uuid: string) => Promise<CardData | null>;
 }
 
@@ -71,7 +71,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
   );
 
   const loadCards = useCallback(
-    async (query: string) => {
+    async (query: string, ordering: Schema.CardSortInput[] = []) => {
       setState((prevState) => ({ ...prevState, loading: true }));
 
       const limit = 25;
@@ -86,14 +86,6 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           searchQuery: query,
           uuid: '',
         };
-
-        const ordering: Schema.CardSortInput[] = [];
-
-        const sortby: Schema.CardSortInput = {
-          price: Schema.SortEnumType.Desc,
-        };
-
-        ordering.push(sortby);
 
         const data = await getCards(apolloClient, searchparams, limit, offset, ordering);
 

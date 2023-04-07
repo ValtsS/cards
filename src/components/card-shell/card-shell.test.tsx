@@ -25,7 +25,7 @@ describe('Card Shell component', () => {
   it('should render something', () => {
     const test = new CardData();
     test.title = 'Title';
-    test.price = '$100';
+    test.price = '100';
     test.text = 'Text';
 
     render(<CardShell data={[test]} />);
@@ -43,7 +43,7 @@ describe('Card Shell component', () => {
   it('should call showDialog!', () => {
     const test = new CardData();
     test.title = 'Title';
-    test.price = '$100';
+    test.price = '100';
     test.text = 'Text';
 
     render(<CardShell data={[test]} />);

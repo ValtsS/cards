@@ -9,7 +9,8 @@ describe('Card component', () => {
     render(<Card card={card} />);
     expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
-    expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+    const price = card.price ? '$' + card.price : '';
+    expect(screen.getByText(price)).toBeInTheDocument();
   });
 
   it.each(mockCardTestData)('should test click', (card) => {
@@ -18,7 +19,9 @@ describe('Card component', () => {
     render(<Card card={card} clicked={fn} />);
     expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
-    expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
+
+    const price = card.price ? '$' + card.price : '';
+    expect(screen.getByText(price)).toBeInTheDocument();
 
     const image = screen.getByRole('img', { name: /full picture/i });
     expect(image).toBeInTheDocument();
