@@ -6,15 +6,16 @@ const config: CodegenConfig = {
   documents: ['src/**/*.graphql'],
   generates: {
     './src/__generated__/': {
+      config: {
+        scalars: {
+          DateTime: 'Date',
+        }
+      },
       preset: 'client',
       presetConfig: {
         fragmentMasking: false,
         strictScalars: true,
         defaultScalarType: false,
-        scalars: {
-          DateTime: 'Date', // Convert DateTime types to Date
-        },
-        skipDocuments: ['**/*.gql.ts'], // Skip generating gql.ts files
       },
     },
   },
