@@ -1,5 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
+import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
 import * as Schema from '../../__generated__/graphql';
 import { AppContextProvider } from '../app-context-provider';
@@ -120,6 +121,26 @@ describe('API provider tests', () => {
     expect(screen.getByText('singleuuid:undefined')).toBeInTheDocument();
 
     expect(screen.getByText('Message=' + testErr)).toBeInTheDocument();
+    expect(screen.getByText('Error=true')).toBeInTheDocument();
+  });
+
+  it('Should handle unknown errors', async () => {
+    api.clientMock.query = jest.fn().mockImplementation(() => {
+      throw new Object();
+    });
+    act(() => renderDefault(api));
+
+    // wait for the component to re-render
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(screen.getByText('Loaded')).toBeInTheDocument();
+    expect(screen.getByText('Length:0')).toBeInTheDocument();
+
+    expect(screen.getByText('singleuuid:undefined')).toBeInTheDocument();
+
+    expect(screen.getByText('Message=Unknown API Error')).toBeInTheDocument();
     expect(screen.getByText('Error=true')).toBeInTheDocument();
   });
 

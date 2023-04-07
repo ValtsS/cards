@@ -20,6 +20,7 @@ const initialState: NotificationState = {
 function reducer(state: NotificationState, action: NotificationAction): NotificationState {
   switch (action.type) {
     case 'SET_MESSAGE':
+      console.log('setmessage', action.message);
       state.queue.enqueue({ message: action.message, error: action.error });
       return { ...state, message: action.message, error: action.error };
     case 'CLEAR_MESSAGE':

@@ -63,7 +63,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
         const data = await getCard(apolloClient, searchparams);
         return data;
       } catch (error) {
-        setMessage((error as Error).message, true);
+        setMessage((error as Error).message ?? 'Unknown API Error', true);
         return null;
       }
     },
