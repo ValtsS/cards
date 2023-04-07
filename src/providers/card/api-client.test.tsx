@@ -18,7 +18,12 @@ describe('Client tests', () => {
     };
 
     const data = await getCards(api.clientMock, params, 99, 0);
-    expect(JSON.stringify(data)).toMatch(JSON.stringify({ cards: cardTestData2B, totalcount: 2 }));
+    expect(JSON.stringify(data)).toMatch(
+      JSON.stringify({
+        cards: cardTestData2B,
+        info: { totalcount: 2, pageInfo: { hasNextPage: false, hasPreviousPage: false } },
+      })
+    );
   });
 
   it('getCards should that return nothing work', async () => {
@@ -35,7 +40,7 @@ describe('Client tests', () => {
     };
 
     const data = await getCards(api.clientMock, params, 99, 0);
-    expect(JSON.stringify(data)).toMatch(JSON.stringify({ cards: [], totalcount: 0 }));
+    expect(JSON.stringify(data)).toMatch(JSON.stringify({ cards: [], info: { totalcount: 0 } }));
   });
 
   it('getCard should work', async () => {

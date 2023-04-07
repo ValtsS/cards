@@ -15,13 +15,21 @@ export function assignCardData(target: CardData, source: Schema.Card): void {
   target.uuid = source.uuid;
 }
 
+export interface ResultsInfo {
+  totalcount: number;
+  pageInfo?: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}
+
 export const getCards = async (
   client: ApolloClient<unknown>,
   params: Schema.CardFilterInput,
   limit: number,
   offset: number,
   order: Schema.CardSortInput[] = []
-): Promise<{ cards: CardData[]; totalcount: number }> => {
+): Promise<{ cards: CardData[]; info: ResultsInfo }> => {
   const response = await client.query<Schema.GetCardsQuery>({
     query: Schema.GetCardsDocument,
     variables: {
@@ -43,7 +51,12 @@ export const getCards = async (
       patched.push(c);
     });
 
-  return { cards: patched, totalcount: response.data.getCards?.totalCount ?? 0 };
+  const info: ResultsInfo = {
+    totalcount: response.data.getCards?.totalCount ?? 0,
+    pageInfo: response.data.getCards?.pageInfo,
+  };
+
+  return { cards: patched, info };
 };
 
 export const getCard = async (

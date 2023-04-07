@@ -15,6 +15,8 @@ jest.mock('@/providers/card/api-provider', () => {
     offset: 0,
     exception: null,
     filteringBy: 'oldstate',
+    hasNext: false,
+    hasPrevious: false,
   };
 
   const cval: ContextValue = {
@@ -59,20 +61,20 @@ describe('CardShellLoader component', () => {
     const { loadCards } = useCardsApiContext();
 
     expect(loadCards).toBeCalledTimes(1);
-    expect(loadCards).toBeCalledWith('test', []);
+    expect(loadCards).toBeCalledWith('test', 0, []);
 
     act(() => {
       fireEvent.click(button);
     });
 
     expect(loadCards).toBeCalledTimes(2);
-    expect(loadCards).toBeCalledWith('test', [{ price: 'ASC' }]);
+    expect(loadCards).toBeCalledWith('test', 0, [{ price: 'ASC' }]);
 
     act(() => {
       fireEvent.click(button);
     });
 
     expect(loadCards).toBeCalledTimes(3);
-    expect(loadCards).toBeCalledWith('test', [{ price: 'DESC' }]);
+    expect(loadCards).toBeCalledWith('test', 0, [{ price: 'DESC' }]);
   });
 });

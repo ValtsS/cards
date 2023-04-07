@@ -33,7 +33,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
               break;
           }
 
-          await loadCards(searchQuery, ordering);
+          await loadCards(searchQuery, 0, ordering);
         } else {
           setMessage('giving up due to multiple API server errors :-( Is server down?', true);
         }

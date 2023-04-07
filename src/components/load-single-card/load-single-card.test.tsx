@@ -15,6 +15,8 @@ jest.mock('@/providers/card/api-provider', () => {
     offset: 0,
     exception: null,
     filteringBy: 'oldstate',
+    hasNext: false,
+    hasPrevious: false,
   };
 
   const cval: ContextValue = {

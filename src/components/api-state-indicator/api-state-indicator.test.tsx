@@ -14,6 +14,8 @@ describe('APIState', () => {
     exception: null,
     filteringBy: '',
     sortingBy: 'XX',
+    hasNext: false,
+    hasPrevious: false,
   };
 
   test('renders API state information', () => {

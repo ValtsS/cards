@@ -15,6 +15,9 @@ export interface ProviderState {
   errorcounter: number;
   filteringBy: string;
   sortingBy?: string;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  pageSize?: number;
 }
 
 export class SortBy {
@@ -51,7 +54,7 @@ export class SortBy {
 
 export interface ContextValue {
   state: ProviderState;
-  loadCards: (query: string, ordering: Schema.CardSortInput[]) => Promise<void>;
+  loadCards: (query: string, offset: number, ordering: Schema.CardSortInput[]) => Promise<void>;
   getSingleCard: (uuid: string) => Promise<CardData | null>;
 }
 
@@ -62,6 +65,8 @@ const CardsApiContext = createContext<ContextValue>({
     errorcounter: 0,
     exception: null,
     filteringBy: '',
+    hasNext: false,
+    hasPrevious: false,
   },
   loadCards: async () => {},
   getSingleCard: async () => null,
@@ -78,6 +83,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
     errorcounter: 0,
     exception: null,
     filteringBy: '',
+    hasNext: false,
+    hasPrevious: false,
   });
 
   const { setMessage } = useNotifications();
@@ -104,11 +111,11 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
   );
 
   const loadCards = useCallback(
-    async (query: string, ordering: Schema.CardSortInput[] = []) => {
+    async (query: string, offset: number, ordering: Schema.CardSortInput[] = []) => {
       setState((prevState) => ({ ...prevState, loading: true }));
 
       const limit = 25;
-      const offset = 0;
+      offset = 0;
 
       try {
         setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
@@ -127,7 +134,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
         setState((prevState) => ({
           ...prevState,
           cards: data.cards,
-          total: data.totalcount,
+          total: data.info.totalcount,
           limit,
           offset,
           errorcounter: 0,
@@ -135,6 +142,9 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           exception: null,
           filteringBy: query,
           sortingBy: order_strings,
+          pageSize: limit,
+          hasNext: data.info.pageInfo?.hasNextPage ?? false,
+          hasPrevious: data.info.pageInfo?.hasPreviousPage ?? false,
         }));
       } catch (error) {
         if (error instanceof Error) {
@@ -147,6 +157,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
             total: 0,
             exception: error as Error,
             filteringBy: '',
+            hasNext: false,
+            hasPrevious: false,
           }));
           setMessage((error as Error).message, true);
         } else {
@@ -159,6 +171,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
             errorcounter: prevState.errorcounter + 1,
             exception: new Error('unknown type exception'),
             filteringBy: '',
+            hasNext: false,
+            hasPrevious: false,
           }));
           setMessage('Unknown API server error', true);
         }

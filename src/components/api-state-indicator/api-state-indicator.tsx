@@ -27,6 +27,14 @@ export const APIState = (props: ProviderState) => {
         <strong>Sorting:</strong>
         <span>{props.sortingBy}</span>
       </p>
+      <p>
+        <strong>Has Prev?:</strong>
+        <span>{props.hasPrevious ? 'yes' : ''}</span>
+      </p>
+      <p>
+        <strong>Has Next?:</strong>
+        <span>{props.hasNext ? 'yes' : ''}</span>
+      </p>
     </div>
   );
 };
