@@ -35,7 +35,6 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
               break;
           }
           setOffset(offset);
-          console.log(searchQuery, offset);
           await loadCards(searchQuery, offset, ordering);
         } else {
           setMessage('giving up due to multiple API server errors :-( Is server down?', true);
