@@ -68,6 +68,6 @@ describe('CardShellLoader component', () => {
     const { setMessage } = useNotifications();
     expect(setMessage).toBeCalled();
     expect(setMessage).toBeCalledWith('API call failed', true);
-    expect(screen.getByTestId("spinner")).toBeInTheDocument();
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 });
