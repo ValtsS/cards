@@ -28,7 +28,7 @@ export const mockCardTestData: CardData[] = [
   },
 ];
 
-export const cardTestData2: Card[] = [
+export const cardTestData2: Schema.Card[] = [
   {
     flipimg: false,
     grayscale: false,
