@@ -51,7 +51,7 @@ export class MockGqlApi {
       }
 
       console.error('configured query not found');
-      return Promise.resolve({} as ApolloQueryResult<any>);
+      return Promise.resolve({} as ApolloQueryResult<unknown>);
     });
   }
 }
