@@ -1,7 +1,6 @@
-import { CardData, CardProviderStore } from './card-provider';
 import * as Schema from '@/__generated__/graphql';
-import { SortEnumType } from '@/__generated__/graphql';
 import { SortBy } from './api-provider';
+import { CardData, CardProviderStore } from './card-provider';
 
 describe('Card provider', () => {
   it('should provide', () => {

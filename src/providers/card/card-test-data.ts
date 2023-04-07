@@ -1,4 +1,4 @@
-import { Card } from '../../__generated__/graphql';
+import { Card } from '@/__generated__/graphql';
 import { CardData } from './card-provider';
 
 let dummy = 999999;

@@ -1,5 +1,5 @@
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
-import * as Schema from '../../__generated__/graphql';
+import * as Schema from '@/__generated__/graphql';
 import { getCard, getCards } from './api-client';
 import { cardTestData2, cardTestData2B } from './card-test-data';
 

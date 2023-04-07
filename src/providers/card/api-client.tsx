@@ -1,5 +1,5 @@
 import { ApolloClient } from '@apollo/client';
-import * as Schema from '../../__generated__/graphql';
+import * as Schema from '@/__generated__/graphql';
 import { CardData } from './card-provider';
 
 export function assignCardData(target: CardData, source: Schema.Card): void {
