@@ -30,13 +30,11 @@ jest.mock('@/providers/card/api-provider', () => {
 });
 
 describe('Load Single card component', () => {
-  it('should not crash', async () => {
+  it('should not crash and load a card', async () => {
     act(() => render(<LoadSingleCard uuid={'512'} />));
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
-
-    screen.debug();
 
     const card = mockCardTestData[0];
 
