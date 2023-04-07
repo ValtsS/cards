@@ -19,7 +19,8 @@ export const getCards = async (
   client: ApolloClient<unknown>,
   params: Schema.CardFilterInput,
   limit: number,
-  offset: number
+  offset: number,
+  order: Schema.CardSortInput[] = []
 ): Promise<{ cards: CardData[]; totalcount: number }> => {
   const response = await client.query<Schema.GetCardsQuery>({
     query: Schema.GetCardsDocument,
@@ -27,6 +28,7 @@ export const getCards = async (
       skip: offset,
       take: limit,
       filter: params,
+      order: order,
     },
   });
 

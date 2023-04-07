@@ -87,7 +87,15 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           uuid: '',
         };
 
-        const data = await getCards(apolloClient, searchparams, limit, offset);
+        const ordering: Schema.CardSortInput[] = [];
+
+        const sortby: Schema.CardSortInput = {
+          price: Schema.SortEnumType.Desc,
+        };
+
+        ordering.push(sortby);
+
+        const data = await getCards(apolloClient, searchparams, limit, offset, ordering);
 
         setState((prevState) => ({
           ...prevState,
