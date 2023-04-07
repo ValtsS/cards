@@ -1,4 +1,3 @@
-import * as Schema from '@/__generated__/graphql';
 import { act, render, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
@@ -6,8 +5,9 @@ import { AppContextProvider } from '../app-context-provider';
 import { NotificationsProvider, useNotifications } from '../notifications-provider';
 import { MemoryStorage } from '../storage';
 import { CardsApiProvider, useCardsApiContext } from './api-provider';
+import { setupDefaultAPI } from './api-test-helper';
 import { CardData, CardProviderStore } from './card-provider';
-import { cardTestData2, singleCard, twoCards } from './card-test-data';
+import { cardTestData2 } from './card-test-data';
 
 const CardApiTester = () => {
   const { state, loadCards, getSingleCard } = useCardsApiContext();
@@ -50,19 +50,7 @@ describe('API provider tests', () => {
   const api = new MockGqlApi();
 
   beforeAll(() => {
-    api.configureQuery<Schema.GetCardsQuery>({
-      when: (options) => options.query === Schema.GetCardsDocument,
-      data: {
-        getCards: twoCards,
-      },
-    });
-
-    api.configureQuery<Schema.GetCardQuery>({
-      when: (options) => options.query === Schema.GetCardDocument,
-      data: {
-        getCards: singleCard,
-      },
-    });
+    setupDefaultAPI(api);
   });
 
   it('Should return single and multi search', async () => {

@@ -1,25 +1,14 @@
 import * as Schema from '@/__generated__/graphql';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
 import { getCard, getCards } from './api-client';
-import { cardTestData2B, singleCard, twoCards } from './card-test-data';
+import { setupDefaultAPI } from './api-test-helper';
+import { cardTestData2B } from './card-test-data';
 
 describe('Client tests', () => {
   const api = new MockGqlApi();
 
   beforeAll(() => {
-    api.configureQuery<Schema.GetCardsQuery>({
-      when: (options) => options.query === Schema.GetCardsDocument,
-      data: {
-        getCards: twoCards,
-      },
-    });
-
-    api.configureQuery<Schema.GetCardQuery>({
-      when: (options) => options.query === Schema.GetCardDocument,
-      data: {
-        getCards: singleCard,
-      },
-    });
+    setupDefaultAPI(api);
   });
 
   it('getCards should work', async () => {
