@@ -8,7 +8,7 @@ export function assignCardData(target: CardData, source: Schema.Card): void {
   target.grayscale = source.grayscale;
   target.imageUrl = source.imageUrl;
   target.minipic = source.minipic;
-  target.price = source.price;
+  target.price = source.price?.toString() ?? undefined;
   target.rating = source.rating ?? undefined;
   target.text = source.text;
   target.title = source.title;

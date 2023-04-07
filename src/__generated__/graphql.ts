@@ -24,7 +24,7 @@ export type Card = {
   imageUrl: Scalars['String'];
   matches: Scalars['Boolean'];
   minipic: Scalars['String'];
-  price: Scalars['String'];
+  price?: Maybe<Scalars['Int']>;
   rating?: Maybe<Scalars['Int']>;
   text: Scalars['String'];
   title: Scalars['String'];
@@ -109,7 +109,7 @@ export type GetCardsQuery = {
     items?: Array<{
       __typename?: 'Card';
       uuid: string;
-      price: string;
+      price?: number | null;
       imageUrl: string;
       flipimg: boolean;
       grayscale: boolean;
@@ -133,7 +133,7 @@ export type GetCardQuery = {
       text: string;
       imageUrl: string;
       minipic: string;
-      price: string;
+      price?: number | null;
       addedat?: any | null;
       rating?: number | null;
       flipimg: boolean;

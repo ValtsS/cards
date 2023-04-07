@@ -41,7 +41,7 @@ export const Card = (props: CardProps): ReactElement => {
         ></img>
 
         <div className="price">
-          {priceSet && <span>{card.price}</span>}
+          {priceSet && <span>{'$' + card.price}</span>}
           {ratingSet && <Rating count={card.rating ?? 0} />}
         </div>
 
