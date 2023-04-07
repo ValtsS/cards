@@ -50,6 +50,23 @@ describe('Client tests', () => {
     expect(JSON.stringify(data)).toMatch(JSON.stringify({ cards: cardTestData2B, totalcount: 2 }));
   });
 
+  it('getCards should that return nothing work', async () => {
+    api.configureQuery<Schema.GetCardsQuery>({
+      when: (options) => options.query === Schema.GetCardsDocument,
+      data: {
+        getCards: undefined,
+      },
+    });
+
+    const params: Schema.CardFilterInput = {
+      searchQuery: '',
+      uuid: '',
+    };
+
+    const data = await getCards(api.clientMock, params, 99, 0);
+    expect(JSON.stringify(data)).toMatch(JSON.stringify({ cards: [], totalcount: 0 }));
+  });
+
   it('getCard should work', async () => {
     const params: Schema.CardFilterInput = {
       searchQuery: '',
@@ -58,5 +75,22 @@ describe('Client tests', () => {
 
     const data = await getCard(api.clientMock, params);
     expect(JSON.stringify(data)).toMatch(JSON.stringify(cardTestData2B[0]));
+  });
+
+  it('getCard should work when nothing is found', async () => {
+    const params: Schema.CardFilterInput = {
+      searchQuery: '',
+      uuid: '',
+    };
+
+    api.configureQuery<Schema.GetCardQuery>({
+      when: (options) => options.query === Schema.GetCardDocument,
+      data: {
+        getCards: undefined,
+      },
+    });
+
+    const data = await getCard(api.clientMock, params);
+    expect(data).toBe(null);
   });
 });

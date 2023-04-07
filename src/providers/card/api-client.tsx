@@ -32,16 +32,14 @@ export const getCards = async (
 
   const data = response.data.getCards?.items as Schema.Card[];
   const patched: CardData[] = [];
-
-  data.forEach((e) => {
-    const { addedat, ...otherProps } = e;
-    const c = new CardData();
-    assignCardData(c, otherProps);
-    c.addedat = new Date(addedat);
-    patched.push(c);
-  });
-
-  console.log(response.data);
+  if (data)
+    data.forEach((e) => {
+      const { addedat, ...otherProps } = e;
+      const c = new CardData();
+      assignCardData(c, otherProps);
+      c.addedat = new Date(addedat);
+      patched.push(c);
+    });
 
   return { cards: patched, totalcount: response.data.getCards?.totalCount ?? 0 };
 };
@@ -60,13 +58,14 @@ export const getCard = async (
   const data = response.data.getCards?.items as Schema.Card[];
   const patched: CardData[] = [];
 
-  data.forEach((e) => {
-    const { addedat, ...otherProps } = e;
-    const c = new CardData();
-    assignCardData(c, otherProps);
-    c.addedat = new Date(addedat);
-    patched.push(c);
-  });
+  if (data)
+    data.forEach((e) => {
+      const { addedat, ...otherProps } = e;
+      const c = new CardData();
+      assignCardData(c, otherProps);
+      c.addedat = new Date(addedat);
+      patched.push(c);
+    });
 
   return patched.length > 0 ? patched[0] : null;
 };
