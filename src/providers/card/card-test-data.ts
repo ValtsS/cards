@@ -51,7 +51,7 @@ export const cardTestData2: Card[] = [
     price: '2456',
     text: 'text',
     title: 'Titel',
-    uuid: '1234',
+    uuid: '1235',
   },
 ];
 
@@ -78,6 +78,6 @@ export const cardTestData2B: CardData[] = [
     rating: undefined,
     text: 'text',
     title: 'Titel',
-    uuid: '1234',
+    uuid: '1235',
   }),
 ];

@@ -16,7 +16,7 @@ export interface ProviderState {
   filteringBy: string;
 }
 
-interface ContextValue {
+export interface ContextValue {
   state: ProviderState;
   loadCards: (query: string) => Promise<void>;
   getSingleCard: (uuid: string) => Promise<CardData | null>;
