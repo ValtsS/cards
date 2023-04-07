@@ -69,7 +69,7 @@ export const cardTestData2B: CardData[] = [
     uuid: '1234',
   }),
   new CardData({
-    addedat: new Date('invalid-date'),
+    addedat: undefined,
     flipimg: true,
     grayscale: true,
     imageUrl: 'UrlX',

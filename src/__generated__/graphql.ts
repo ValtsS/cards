@@ -13,7 +13,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
-  DateTime: any;
+  DateTime: Date;
 };
 
 export type Card = {
@@ -134,7 +134,7 @@ export type GetCardQuery = {
       imageUrl: string;
       minipic: string;
       price?: number | null;
-      addedat?: any | null;
+      addedat?: Date | null;
       rating?: number | null;
       flipimg: boolean;
       grayscale: boolean;

@@ -3,7 +3,7 @@ import * as Schema from '@/__generated__/graphql';
 import { CardData } from './card-provider';
 
 export function assignCardData(target: CardData, source: Schema.Card): void {
-  target.addedat = source.addedat;
+  target.addedat = source.addedat ? source.addedat : undefined;
   target.flipimg = source.flipimg;
   target.grayscale = source.grayscale;
   target.imageUrl = source.imageUrl;
@@ -47,7 +47,7 @@ export const getCards = async (
       const { addedat, ...otherProps } = e;
       const c = new CardData();
       assignCardData(c, otherProps);
-      c.addedat = new Date(addedat);
+      c.addedat = addedat ? new Date(addedat) : undefined;
       patched.push(c);
     });
 
@@ -78,7 +78,7 @@ export const getCard = async (
       const { addedat, ...otherProps } = e;
       const c = new CardData();
       assignCardData(c, otherProps);
-      c.addedat = new Date(addedat);
+      c.addedat = addedat ? new Date(addedat) : undefined;
       patched.push(c);
     });
 
