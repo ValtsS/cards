@@ -3,7 +3,7 @@ import { CardData } from './card-provider';
 
 let dummy = 999999;
 
-export const cardTestData: CardData[] = [
+export const mockCardTestData: CardData[] = [
   {
     uuid: (dummy++).toString(),
     title: 'Luxury Suite at Marriott',

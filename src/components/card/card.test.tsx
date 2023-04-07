@@ -1,18 +1,18 @@
 import { CardData } from '@/providers';
-import { cardTestData } from '@/providers/card/card-test-data';
+import { mockCardTestData } from '@/providers/card/card-test-data';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Card, IMGCLS_FLIP, IMGCLS_GRAY } from './card';
 
 describe('Card component', () => {
-  it.each(cardTestData)('should render the card data correctly for $title', (card) => {
+  it.each(mockCardTestData)('should render the card data correctly for $title', (card) => {
     render(<Card card={card} />);
     expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.text ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.price ?? '')).toBeInTheDocument();
   });
 
-  it.each(cardTestData)('should test click', (card) => {
+  it.each(mockCardTestData)('should test click', (card) => {
     const fn = jest.fn();
 
     render(<Card card={card} clicked={fn} />);

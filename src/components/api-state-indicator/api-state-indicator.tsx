@@ -12,13 +12,16 @@ export const APIState = (props: ProviderState) => {
         </span>
       </p>
       <p>
-        <strong>Total results:</strong> {props.total}
+        <strong>Total results:</strong>
+        <span>{props.total}</span>
       </p>
       <p>
-        <strong>Offset:</strong> {props.offset}
+        <strong>Offset:</strong>
+        <span>{props.offset}</span>
       </p>
       <p>
-        <strong>Limit:</strong> {props.limit}
+        <strong>Limit:</strong>
+        <span>{props.limit}</span>
       </p>
     </div>
   );
