@@ -14,6 +14,7 @@ export interface ProviderState {
   exception: Error | null;
   errorcounter: number;
   filteringBy: string;
+  sortingBy?: string;
 }
 
 export class SortBy {
@@ -24,6 +25,28 @@ export class SortBy {
   public static Price_DESC: Schema.CardSortInput = {
     price: Schema.SortEnumType.Desc,
   };
+
+  public static getSortingStr(ordering: Schema.CardSortInput[]): string[] {
+    const results: string[] = [];
+
+    ordering.forEach((o) => {
+      let str = '';
+
+      switch (o) {
+        case SortBy.Price_ASC:
+          str = '↑Price';
+          break;
+
+        case SortBy.Price_DESC:
+          str = '↓Price';
+          break;
+      }
+
+      results.push(str);
+    });
+
+    return results;
+  }
 }
 
 export interface ContextValue {
@@ -97,6 +120,8 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           uuid: '',
         };
 
+        const order_strings = SortBy.getSortingStr(ordering).join(', ');
+
         const data = await getCards(apolloClient, searchparams, limit, offset, ordering);
 
         setState((prevState) => ({
@@ -109,6 +134,7 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
           loading: false,
           exception: null,
           filteringBy: query,
+          sortingBy: order_strings,
         }));
       } catch (error) {
         if (error instanceof Error) {

@@ -23,6 +23,10 @@ export const APIState = (props: ProviderState) => {
         <strong>Limit:</strong>
         <span>{props.limit}</span>
       </p>
+      <p>
+        <strong>Sorting:</strong>
+        <span>{props.sortingBy}</span>
+      </p>
     </div>
   );
 };

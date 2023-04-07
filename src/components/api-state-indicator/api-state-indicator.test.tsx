@@ -13,6 +13,7 @@ describe('APIState', () => {
     errorcounter: 0,
     exception: null,
     filteringBy: '',
+    sortingBy: 'XX',
   };
 
   test('renders API state information', () => {
@@ -22,6 +23,7 @@ describe('APIState', () => {
     expect(screen.getByText(defaultProps.total ?? 0)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.offset ?? 0)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.limit ?? 0)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.sortingBy ?? 0)).toBeInTheDocument();
   });
 
   test('displays "Loading" when loading prop is true', () => {
