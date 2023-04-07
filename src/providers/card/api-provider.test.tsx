@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
-import * as Schema from '../../__generated__/graphql';
+import * as Schema from '@/__generated__/graphql';
 import { AppContextProvider } from '../app-context-provider';
 import { NotificationsProvider, useNotifications } from '../notifications-provider';
 import { MemoryStorage } from '../storage';
