@@ -1,27 +1,9 @@
-import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
 import * as Schema from '@/__generated__/graphql';
+import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
 import { getCard, getCards } from './api-client';
-import { cardTestData2, cardTestData2B } from './card-test-data';
+import { cardTestData2B, singleCard, twoCards } from './card-test-data';
 
 describe('Client tests', () => {
-  const twoCards: Schema.GetCardsCollectionSegment = {
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false,
-    },
-    totalCount: 2,
-    items: cardTestData2,
-  };
-
-  const singleCard: Schema.GetCardsCollectionSegment = {
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false,
-    },
-    totalCount: 1,
-    items: [cardTestData2[0]],
-  };
-
   const api = new MockGqlApi();
 
   beforeAll(() => {

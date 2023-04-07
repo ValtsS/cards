@@ -1,4 +1,4 @@
-import { Card } from '@/__generated__/graphql';
+import * as Schema from '@/__generated__/graphql';
 import { CardData } from './card-provider';
 
 let dummy = 999999;
@@ -81,3 +81,21 @@ export const cardTestData2B: CardData[] = [
     uuid: '1235',
   }),
 ];
+
+export const twoCards: Schema.GetCardsCollectionSegment = {
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
+  totalCount: 2,
+  items: cardTestData2,
+};
+
+export const singleCard: Schema.GetCardsCollectionSegment = {
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
+  totalCount: 1,
+  items: [cardTestData2[0]],
+};

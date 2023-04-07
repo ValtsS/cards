@@ -1,13 +1,13 @@
+import * as Schema from '@/__generated__/graphql';
 import { act, render, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
-import * as Schema from '@/__generated__/graphql';
 import { AppContextProvider } from '../app-context-provider';
 import { NotificationsProvider, useNotifications } from '../notifications-provider';
 import { MemoryStorage } from '../storage';
 import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { CardData, CardProviderStore } from './card-provider';
-import { cardTestData2 } from './card-test-data';
+import { cardTestData2, singleCard, twoCards } from './card-test-data';
 
 const CardApiTester = () => {
   const { state, loadCards, getSingleCard } = useCardsApiContext();
@@ -47,24 +47,6 @@ const CardApiTester = () => {
 };
 
 describe('API provider tests', () => {
-  const twoCards: Schema.GetCardsCollectionSegment = {
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false,
-    },
-    totalCount: 2,
-    items: cardTestData2,
-  };
-
-  const singleCard: Schema.GetCardsCollectionSegment = {
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false,
-    },
-    totalCount: 1,
-    items: [cardTestData2[0]],
-  };
-
   const api = new MockGqlApi();
 
   beforeAll(() => {
