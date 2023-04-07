@@ -1,3 +1,4 @@
+import { Card } from '../../__generated__/graphql';
 import { CardData } from './card-provider';
 
 let dummy = 999999;
@@ -25,4 +26,58 @@ export const cardTestData: CardData[] = [
     minipic:
       'https://randompicturegenerator.com/img/cat-generator/gbc0167b5494b0f694cef1a200e0c580556048963590ce82c252451d73dfcdd9ed9ff28282a16b8f901f409deaa7a54e8_640.jpg',
   },
+];
+
+export const cardTestData2: Card[] = [
+  {
+    flipimg: false,
+    grayscale: false,
+    addedat: new Date('2022-01-13'),
+    imageUrl: 'Url',
+    matches: true,
+    minipic: 'Mini',
+    price: '2456',
+    rating: 3,
+    text: 'text',
+    title: 'Titel',
+    uuid: '1234',
+  },
+  {
+    flipimg: true,
+    grayscale: true,
+    imageUrl: 'UrlX',
+    matches: true,
+    minipic: 'MiniY',
+    price: '2456',
+    text: 'text',
+    title: 'Titel',
+    uuid: '1234',
+  },
+];
+
+export const cardTestData2B: CardData[] = [
+  new CardData({
+    flipimg: false,
+    grayscale: false,
+    addedat: new Date('2022-01-13'),
+    imageUrl: 'Url',
+    minipic: 'Mini',
+    price: '2456',
+    rating: 3,
+    text: 'text',
+    title: 'Titel',
+    uuid: '1234',
+  }),
+  new CardData({
+    addedat: new Date('invalid-date'),
+    flipimg: true,
+    grayscale: true,
+    imageUrl: 'UrlX',
+    minipic: 'MiniY',
+    price: '2456',
+    rating: undefined,
+    text: 'text',
+    title: 'Titel',
+    uuid: '1234',
+  }),
 ];

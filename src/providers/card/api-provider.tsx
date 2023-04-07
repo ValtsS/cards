@@ -1,8 +1,8 @@
 import * as Schema from '@/__generated__/graphql';
-import { ApolloClient } from '@apollo/client';
 import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
 import { useNotifications } from '../notifications-provider/notifications-provider';
+import { getCard, getCards } from './api-client';
 import { CardData } from './card-provider';
 
 export interface ProviderState {
@@ -37,60 +37,6 @@ const CardsApiContext = createContext<ContextValue>({
 interface CardsApiProviderProps {
   children: React.ReactNode;
 }
-
-const getCards = async (
-  client: ApolloClient<unknown>,
-  params: Schema.CardFilterInput,
-  limit: number,
-  offset: number
-): Promise<{ cards: CardData[]; totalcount: number }> => {
-  const response = await client.query<Schema.GetCardsQuery>({
-    query: Schema.GetCardsDocument,
-    variables: {
-      skip: offset,
-      take: limit,
-      filter: params,
-    },
-  });
-
-  const data = response.data.getCards?.items as Schema.Card[];
-  const patched: CardData[] = [];
-
-  data.forEach((e) => {
-    const { addedat, ...otherProps } = e;
-    const c = new CardData();
-    Object.assign(c, otherProps);
-    c.addedat = new Date(addedat);
-    patched.push(c);
-  });
-
-  return { cards: patched, totalcount: response.data.getCards?.totalCount ?? 0 };
-};
-
-const getCard = async (
-  client: ApolloClient<unknown>,
-  params: Schema.CardFilterInput
-): Promise<CardData | null> => {
-  const response = await client.query<Schema.GetCardQuery>({
-    query: Schema.GetCardDocument,
-    variables: {
-      filter: params,
-    },
-  });
-
-  const data = response.data.getCards?.items as Schema.Card[];
-  const patched: CardData[] = [];
-
-  data.forEach((e) => {
-    const { addedat, ...otherProps } = e;
-    const c = new CardData();
-    Object.assign(c, otherProps);
-    c.addedat = new Date(addedat);
-    patched.push(c);
-  });
-
-  return patched.length > 0 ? patched[0] : null;
-};
 
 export function CardsApiProvider(props: CardsApiProviderProps) {
   const [state, setState] = useState<ProviderState>({

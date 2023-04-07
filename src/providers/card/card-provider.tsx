@@ -21,8 +21,9 @@ export class CardData {
     return CardData.counter++;
   }
 
-  constructor() {
+  constructor(props?: Partial<CardData>) {
     this.uuid = CardData.getNext().toString();
+    if (props) Object.assign(this, props);
   }
 }
 
