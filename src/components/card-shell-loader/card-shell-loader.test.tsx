@@ -15,8 +15,8 @@ jest.mock('@/providers/card/api-provider', () => {
     offset: 0,
     exception: null,
     filteringBy: 'oldstate',
-    hasNext: false,
-    hasPrevious: false,
+    hasNext: true,
+    hasPrevious: true,
   };
 
   const cval: ContextValue = {
@@ -55,26 +55,46 @@ describe('CardShellLoader component', () => {
 
     expect(screen.getByText('275')).toBeInTheDocument();
 
-    const button = screen.getAllByRole('button')[0];
-    expect(button).toBeInTheDocument();
+    const buttonSort = screen.getAllByRole('button')[0];
+    expect(buttonSort).toBeInTheDocument();
+
+    const buttonPrev = screen.getAllByRole('button')[1];
+    expect(buttonPrev).toBeInTheDocument();
+
+    const buttonNext = screen.getAllByRole('button')[2];
+    expect(buttonNext).toBeInTheDocument();
 
     const { loadCards } = useCardsApiContext();
 
     expect(loadCards).toBeCalledTimes(1);
-    expect(loadCards).toBeCalledWith('test', 0, []);
+    expect(loadCards).toHaveBeenLastCalledWith('test', 0, []);
 
     act(() => {
-      fireEvent.click(button);
+      fireEvent.click(buttonSort);
     });
 
     expect(loadCards).toBeCalledTimes(2);
-    expect(loadCards).toBeCalledWith('test', 0, [{ price: 'ASC' }]);
+    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'ASC' }]);
 
     act(() => {
-      fireEvent.click(button);
+      fireEvent.click(buttonSort);
     });
 
     expect(loadCards).toBeCalledTimes(3);
-    expect(loadCards).toBeCalledWith('test', 0, [{ price: 'DESC' }]);
+    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'DESC' }]);
+
+    act(() => {
+      fireEvent.click(buttonNext);
+    });
+
+    expect(loadCards).toBeCalledTimes(4);
+    expect(loadCards).toHaveBeenLastCalledWith('test', 25, [{ price: 'DESC' }]);
+
+    act(() => {
+      fireEvent.click(buttonPrev);
+    });
+
+    expect(loadCards).toBeCalledTimes(5);
+    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'DESC' }]);
   });
 });
