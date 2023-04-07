@@ -1,6 +1,6 @@
 import { ContextValue, ProviderState, useCardsApiContext } from '@/providers/card';
 import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
-import { act, render } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CardShellLoader } from './card-shell-loader';
 
@@ -60,6 +60,7 @@ describe('CardShellLoader component', () => {
   it('should handle other failures', () => {
     const { state } = useCardsApiContext();
     state.errorcounter = 0;
+    state.loading = true;
 
     act(() => {
       render(<CardShellLoader query="test" />);
@@ -67,5 +68,6 @@ describe('CardShellLoader component', () => {
     const { setMessage } = useNotifications();
     expect(setMessage).toBeCalled();
     expect(setMessage).toBeCalledWith('API call failed', true);
+    expect(screen.getByTestId("spinner")).toBeInTheDocument();
   });
 });
