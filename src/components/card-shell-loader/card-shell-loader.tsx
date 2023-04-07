@@ -17,9 +17,10 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
   const { state: notify } = useNotifications();
 
   const [sortByPrice, setUseSort] = useState(0);
+  const [offset, setOffset] = useState(0);
 
   const handleQueryChange = useCallback(
-    async (searchQuery: string) => {
+    async (searchQuery: string, offset: number) => {
       try {
         if (state.errorcounter < 5) {
           const ordering: Schema.CardSortInput[] = [];
@@ -32,8 +33,9 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
               ordering.push(SortBy.Price_DESC);
               break;
           }
-
-          await loadCards(searchQuery, 0, ordering);
+          setOffset(offset);
+          console.log(searchQuery, offset);
+          await loadCards(searchQuery, offset, ordering);
         } else {
           setMessage('giving up due to multiple API server errors :-( Is server down?', true);
         }
@@ -41,19 +43,34 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
         setMessage('API call failed', true);
       }
     },
-    [loadCards, state.errorcounter, setMessage, sortByPrice]
+    [loadCards, state.errorcounter, setMessage, sortByPrice, setOffset]
   );
 
+  const goNext = () => {
+    handleQueryChange(props.query, offset + 25);
+  };
+  const goPrev = () => {
+    handleQueryChange(props.query, offset - 25);
+  };
+
   useEffect(() => {
-    handleQueryChange(props.query);
+    handleQueryChange(props.query, 0);
   }, [props.query, handleQueryChange]);
 
   return (
     <>
       <APIState {...state} />
-      <button onClick={() => setUseSort((prevState) => prevState + 1)}>
-        Push to sort by price!
-      </button>
+      <span>
+        <button onClick={() => setUseSort((prevState) => prevState + 1)}>
+          Push to sort by price!
+        </button>
+        <button disabled={!state.hasPrevious} onClick={goPrev}>
+          &#x00AB;
+        </button>
+        <button disabled={!state.hasNext} onClick={goNext}>
+          &#x00BB;
+        </button>
+      </span>
       <FloatNotification message={notify.message} error={notify.error} />
       {state.loading && <Spinner />}
       {state.cards && <CardShell data={state.cards} query={state.filteringBy} />}

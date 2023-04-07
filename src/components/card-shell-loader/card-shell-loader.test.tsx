@@ -55,7 +55,7 @@ describe('CardShellLoader component', () => {
 
     expect(screen.getByText('275')).toBeInTheDocument();
 
-    const button = screen.getByRole('button');
+    const button = screen.getAllByRole('button')[0];
     expect(button).toBeInTheDocument();
 
     const { loadCards } = useCardsApiContext();

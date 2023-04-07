@@ -115,7 +115,6 @@ export function CardsApiProvider(props: CardsApiProviderProps) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
       const limit = 25;
-      offset = 0;
 
       try {
         setState((prevState) => ({ ...prevState, loading: true, exception: null, cards: [] }));
