@@ -22,7 +22,7 @@ export const CardShell = (props: CardLoaderProps): ReactElement => {
 
   const onclick = useCallback(
     async (uuid: string) => {
-      showDialog(<LoadSingleCard uuid={uuid} />, {});
+      if (props.showdetails) showDialog(<LoadSingleCard uuid={uuid} />, {});
     },
     [showDialog]
   );
