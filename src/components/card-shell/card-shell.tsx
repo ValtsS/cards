@@ -24,7 +24,7 @@ export const CardShell = (props: CardLoaderProps): ReactElement => {
     async (uuid: string) => {
       if (props.showdetails) showDialog(<LoadSingleCard uuid={uuid} />, {});
     },
-    [showDialog]
+    [showDialog, props.showdetails]
   );
 
   return (
