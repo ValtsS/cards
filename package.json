@@ -15,7 +15,8 @@
     "sonar": "/sonar/runsonar.sh",
     "pre-commit": "lint-staged",
     "gql:compile": "graphql-codegen",
-    "gql:watch": "graphql-codegen -w"
+    "gql:watch": "graphql-codegen -w",
+    "check-strict": "eslint src --ext js,ts,tsx  --max-warnings 0 && tsc --noEmit --strict"
   },
   "dependencies": {
     "@apollo/client": "^3.7.11",
