@@ -46,11 +46,25 @@ describe('Card Shell component', () => {
     test.price = '100';
     test.text = 'Text';
 
-    render(<CardShell data={[test]} />);
+    render(<CardShell data={[test]} showdetails={true} />);
 
     const image = screen.getByRole('img');
     fireEvent.click(image);
 
     expect(mockShowDialog).toBeCalled();
+  });
+
+  it('should not call showDialog!', () => {
+    const test = new CardData();
+    test.title = 'Title';
+    test.price = '100';
+    test.text = 'Text';
+
+    render(<CardShell data={[test]} />);
+
+    const image = screen.getByRole('img');
+    fireEvent.click(image);
+
+    expect(mockShowDialog).not.toBeCalled();
   });
 });

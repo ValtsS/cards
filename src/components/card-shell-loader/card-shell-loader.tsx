@@ -73,7 +73,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
       </span>
       <FloatNotification message={notify.message} error={notify.error} />
       {state.loading && <Spinner />}
-      {state.cards && <CardShell data={state.cards} query={state.filteringBy} />}
+      {state.cards && <CardShell data={state.cards} query={state.filteringBy} showdetails={true} />}
     </>
   );
 };
