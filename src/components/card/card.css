@@ -20,6 +20,8 @@
   max-width: 96px;
   max-height: 96px;
   float: right;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .card .title {
@@ -36,4 +38,18 @@
 
 .card img.grayscale {
   filter: grayscale(100%);
+}
+
+.card img.bigpichover {
+  transition: box-shadow 0.3s ease-in-out; /* Add a transition effect to the box-shadow property */
+}
+
+.card img.bigpichover:hover {
+  box-shadow: 0 0 0 5px black; /* Add a blue shadow effect on hover */
+}
+
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
 }

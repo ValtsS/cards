@@ -34,7 +34,7 @@ describe('Searchbar component', () => {
       render(
         <AppContextProvider
           localStoreProvider={memory}
-          cardProvider={new CardProviderStore()}
+          apolloClient={null}
           formCardProvider={new CardProviderStore()}
         >
           <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
@@ -63,7 +63,7 @@ describe('Searchbar component', () => {
     const { unmount } = render(
       <AppContextProvider
         localStoreProvider={memory}
-        cardProvider={new CardProviderStore()}
+        apolloClient={null}
         formCardProvider={new CardProviderStore()}
       >
         <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />

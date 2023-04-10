@@ -1,5 +1,7 @@
+import { AboutPage } from '@/pages/about';
+import { FormerPage } from '@/pages/former';
+import { MainPage } from '@/pages/main';
 import React from 'react';
-import { AboutPage, FormerPage, MainPage } from '@/pages';
 
 export interface RouteConfig {
   path: string;

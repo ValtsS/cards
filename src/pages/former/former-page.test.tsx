@@ -1,5 +1,5 @@
 import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
-import { cardTestData } from '@/providers/card/card-test-data';
+import { mockCardTestData } from '@/providers/card/card-test-data';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';
@@ -7,14 +7,14 @@ import { ConfirmationMessage, FormerPage } from './former-page';
 describe('Former page component', () => {
   it('should render without crash', async () => {
     const testCardProvider = new CardProviderStore();
-    const firstCard = cardTestData[0];
+    const firstCard = mockCardTestData[0];
 
     testCardProvider.data.push(firstCard);
 
     render(
       <AppContextProvider
         localStoreProvider={new MemoryStorage()}
-        cardProvider={new CardProviderStore()}
+        apolloClient={null}
         formCardProvider={testCardProvider}
       >
         <FormerPage />

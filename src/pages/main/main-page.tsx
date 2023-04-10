@@ -1,44 +1,29 @@
-import { CardShell } from '@/components/card-shell';
 import { SearchBar } from '@/components/searchbar';
-import { CardData, useAppContext } from '@/providers';
+import { CardShellLoader } from '@/components/card-shell-loader';
+import { useAppContext } from '@/providers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
 }
-export interface MainPageState {
-  cards?: CardData[];
-  filteringBy?: string;
-  ready: boolean;
-}
-
-const mainpageLastQuery = `mainpage_lastquery`;
+const mainpageLastQuery = 'mainpage_lastquery_key';
 
 export const MainPage = (props: MainPageProps): ReactElement => {
-  const { localStore, cardProvider } = useAppContext();
-
-  const initialState: MainPageState = {
-    ready: false,
-  };
-
-  const [state, setState] = useState(initialState);
+  const { localStore } = useAppContext();
+  const [query, setQuery] = useState('');
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
-      setState({
-        cards: await cardProvider.loadTestData(searchQuery),
-        filteringBy: searchQuery,
-        ready: true,
-      });
-      localStore.setItem(mainpageLastQuery, searchQuery);
       if (props.onSearch) props.onSearch(searchQuery);
+      localStore.setItem(mainpageLastQuery, searchQuery);
+      setQuery(searchQuery);
     },
-    [localStore, cardProvider, props]
+    [localStore, props]
   );
 
   useEffect(() => {
-    const searched = localStore.getItem(mainpageLastQuery);
-    handleQueryChange(searched ?? '');
+    const prevQuery = localStore.getItem(mainpageLastQuery) ?? '';
+    handleQueryChange(prevQuery);
   }, [localStore, handleQueryChange]);
 
   return (
@@ -49,8 +34,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
         testId="search-bar-test-id"
         title="Enter search query"
       />
-
-      <CardShell data={state.cards} query={state.filteringBy} />
+      <CardShellLoader query={query} />
     </>
   );
 };

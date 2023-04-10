@@ -1,1 +1,1 @@
-export { FormerPage } from './former-page';
+export { ConfirmationMessage, FormerPage } from './former-page';

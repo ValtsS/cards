@@ -4,6 +4,7 @@ export class LocalStorage {
   }
 
   getItem(key: string): string | null {
-    return localStorage.getItem(key);
+    const data = localStorage.getItem(key);
+    return data;
   }
 }

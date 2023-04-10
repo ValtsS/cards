@@ -13,9 +13,12 @@
     "watch-tests": "cross-env BABEL_ENV=test NODE_ENV=test jest --watch",
     "coverage": "cross-env BABEL_ENV=test NODE_ENV=test jest --coverage",
     "sonar": "/sonar/runsonar.sh",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "gql:compile": "graphql-codegen",
+    "gql:watch": "graphql-codegen -w"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.8",
@@ -28,6 +31,10 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
+    "@graphql-codegen/cli": "^3.3.0",
+    "@graphql-codegen/client-preset": "^3.0.0",
+    "@graphql-codegen/introspection": "^3.0.1",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.9",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.27",

@@ -1,1 +1,3 @@
 **/setup-test.ts
+**/__generated__/graphql.ts
+__mocks__/*

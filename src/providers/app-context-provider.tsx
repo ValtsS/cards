@@ -1,38 +1,39 @@
+import { ApolloClient } from '@apollo/client';
 import React from 'react';
 import { CardProviderStore } from './card';
 import { LocalStorage } from './storage';
 
 type AppContextValue = {
   localStore: LocalStorage;
-  cardProvider: CardProviderStore;
   formCardProvider: CardProviderStore;
+  apolloClient: ApolloClient<unknown> | null;
 };
 
 export const AppContext = React.createContext<AppContextValue>({
   localStore: new LocalStorage(),
-  cardProvider: new CardProviderStore(),
   formCardProvider: new CardProviderStore(),
+  apolloClient: null,
 });
 
 type AppContextProviderProps = {
   children: React.ReactNode;
   localStoreProvider: LocalStorage;
-  cardProvider: CardProviderStore;
   formCardProvider: CardProviderStore;
+  apolloClient: ApolloClient<unknown> | null;
 };
 
 export const AppContextProvider = ({
   children,
   localStoreProvider,
-  cardProvider,
-  formCardProvider: cardProvider2,
+  formCardProvider: cardProvider,
+  apolloClient,
 }: AppContextProviderProps) => {
   return (
     <AppContext.Provider
       value={{
         localStore: localStoreProvider,
-        cardProvider: cardProvider,
-        formCardProvider: cardProvider2,
+        formCardProvider: cardProvider,
+        apolloClient,
       }}
     >
       {children}

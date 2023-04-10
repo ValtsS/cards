@@ -1,0 +1,10 @@
+.buttonland {
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.buttonland button {
+  font-size: 18px; /* Set the font size to make buttons larger */
+  margin: 0 10px; /* Add some margin between buttons */
+}
