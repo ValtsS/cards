@@ -1,16 +1,17 @@
-import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
+import {
+  expectedTestCardData,
+  fillTheInputs,
+} from '@/components/card-creator/cart-creator-test-helper';
+import { AppContextProvider, MemoryStorage } from '@/providers';
 import { mockCardTestData } from '@/providers/card/card-test-data';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
 
 describe('Former page component', () => {
   it('should render without crash', async () => {
-    const testCardProvider = new CardProviderStore();
     const firstCard = mockCardTestData[0];
-
-    testCardProvider.data.push(firstCard);
     firstCard.addedat = new Date('2024-06-11').getDate();
 
     renderWithProviders(
@@ -27,6 +28,36 @@ describe('Former page component', () => {
     expect(submit).toBeInTheDocument();
     expect(screen.getByText(firstCard.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(firstCard.text ?? '')).toBeInTheDocument();
+  });
+
+  it('should should create a card', async () => {
+    const mockCreateObjectURL = jest.fn(() => 'mock-url');
+    const original = global.URL.createObjectURL;
+    try {
+      global.URL.createObjectURL = mockCreateObjectURL;
+
+      renderWithProviders(
+        <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
+          <FormerPage />
+        </AppContextProvider>
+      );
+
+      const file = new File(['test image'], 'test.png', { type: 'image/png' });
+      await fillTheInputs(expectedTestCardData, file);
+      const submit = screen.getByRole('button');
+      expect(submit).toBeInTheDocument();
+
+      await act(async () => {
+        fireEvent.mouseDown(submit);
+        fireEvent.click(submit);
+        fireEvent.mouseUp(submit);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      expect(screen.getByText(/^Card \(Id = .+\) has been saved$/)).toBeInTheDocument();
+    } finally {
+      global.URL.createObjectURL = original;
+    }
   });
 });
 

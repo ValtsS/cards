@@ -39,3 +39,16 @@ export const fillTheInputs = async (data: CardData, file: File) => {
     fireEvent.change(dateadd, { target: { value: dateToTest } });
   }
 };
+
+export const expectedTestCardData: CardData = {
+  addedat: new Date('2012-01-01').getTime(),
+  flipimg: false,
+  grayscale: true,
+  imageUrl: 'mock-url',
+  minipic: undefined,
+  price: '13',
+  rating: 1,
+  text: 'Text2',
+  title: 'Text1',
+  uuid: '4',
+};
