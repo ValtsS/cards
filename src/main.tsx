@@ -1,4 +1,4 @@
-import { LocalStorage, ModalDialogProvider } from '@/providers';
+import { ModalDialogProvider } from '@/providers';
 import { AppContextProvider } from '@/providers/app-context-provider';
 import { defaultRoutes } from '@/routes/routes-config';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
@@ -10,8 +10,6 @@ import { CardsApp } from './cards-app';
 import { CardsApiProvider } from './providers/card/api-provider';
 import { NotificationsProvider } from './providers/notifications-provider/notifications-provider';
 import { setupStore } from './store';
-
-const localStoreProvider = new LocalStorage();
 
 const client = new ApolloClient({
   uri: 'http://ng4.velns.org:8000/graphql',
@@ -25,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <App>
       <Provider store={store}>
         <NotificationsProvider>
-          <AppContextProvider localStoreProvider={localStoreProvider} apolloClient={client}>
+          <AppContextProvider apolloClient={client}>
             <ModalDialogProvider>
               <CardsApiProvider>
                 <CardsApp routesConfig={defaultRoutes} />

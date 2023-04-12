@@ -3,7 +3,7 @@ import {
   expectedTestCardData,
   fillTheInputs,
 } from '@/components/card-creator/cart-creator-test-helper';
-import { AppContextProvider, MemoryStorage } from '@/providers';
+import { AppContextProvider } from '@/providers';
 import { mockCardTestData } from '@/providers/card/card-test-data';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
@@ -15,7 +15,7 @@ describe('Former page component', () => {
     firstCard.addedat = new Date('2024-06-11').getDate();
 
     renderWithProviders(
-      <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
+      <AppContextProvider apolloClient={null}>
         <FormerPage />
       </AppContextProvider>,
       {
@@ -37,7 +37,7 @@ describe('Former page component', () => {
       global.URL.createObjectURL = mockCreateObjectURL;
 
       renderWithProviders(
-        <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
+        <AppContextProvider apolloClient={null}>
           <FormerPage />
         </AppContextProvider>
       );

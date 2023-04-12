@@ -1,10 +1,9 @@
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { act, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { AppContextProvider } from '../app-context-provider';
 import { NotificationsProvider, useNotifications } from '../notifications-provider';
-import { MemoryStorage } from '../storage';
 import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { setupDefaultAPI } from './api-test-helper';
 import { CardData } from './card-provider';
@@ -132,10 +131,7 @@ function renderDefault(api: MockGqlApi | null) {
 
   renderWithProviders(
     <NotificationsProvider>
-      <AppContextProvider
-        localStoreProvider={new MemoryStorage()}
-        apolloClient={api?.clientMock || null}
-      >
+      <AppContextProvider apolloClient={api?.clientMock || null}>
         <CardsApiProvider>
           <CardApiTester />
         </CardsApiProvider>

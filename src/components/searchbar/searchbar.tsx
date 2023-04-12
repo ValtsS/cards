@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useRedux } from './searchbar-use-localstore';
+import { useRedux } from './searchbar-use-redux';
 import './searchbar.css';
 
 interface SearchProps {

@@ -1,28 +1,14 @@
 import { renderWithProviders } from '@/../__mocks__/test-utils';
-import { AppContextProvider, MemoryStorage } from '@/providers';
+import { AppContextProvider } from '@/providers';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MainPage } from './main-page';
-
-// Create a mock for the CardProviderStore class
-jest.mock('@/providers', () => {
-  const MockCardProviderStore = jest.fn().mockImplementation(() => {
-    return {
-      loadTestData: jest.fn().mockResolvedValue([]),
-    };
-  });
-
-  return {
-    ...jest.requireActual('@/providers'),
-    CardProviderStore: MockCardProviderStore,
-  };
-});
 
 describe('Main page component', () => {
   it('should render without crash', async () => {
     act(() => {
       renderWithProviders(
-        <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
+        <AppContextProvider apolloClient={null}>
           <MainPage />
         </AppContextProvider>
       );
@@ -40,7 +26,7 @@ describe('Main page component', () => {
 
     act(() => {
       renderWithProviders(
-        <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
+        <AppContextProvider apolloClient={null}>
           <MainPage onSearch={sfun} />
         </AppContextProvider>
       );
@@ -66,7 +52,7 @@ describe('Main page component', () => {
 
   it('test slow propogation due to unmount', async () => {
     const { unmount } = renderWithProviders(
-      <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
+      <AppContextProvider apolloClient={null}>
         <MainPage />
       </AppContextProvider>
     );
