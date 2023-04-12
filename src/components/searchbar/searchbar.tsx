@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { useLocalStore } from './searchbar-use-localstore';
+import { useRedux } from './searchbar-use-localstore';
 import './searchbar.css';
 
 interface SearchProps {
@@ -10,7 +10,7 @@ interface SearchProps {
 }
 
 export const SearchBar = (props: SearchProps): ReactElement => {
-  const { queryString, handleChange } = useLocalStore(`searchbar_${props.id}_lastquery`);
+  const { queryString, handleChange } = useRedux(`searchbar_${props.id}_lastquery`);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event.target.value);
