@@ -1,63 +1,24 @@
-import { useAppContext } from '@/providers';
-import { useRef, useState, useEffect } from 'react';
-
-export interface LocalSearchState {
-  query: string;
-  contextReady: boolean;
-}
+import { change, selectSearchQueryData } from '@/slices/searchbar/searchbarSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export interface UseLocalStoreResult {
-  state: LocalSearchState;
+  queryString: string;
   handleChange: (filter: string | undefined, search: boolean) => string;
 }
 
 export const useLocalStore = (key: string): UseLocalStoreResult => {
-  const { localStore } = useAppContext();
-  const initialState: LocalSearchState = {
-    contextReady: false,
-    query: '',
-  };
-
-  const lastQueryRef = useRef<string>('');
-
-  const [state, setState] = useState(initialState);
-
-  const saveToStore = (val: string) => localStore.setItem(key, val);
-
-  useEffect(() => {
-    const getFromStore = (): string => {
-      return localStore.getItem(key) ?? '';
-    };
-
-    const loaded = getFromStore();
-
-    if (loaded) {
-      lastQueryRef.current = loaded;
-      setState({
-        contextReady: true,
-        query: loaded,
-      });
-    }
-    return () => {
-      if (lastQueryRef.current) localStore.setItem(key, lastQueryRef.current);
-    };
-  }, [localStore, key]);
+  const dispatch = useDispatch();
+  const queryString = useSelector(selectSearchQueryData);
 
   const handleChange = (filter: string | undefined, search: boolean): string => {
-    const last = state.query;
+    const last = queryString;
     const apply = filter === undefined ? last : filter;
 
     if (apply != last) {
-      lastQueryRef.current = apply;
-      setState((prevState) => ({
-        ...prevState,
-        query: apply,
-      }));
+      dispatch(change(apply));
     }
-
-    if (search) saveToStore(apply);
     return apply;
   };
 
-  return { state, handleChange };
+  return { queryString, handleChange };
 };

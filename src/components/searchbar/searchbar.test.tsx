@@ -1,6 +1,6 @@
-import { MemoryStorage } from '@/providers';
-import { AppContextProvider } from '@/providers/app-context-provider';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { AppStore, setupStore } from '@/store';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { SearchBar } from './searchbar';
 
@@ -19,22 +19,21 @@ jest.mock('@/providers', () => {
 });
 
 describe('Searchbar component', () => {
-  let memory: MemoryStorage;
+  let store: AppStore;
   let qcFunc: typeof jest.fn;
 
   const pattern = 'sweetsearch';
 
   beforeEach(() => {
-    memory = new MemoryStorage();
+    store = setupStore();
     qcFunc = jest.fn();
   });
 
   const TestRender = async () => {
     act(() => {
-      render(
-        <AppContextProvider localStoreProvider={memory} apolloClient={null}>
-          <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
-        </AppContextProvider>
+      renderWithProviders(
+        <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />,
+        { store }
       );
     });
 
@@ -45,25 +44,22 @@ describe('Searchbar component', () => {
 
   it('should render without crash', async () => {
     TestRender();
-
     expect(qcFunc).toBeCalledTimes(0);
-    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
+    const updatedState = store.getState();
+    expect(updatedState.searchBar.query).toBe('');
   });
 
   it('should render with forced umount', async () => {
     const qcFunc = jest.fn();
     const pattern = 'sweetsearch';
 
-    const memory = new MemoryStorage();
-
-    const { unmount } = render(
-      <AppContextProvider localStoreProvider={memory} apolloClient={null}>
-        <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
-      </AppContextProvider>
+    const { unmount } = renderWithProviders(
+      <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
     );
 
     unmount();
-    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
+    const updatedState = store.getState();
+    expect(updatedState.searchBar.query).toBe('');
   });
 
   it('should Trigger querychange', async () => {
@@ -75,7 +71,18 @@ describe('Searchbar component', () => {
     act(() => fireEvent.change(searchBar, { target: { value: '12345' } }));
 
     expect(qcFunc).toBeCalledTimes(0);
-    expect(memory.getItem(`searchbar_sb_lastquery`)).toBeNull();
+    const updatedState = store.getState();
+    expect(updatedState.searchBar.query).toBe('12345');
+
+    act(() => {
+      fireEvent.keyDown(searchBar, { key: 'Enter', keyCode: 13 });
+      fireEvent.keyUp(searchBar, { key: 'Enter', keyCode: 13 });
+    });
+
+    await waitFor(() => {
+      expect(qcFunc).toBeCalled();
+      expect(qcFunc).toBeCalledWith('12345');
+    });
   });
 
   it('should Trigger querychange via Enter', async () => {
@@ -95,7 +102,8 @@ describe('Searchbar component', () => {
     await waitFor(() => {
       expect(qcFunc).toBeCalled();
       expect(qcFunc).toBeCalledWith('0');
-      expect(memory.getItem(`searchbar_sb_lastquery`)).toBe('0');
+      const updatedState = store.getState();
+      expect(updatedState.searchBar.query).toBe('0');
     });
   });
 });

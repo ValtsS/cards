@@ -1,5 +1,6 @@
+import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { AppContextProvider, MemoryStorage } from '@/providers';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MainPage } from './main-page';
 
@@ -20,7 +21,7 @@ jest.mock('@/providers', () => {
 describe('Main page component', () => {
   it('should render without crash', async () => {
     act(() => {
-      render(
+      renderWithProviders(
         <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
           <MainPage />
         </AppContextProvider>
@@ -38,7 +39,7 @@ describe('Main page component', () => {
     const sfun = jest.fn();
 
     act(() => {
-      render(
+      renderWithProviders(
         <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
           <MainPage onSearch={sfun} />
         </AppContextProvider>
@@ -64,7 +65,7 @@ describe('Main page component', () => {
   });
 
   it('test slow propogation due to unmount', async () => {
-    const { unmount } = render(
+    const { unmount } = renderWithProviders(
       <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
         <MainPage />
       </AppContextProvider>

@@ -1,8 +1,10 @@
 import { cardReducer } from '@/slices/card/cardSlice';
+import { searchBarReducer } from '@/slices/searchbar/searchbarSlice';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
   cards: cardReducer,
+  searchBar: searchBarReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

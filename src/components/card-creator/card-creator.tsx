@@ -10,7 +10,7 @@ export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
 }
 
-class localState {
+class LocalState {
   previewImageUrl?: string;
 }
 
@@ -22,7 +22,7 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
   ];
   const imageCache = new ImageCache();
 
-  const [state, setState] = useState(new localState());
+  const [state, setState] = useState(new LocalState());
 
   const handleImagePrview = (event: ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;

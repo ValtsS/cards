@@ -10,7 +10,7 @@ interface SearchProps {
 }
 
 export const SearchBar = (props: SearchProps): ReactElement => {
-  const { state, handleChange } = useLocalStore(`searchbar_${props.id}_lastquery`);
+  const { queryString, handleChange } = useLocalStore(`searchbar_${props.id}_lastquery`);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event.target.value, false);
@@ -36,7 +36,7 @@ export const SearchBar = (props: SearchProps): ReactElement => {
             <>
               <input
                 type="text"
-                value={state.query}
+                value={queryString}
                 onChange={handleQueryChange}
                 data-testid={props.testId}
                 onKeyDown={handleKeyPress}
