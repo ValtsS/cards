@@ -1,8 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { act, render, screen } from '@testing-library/react';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { act, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { AppContextProvider } from '../app-context-provider';
 import { NotificationsProvider, useNotifications } from '../notifications-provider';
 import { MemoryStorage } from '../storage';
@@ -10,7 +9,6 @@ import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { setupDefaultAPI } from './api-test-helper';
 import { CardData } from './card-provider';
 import { cardTestData2 } from './card-test-data';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
 
 const CardApiTester = () => {
   const { state, loadCards, getSingleCard } = useCardsApiContext();
