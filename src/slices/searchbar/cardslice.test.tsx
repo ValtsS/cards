@@ -6,11 +6,11 @@ describe('searchQuery tests', () => {
     const store = setupStore();
     const testVal = '134567';
 
-    const action = searchBarSlice.actions.change(testVal);
+    const action = searchBarSlice.actions.change({ key: '1', value: testVal });
     // Act
     store.dispatch(action);
 
-    let updatedState = store.getState();
-    expect(updatedState.searchBar.query).toBe(testVal);
+    const updatedState = store.getState();
+    expect(updatedState.searchBar.query['1']).toBe(testVal);
   });
 });

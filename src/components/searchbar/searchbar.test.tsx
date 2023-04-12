@@ -23,6 +23,7 @@ describe('Searchbar component', () => {
   let qcFunc: typeof jest.fn;
 
   const pattern = 'sweetsearch';
+  const expectedKey = 'searchbar_sb_lastquery';
 
   beforeEach(() => {
     store = setupStore();
@@ -46,7 +47,7 @@ describe('Searchbar component', () => {
     TestRender();
     expect(qcFunc).toBeCalledTimes(0);
     const updatedState = store.getState();
-    expect(updatedState.searchBar.query).toBe('');
+    expect(updatedState.searchBar.query[expectedKey]).toBeUndefined();
   });
 
   it('should render with forced umount', async () => {
@@ -59,7 +60,7 @@ describe('Searchbar component', () => {
 
     unmount();
     const updatedState = store.getState();
-    expect(updatedState.searchBar.query).toBe('');
+    expect(updatedState.searchBar.query[expectedKey]).toBeUndefined();
   });
 
   it('should Trigger querychange', async () => {
@@ -72,7 +73,7 @@ describe('Searchbar component', () => {
 
     expect(qcFunc).toBeCalledTimes(0);
     const updatedState = store.getState();
-    expect(updatedState.searchBar.query).toBe('12345');
+    expect(updatedState.searchBar.query[expectedKey]).toBe('12345');
 
     act(() => {
       fireEvent.keyDown(searchBar, { key: 'Enter', keyCode: 13 });
@@ -103,7 +104,7 @@ describe('Searchbar component', () => {
       expect(qcFunc).toBeCalled();
       expect(qcFunc).toBeCalledWith('0');
       const updatedState = store.getState();
-      expect(updatedState.searchBar.query).toBe('0');
+      expect(updatedState.searchBar.query[expectedKey]).toBe('0');
     });
   });
 });
