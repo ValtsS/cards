@@ -1,4 +1,4 @@
-import { CardProviderStore, MemoryStorage } from '@/providers';
+import { MemoryStorage } from '@/providers';
 import { AppContextProvider } from '@/providers/app-context-provider';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';

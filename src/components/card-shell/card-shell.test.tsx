@@ -1,4 +1,4 @@
-import { CardData, Cards } from '@/providers';
+import { Cards } from '@/providers';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CardShell } from './card-shell';
