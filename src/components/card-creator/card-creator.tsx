@@ -1,5 +1,5 @@
 import { InputDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
-import { CardData } from '@/providers';
+import { CardData, Cards } from '@/providers';
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import ImageCache from '@/core/ImageCache';
@@ -15,8 +15,8 @@ class LocalCardState2 {
   previewImageUrl?: string;
 
   constructor(defaultDate: Date) {
-    this.card = new CardData();
-    this.card.addedat = defaultDate;
+    this.card = Cards.alloc();
+    this.card.addedat = defaultDate.getTime();
   }
 }
 

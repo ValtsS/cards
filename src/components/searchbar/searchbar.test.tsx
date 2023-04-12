@@ -32,11 +32,7 @@ describe('Searchbar component', () => {
   const TestRender = async () => {
     act(() => {
       render(
-        <AppContextProvider
-          localStoreProvider={memory}
-          apolloClient={null}
-          formCardProvider={new CardProviderStore()}
-        >
+        <AppContextProvider localStoreProvider={memory} apolloClient={null}>
           <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
         </AppContextProvider>
       );
@@ -61,11 +57,7 @@ describe('Searchbar component', () => {
     const memory = new MemoryStorage();
 
     const { unmount } = render(
-      <AppContextProvider
-        localStoreProvider={memory}
-        apolloClient={null}
-        formCardProvider={new CardProviderStore()}
-      >
+      <AppContextProvider localStoreProvider={memory} apolloClient={null}>
         <SearchBar id="sb" testId="sb-test" onQueryChange={qcFunc} title={pattern} />
       </AppContextProvider>
     );

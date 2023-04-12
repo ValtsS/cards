@@ -112,7 +112,7 @@ describe('Card Shell component', () => {
     expect(fn).toBeCalledTimes(1);
 
     const expected: CardData = {
-      addedat: new Date(dateToTest),
+      addedat: new Date(dateToTest).getTime(),
       flipimg: false,
       grayscale: true,
       imageUrl: 'mock-url',

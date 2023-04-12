@@ -35,26 +35,32 @@ describe('Card component', () => {
     {
       uuid: 'AA',
       flipimg: false,
+      addedat: undefined,
     },
     {
       uuid: 'BB',
       grayscale: false,
+      addedat: undefined,
     },
     {
       uuid: 'CC',
       flipimg: true,
+      addedat: undefined,
     },
     {
       uuid: 'DD',
       grayscale: true,
+      addedat: undefined,
     },
     {
       uuid: 'EE',
       rating: 0,
+      addedat: undefined,
     },
     {
       uuid: 'EE',
       rating: 3,
+      addedat: undefined,
     },
   ];
 

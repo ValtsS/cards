@@ -1,4 +1,4 @@
-import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
+import { AppContextProvider, MemoryStorage } from '@/providers';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MainPage } from './main-page';
@@ -21,11 +21,7 @@ describe('Main page component', () => {
   it('should render without crash', async () => {
     act(() => {
       render(
-        <AppContextProvider
-          apolloClient={null}
-          localStoreProvider={new MemoryStorage()}
-          formCardProvider={new CardProviderStore()}
-        >
+        <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
           <MainPage />
         </AppContextProvider>
       );
@@ -43,11 +39,7 @@ describe('Main page component', () => {
 
     act(() => {
       render(
-        <AppContextProvider
-          apolloClient={null}
-          localStoreProvider={new MemoryStorage()}
-          formCardProvider={new CardProviderStore()}
-        >
+        <AppContextProvider apolloClient={null} localStoreProvider={new MemoryStorage()}>
           <MainPage onSearch={sfun} />
         </AppContextProvider>
       );
@@ -73,11 +65,7 @@ describe('Main page component', () => {
 
   it('test slow propogation due to unmount', async () => {
     const { unmount } = render(
-      <AppContextProvider
-        localStoreProvider={new MemoryStorage()}
-        formCardProvider={new CardProviderStore()}
-        apolloClient={null}
-      >
+      <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
         <MainPage />
       </AppContextProvider>
     );

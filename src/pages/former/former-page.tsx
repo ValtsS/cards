@@ -1,11 +1,12 @@
 import { CardCreator } from '@/components/card-creator';
 import { CardShell } from '@/components/card-shell';
-import { CardData, useAppContext } from '@/providers';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { CardData } from '@/providers';
+import { insertCard, selectCardData } from '@/slices/card/cardSlice';
+import React, { ReactElement, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './former-page.css';
 
 interface FormerPageState {
-  cards: CardData[];
   message?: string;
 }
 
@@ -18,25 +19,18 @@ export const ConfirmationMessage = ({ message }: MessageProps) => {
 };
 
 export const FormerPage = (): ReactElement => {
-  const { formCardProvider } = useAppContext();
+  const cardslist = useSelector(selectCardData);
+  const dispatch = useDispatch();
 
-  const initialState: FormerPageState = {
-    cards: [],
-  };
+  const initialState: FormerPageState = {};
+
   const [state, setState] = useState(initialState);
 
-  useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      cards: formCardProvider.data,
-      message: '',
-    }));
-  }, [formCardProvider]);
-
   const newCard = (newCard: CardData) => {
+    const cardDataObject = { ...newCard, addedat: newCard.addedat };
+    dispatch(insertCard(cardDataObject));
     setState((prevState) => ({
       ...prevState,
-      cards: formCardProvider.insert(newCard),
       message: 'Card (Id = ' + newCard.uuid + ') has been saved',
     }));
   };
@@ -46,7 +40,7 @@ export const FormerPage = (): ReactElement => {
       <br />
       <CardCreator onCardCreate={newCard} />
       <ConfirmationMessage message={state.message} />
-      <CardShell data={state.cards} hidequery={true} />
+      <CardShell data={cardslist} hidequery={true} />
     </>
   );
 };

@@ -1,5 +1,5 @@
-import { CardData } from '@/providers';
 import ImageCache from '@/core/ImageCache';
+import { Cards } from '@/providers';
 import { CardFormValues, CardValidator } from './card-validator';
 
 const mockFile = (type: string, size: number): File => {
@@ -30,11 +30,11 @@ describe('CardValidator', () => {
 
   describe('isValid', () => {
     it('returns true for a valid card', () => {
-      const card = new CardData();
+      const card = Cards.alloc();
       card.title = 'Test Title';
       card.text = 'Test Text';
       card.price = '100';
-      card.addedat = new Date();
+      card.addedat = new Date().getTime();
       card.rating = 3;
       card.imageUrl = 'http://example.com/image.png';
       card.flipimg = false;
@@ -44,7 +44,7 @@ describe('CardValidator', () => {
     });
 
     it('returns false and sets errors for an invalid card', () => {
-      const card = new CardData();
+      const card = Cards.alloc();
       expect(validator.isValid(card)).toBe(false);
       expect(validator.errors).toEqual({
         title: CardValidator.ERRORS.TITLE_REQUIRED,
@@ -59,11 +59,11 @@ describe('CardValidator', () => {
     });
 
     it('returns false and sets errors for an invalid card data', () => {
-      const card = new CardData();
+      const card = Cards.alloc();
       card.title = 'Test Title';
       card.text = 'Test Text';
       card.price = '-100';
-      card.addedat = new Date(new Date().getFullYear() + 100, 1, 1);
+      card.addedat = new Date(new Date().getFullYear() + 100, 1, 1).getTime();
       card.rating = undefined;
       card.imageUrl = 'http://example.com/image.png';
       card.flipimg = false;
@@ -77,7 +77,7 @@ describe('CardValidator', () => {
     });
 
     it('returns false and sets errors for an invalid card data #2', () => {
-      const card = new CardData();
+      const card = Cards.alloc();
       card.title = 'Test Title';
       card.text = 'Test Text';
       card.price = '-100';
@@ -173,7 +173,7 @@ describe('CardValidator Prepare Card', () => {
       expect(card.title).toBe('Test Card');
       expect(card.text).toBe('This is a test card.');
       expect(card.price).toBe('9.99');
-      expect(card.addedat).toEqual(new Date('2022-01-01'));
+      expect(card.addedat).toEqual(new Date('2022-01-01').getTime());
       expect(card.rating).toBe(3);
       expect(card.grayscale).toBe(true);
       expect(card.imageUrl).toBe('blob: HAHA');

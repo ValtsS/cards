@@ -18,12 +18,10 @@ describe('Client tests', () => {
     };
 
     const data = await getCards(api.clientMock, params, 99, 0);
-    expect(JSON.stringify(data)).toMatch(
-      JSON.stringify({
-        cards: cardTestData2B,
-        info: { totalcount: 2, pageInfo: { hasNextPage: false, hasPreviousPage: false } },
-      })
-    );
+    expect(data).toEqual({
+      cards: cardTestData2B,
+      info: { totalcount: 2, pageInfo: { hasNextPage: false, hasPreviousPage: false } },
+    });
   });
 
   it('getCards should that return nothing work', async () => {
@@ -50,7 +48,7 @@ describe('Client tests', () => {
     };
 
     const data = await getCard(api.clientMock, params);
-    expect(JSON.stringify(data)).toMatch(JSON.stringify(cardTestData2B[0]));
+    expect(data).toEqual(cardTestData2B[0]);
   });
 
   it('getCard should work when nothing is found', async () => {

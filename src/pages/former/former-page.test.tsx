@@ -3,6 +3,7 @@ import { mockCardTestData } from '@/providers/card/card-test-data';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
 
 describe('Former page component', () => {
   it('should render without crash', async () => {
@@ -10,15 +11,17 @@ describe('Former page component', () => {
     const firstCard = mockCardTestData[0];
 
     testCardProvider.data.push(firstCard);
+    firstCard.addedat = new Date('2024-06-11').getDate();
 
-    render(
-      <AppContextProvider
-        localStoreProvider={new MemoryStorage()}
-        apolloClient={null}
-        formCardProvider={testCardProvider}
-      >
+    renderWithProviders(
+      <AppContextProvider localStoreProvider={new MemoryStorage()} apolloClient={null}>
         <FormerPage />
-      </AppContextProvider>
+      </AppContextProvider>,
+      {
+        preloadedState: {
+          cards: { data: [firstCard] },
+        },
+      }
     );
     const submit = screen.getByRole('button');
     expect(submit).toBeInTheDocument();
