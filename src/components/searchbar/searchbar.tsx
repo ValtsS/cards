@@ -13,11 +13,11 @@ export const SearchBar = (props: SearchProps): ReactElement => {
   const { queryString, handleChange } = useLocalStore(`searchbar_${props.id}_lastquery`);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(event.target.value, false);
+    handleChange(event.target.value);
   };
 
   const handleSearch = () => {
-    const query = handleChange(undefined, true);
+    const query = handleChange(undefined);
     props.onQueryChange(query);
   };
 

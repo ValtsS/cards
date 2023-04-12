@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export interface UseLocalStoreResult {
   queryString: string;
-  handleChange: (filter: string | undefined, search: boolean) => string;
+  handleChange: (filter: string | undefined) => string;
 }
 
 export const useLocalStore = (key: string): UseLocalStoreResult => {
   const dispatch = useDispatch();
   const queryString = useSelector((state: RootState) => selectSearchQueryData(state, key)) ?? '';
 
-  const handleChange = (filter: string | undefined, search: boolean): string => {
+  const handleChange = (filter: string | undefined): string => {
     const last = queryString;
     const apply = filter === undefined ? last : filter;
 
