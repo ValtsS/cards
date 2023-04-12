@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CardCreator } from './card-creator';
 import { CardValidator } from './card-validator';
+import { fillTheInputs } from './cart-creator-test-helper';
 
 describe('Card Shell component', () => {
   let originalCreate: (obj: Blob | MediaSource) => string;
@@ -55,88 +56,62 @@ describe('Card Shell component', () => {
   });
 
   it('should handle creation', async () => {
-    const fn = jest.fn();
-
     const mockCreateObjectURL = jest.fn(() => 'mock-url');
-    global.URL.createObjectURL = mockCreateObjectURL;
+    const original = global.URL.createObjectURL;
+    try {
+      global.URL.createObjectURL = mockCreateObjectURL;
 
-    render(<CardCreator onCardCreate={fn} />);
+      const file = new File(['test image'], 'test.png', { type: 'image/png' });
 
-    const file = new File(['test image'], 'test.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Upload picture') as HTMLInputElement;
+      const fn = jest.fn();
 
-    expect(input).toBeInTheDocument();
+      render(<CardCreator onCardCreate={fn} />);
 
-    await act(async () => {
-      fireEvent.input(input, { target: { files: [file] } });
-      fireEvent.change(input, { target: { files: [file] } });
-    });
+      const expected: CardData = {
+        addedat: new Date('2012-01-01').getTime(),
+        flipimg: false,
+        grayscale: true,
+        imageUrl: 'mock-url',
+        minipic: undefined,
+        price: '13',
+        rating: 1,
+        text: 'Text2',
+        title: 'Text1',
+        uuid: '4',
+      };
 
-    expect(input.files?.[0]).toBe(file);
-    expect(screen.getByRole('img')).toHaveAttribute('src', 'mock-url');
+      await fillTheInputs(expected, file);
+      expect(screen.getByRole('img')).toHaveAttribute('src', 'mock-url');
 
-    const texts = screen.queryAllByRole('textbox');
-    expect(screen.queryAllByRole('textbox').length).toBe(2);
-    fireEvent.change(texts[0], { target: { value: 'Text1' } });
-    fireEvent.change(texts[1], { target: { value: 'Text2' } });
+      const submit = screen.getByRole('button');
 
-    const ratingcontrol = screen.getByRole('combobox');
-    fireEvent.change(ratingcontrol, { target: { value: '1' } });
+      expect(submit).toBeInTheDocument();
 
-    const gray = screen.getByRole('checkbox');
-    fireEvent.click(gray);
+      // wait for the component to re-render
+      await act(async () => {
+        fireEvent.mouseDown(submit);
+        fireEvent.click(submit);
+        fireEvent.mouseUp(submit);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
 
-    const pricecontrol = screen.getByRole('spinbutton');
-    fireEvent.change(pricecontrol, { target: { value: '13' } });
+      expect(fn).toBeCalledTimes(1);
+      const actual: CardData = fn.mock.calls[0][0];
 
-    const orientation = screen.queryAllByRole('radio');
-    expect(orientation.length).toBe(2);
-    const firstRadio = orientation[0];
-    fireEvent.click(firstRadio);
+      expect(actual.flipimg).toEqual(expected.flipimg);
+      expect(actual.grayscale).toEqual(expected.grayscale);
+      expect(actual.imageUrl).toEqual(expected.imageUrl);
+      expect(actual.minipic).toEqual(expected.minipic);
+      expect(actual.price).toEqual(expected.price);
+      expect(actual.rating).toEqual(expected.rating);
+      expect(actual.text).toEqual(expected.text);
+      expect(actual.title).toEqual(expected.title);
 
-    const dateadd = screen.getByLabelText('Added at');
-    expect(dateadd).toBeInTheDocument();
-    const dateToTest = '2012-12-15';
-    fireEvent.change(dateadd, { target: { value: dateToTest } });
+      const receivedDate = new Date(actual.addedat ?? 0);
 
-    const submit = screen.getByRole('button');
-
-    // wait for the component to re-render
-    await act(async () => {
-      fireEvent.mouseDown(submit);
-      fireEvent.click(submit);
-      fireEvent.mouseUp(submit);
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    expect(fn).toBeCalledTimes(1);
-
-    const expected: CardData = {
-      addedat: new Date(dateToTest).getTime(),
-      flipimg: false,
-      grayscale: true,
-      imageUrl: 'mock-url',
-      minipic: undefined,
-      price: '13',
-      rating: 1,
-      text: 'Text2',
-      title: 'Text1',
-      uuid: '4',
-    };
-
-    const actual: CardData = fn.mock.calls[0][0];
-
-    expect(actual.flipimg).toEqual(expected.flipimg);
-    expect(actual.grayscale).toEqual(expected.grayscale);
-    expect(actual.imageUrl).toEqual(expected.imageUrl);
-    expect(actual.minipic).toEqual(expected.minipic);
-    expect(actual.price).toEqual(expected.price);
-    expect(actual.rating).toEqual(expected.rating);
-    expect(actual.text).toEqual(expected.text);
-    expect(actual.title).toEqual(expected.title);
-
-    const receivedDate = new Date(actual.addedat ?? 0);
-
-    expect(receivedDate.getTime()).toEqual(new Date(dateToTest).getTime());
+      expect(receivedDate.getTime()).toEqual(new Date(expected.addedat ?? 0).getTime());
+    } finally {
+      global.URL.createObjectURL = original;
+    }
   });
 });
