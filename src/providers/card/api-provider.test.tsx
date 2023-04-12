@@ -10,6 +10,7 @@ import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { setupDefaultAPI } from './api-test-helper';
 import { CardData } from './card-provider';
 import { cardTestData2 } from './card-test-data';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
 
 const CardApiTester = () => {
   const { state, loadCards, getSingleCard } = useCardsApiContext();
@@ -131,22 +132,16 @@ describe('API provider tests', () => {
 function renderDefault(api: MockGqlApi | null) {
   // Create a mock store with initial state and configure it with the card reducer
 
-  const store = configureStore({
-    reducer: {},
-  });
-
-  render(
-    <Provider store={store}>
-      <NotificationsProvider>
-        <AppContextProvider
-          localStoreProvider={new MemoryStorage()}
-          apolloClient={api?.clientMock || null}
-        >
-          <CardsApiProvider>
-            <CardApiTester />
-          </CardsApiProvider>
-        </AppContextProvider>
-      </NotificationsProvider>
-    </Provider>
+  renderWithProviders(
+    <NotificationsProvider>
+      <AppContextProvider
+        localStoreProvider={new MemoryStorage()}
+        apolloClient={api?.clientMock || null}
+      >
+        <CardsApiProvider>
+          <CardApiTester />
+        </CardsApiProvider>
+      </AppContextProvider>
+    </NotificationsProvider>
   );
 }
