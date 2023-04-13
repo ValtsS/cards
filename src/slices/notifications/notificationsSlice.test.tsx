@@ -2,13 +2,13 @@ import { setupStore } from '@/store';
 import { notificationsSlice } from './notificationsSlice';
 
 describe('notificationsSlice tests', () => {
-  it('should trigger a change', async () => {
+  it('tests queue', async () => {
     const store = setupStore();
     const testVal = '134567';
     const testVal2 = '988765';
 
     let action = notificationsSlice.actions.setMessage({ message: testVal, error: false });
-    // Act
+
     store.dispatch(action);
 
     let updatedState = store.getState();
