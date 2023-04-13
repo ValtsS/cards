@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import { CardsApp } from './cards-app';
-import { CardsApiProvider } from './providers/card/api-provider';
 import { setupStore } from './store';
 
 const client = new ApolloClient({
@@ -23,9 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Provider store={store}>
         <AppContextProvider apolloClient={client}>
           <ModalDialogProvider>
-            <CardsApiProvider>
-              <CardsApp routesConfig={defaultRoutes} />
-            </CardsApiProvider>
+            <CardsApp routesConfig={defaultRoutes} />
           </ModalDialogProvider>
         </AppContextProvider>
       </Provider>
