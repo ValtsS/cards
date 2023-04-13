@@ -19,11 +19,11 @@ describe('CardShellLoader component', () => {
     const store = setupStore();
     api.clientMock.query = jest.fn();
 
-    const preload = store.getState();
-    const xx = {
-      ...preload,
+    const initial = store.getState();
+    const preload = {
+      ...initial,
       cardsAPI: {
-        ...preload.cardsAPI,
+        ...initial.cardsAPI,
         errorcounter: 15,
       },
     };
@@ -33,7 +33,7 @@ describe('CardShellLoader component', () => {
         <AppContextProvider apolloClient={api.clientMock}>
           <CardShellLoader query="test" />
         </AppContextProvider>,
-        { store, preloadedState: xx }
+        { store, preloadedState: preload }
       );
     });
     await waitRender();
