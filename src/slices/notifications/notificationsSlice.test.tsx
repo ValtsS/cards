@@ -16,7 +16,7 @@ describe('notificationsSlice tests', () => {
     expect(updatedState.notifications.error).toEqual(false);
 
     action = notificationsSlice.actions.setMessage({ message: testVal2, error: true });
-    // Act
+
     store.dispatch(action);
 
     updatedState = store.getState();

@@ -1,3 +1,5 @@
+import { cardApiReducer } from '@/slices/api/cardApi';
+import { cardsApiReducer } from '@/slices/api/cardsApi';
 import { cardReducer } from '@/slices/card/cardSlice';
 import { mainPageReducer } from '@/slices/mainpage/mainpageSlice';
 import { notificationsReducer } from '@/slices/notifications/notificationsSlice';
@@ -9,6 +11,8 @@ const rootReducer = combineReducers({
   searchBar: searchBarReducer,
   mainPage: mainPageReducer,
   notifications: notificationsReducer,
+  cardsAPI: cardsApiReducer,
+  cardAPI: cardApiReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
