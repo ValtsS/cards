@@ -20,8 +20,8 @@ export const notificationsSlice = createSlice({
     setMessage: (state, action: PayloadAction<{ message: string; error: boolean }>) => {
       state.queue.push({ message: action.payload.message, error: action.payload.error });
       const next = state.queue[0];
-      state.message = next?.message;
-      state.error = next?.error ?? false;
+      state.message = next.message;
+      state.error = next.error;
     },
     clearMessage: (state) => {
       state.queue.shift();
