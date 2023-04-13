@@ -1,9 +1,9 @@
-import * as Schema from '@/__generated__/graphql';
-import { setupStore } from '@/store';
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
+import * as Schema from '@/__generated__/graphql';
 import { setupDefaultAPI } from '@/providers/card/api-test-helper';
 import { cardTestData2B } from '@/providers/card/card-test-data';
-import { fetchCards, fetchParams } from './cardsApi';
+import { setupStore } from '@/store';
+import { StoreStatus, fetchCards, fetchParams } from './cardsApi';
 
 describe('cards Api tests', () => {
   const api = new MockGqlApi();
@@ -31,7 +31,40 @@ describe('cards Api tests', () => {
     await store.dispatch(fetchCards(params));
 
     const updatedState = store.getState();
-    const data = updatedState.cardsAPI.cards;
-    expect(data).toEqual(cardTestData2B);
+    const data = updatedState.cardsAPI;
+    expect(data.status).toBe(StoreStatus.succeeded);
+    expect(data.cards).toEqual(cardTestData2B);
+  });
+
+  it('should handle errors', async () => {
+    const store = setupStore();
+
+    const errMsg = 'API failed';
+
+    api.clientMock.query = jest.fn().mockImplementation(() => {
+      throw new Error(errMsg);
+    });
+
+    const qparams: Schema.CardFilterInput = {
+      searchQuery: '',
+      uuid: '',
+    };
+
+    const params: fetchParams = {
+      client: api.clientMock,
+      limit: 100,
+      offset: 0,
+      order: [],
+      params: qparams,
+    };
+
+    await store.dispatch(fetchCards(params));
+
+    const updatedState = store.getState();
+
+    const data = updatedState.cardsAPI;
+    expect(data.status).toBe(StoreStatus.failed);
+    expect(data.error).toBeTruthy();
+    expect(data.cards.length).toBe(0);
   });
 });

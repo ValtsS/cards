@@ -4,6 +4,7 @@ import { fetchCard } from './cardApi';
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { setupDefaultAPI } from '@/providers/card/api-test-helper';
 import { cardTestData2B } from '@/providers/card/card-test-data';
+import { StoreStatus } from './cardsApi';
 
 describe('cardApi tests', () => {
   const api = new MockGqlApi();
@@ -28,7 +29,8 @@ describe('cardApi tests', () => {
     );
 
     const updatedState = store.getState();
-    const data = updatedState.cardAPI.card;
-    expect(data).toEqual(cardTestData2B[0]);
+    const data = updatedState.cardAPI;
+    expect(data.card).toEqual(cardTestData2B[0]);
+    expect(data.status).toBe(StoreStatus.succeeded);
   });
 });
