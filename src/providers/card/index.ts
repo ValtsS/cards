@@ -1,2 +1,2 @@
-export * from './card-provider';
+export * from './card-data';
 export * from './api-provider';

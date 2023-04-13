@@ -1,6 +1,6 @@
 import { ApolloClient } from '@apollo/client';
 import * as Schema from '@/__generated__/graphql';
-import { CardData, Cards } from './card-provider';
+import { CardData, Cards } from './card-data';
 
 export function assignCardData(target: CardData, source: Schema.Card): void {
   target.addedat = source.addedat ? source.addedat.getTime() : undefined;

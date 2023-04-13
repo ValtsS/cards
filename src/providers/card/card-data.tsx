@@ -26,13 +26,3 @@ export class Cards {
     return nc;
   };
 }
-
-export class CardProviderStore {
-  data: CardData[] = [];
-
-  insert = (card: CardData): CardData[] => {
-    const lastcardUUID = this.data.length > 0 ? this.data[0].uuid : -1;
-    if (card.uuid != lastcardUUID) this.data.unshift(card);
-    return this.data;
-  };
-}

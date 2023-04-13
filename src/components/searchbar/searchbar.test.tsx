@@ -4,20 +4,6 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { SearchBar } from './searchbar';
 
-// Create a mock for the CardProviderStore class
-jest.mock('@/providers', () => {
-  const MockCardProviderStore = jest.fn().mockImplementation(() => {
-    return {
-      loadTestData: jest.fn().mockResolvedValue([]),
-    };
-  });
-
-  return {
-    ...jest.requireActual('@/providers'),
-    CardProviderStore: MockCardProviderStore,
-  };
-});
-
 describe('Searchbar component', () => {
   let store: AppStore;
   let qcFunc: typeof jest.fn;

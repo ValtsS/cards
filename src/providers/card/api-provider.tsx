@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useAppContext } from '../app-context-provider';
 import { useNotifications } from '../notifications-provider/notifications-provider';
 import { getCard, getCards } from './api-client';
-import { CardData } from './card-provider';
+import { CardData } from './card-data';
 
 export interface ProviderState {
   cards: CardData[];

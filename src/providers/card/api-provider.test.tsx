@@ -6,7 +6,7 @@ import { AppContextProvider } from '../app-context-provider';
 import { useNotifications } from '../notifications-provider';
 import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { setupDefaultAPI } from './api-test-helper';
-import { CardData } from './card-provider';
+import { CardData } from './card-data';
 import { cardTestData2 } from './card-test-data';
 
 const CardApiTester = () => {
