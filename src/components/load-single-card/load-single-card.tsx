@@ -30,7 +30,7 @@ export const LoadSingleCard = ({ uuid }: { uuid: string }) => {
         .unwrap()
         .catch((rejectedValueOrSerializedError) => {
           setMessage(
-            'Error caught while loading card: ' + (rejectedValueOrSerializedError ?? ''),
+            'Error caught while loading card: ' + String(rejectedValueOrSerializedError),
             true
           );
         });
