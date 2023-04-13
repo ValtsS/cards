@@ -3,7 +3,7 @@ import { act, screen } from '@testing-library/react';
 import React from 'react';
 
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import { setupStore } from '@/store';
 import { LoadSingleCard } from './load-single-card';
 
@@ -27,9 +27,7 @@ describe('Load Single card component', () => {
         { store }
       )
     );
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
 

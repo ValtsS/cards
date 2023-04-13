@@ -1,5 +1,5 @@
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import { act, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { AppContextProvider } from '../app-context-provider';
@@ -55,11 +55,7 @@ describe('API provider tests', () => {
 
   it('Should return single and multi search', async () => {
     act(() => renderDefault(api));
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('Loaded')).toBeInTheDocument();
     expect(screen.getByText('Length:' + cardTestData2.length)).toBeInTheDocument();
@@ -78,11 +74,7 @@ describe('API provider tests', () => {
       throw new Error(testErr);
     });
     act(() => renderDefault(api));
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('Loaded')).toBeInTheDocument();
     expect(screen.getByText('Length:0')).toBeInTheDocument();
@@ -98,11 +90,7 @@ describe('API provider tests', () => {
       throw new Object();
     });
     act(() => renderDefault(api));
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('Loaded')).toBeInTheDocument();
     expect(screen.getByText('Length:0')).toBeInTheDocument();
@@ -115,11 +103,7 @@ describe('API provider tests', () => {
 
   it('Should should trigger errors without provider', async () => {
     act(() => renderDefault(null));
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('Message=client is not set')).toBeInTheDocument();
     expect(screen.getByText('Error=true')).toBeInTheDocument();

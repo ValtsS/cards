@@ -1,5 +1,5 @@
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/providers';
 import { setupDefaultAPI } from '@/providers/card/api-test-helper';
 import { cardTestData2 } from '@/providers/card/card-test-data';
@@ -24,9 +24,7 @@ describe('Load Single card component', () => {
         { store }
       )
     );
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     const card = cardTestData2[0];
 

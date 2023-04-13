@@ -4,6 +4,7 @@ import React from 'react';
 import { CardCreator } from './card-creator';
 import { CardValidator } from './card-validator';
 import { fillTheInputs } from './cart-creator-test-helper';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('Card Shell component', () => {
   let originalCreate: (obj: Blob | MediaSource) => string;
@@ -41,10 +42,7 @@ describe('Card Shell component', () => {
       fireEvent.mouseUp(submit);
     });
 
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     screen.getByText(CardValidator.ERRORS.ORIENTATION_REQUIRED);
     screen.getByText(CardValidator.ERRORS.IMAGE_REQUIRED);
@@ -92,8 +90,9 @@ describe('Card Shell component', () => {
         fireEvent.mouseDown(submit);
         fireEvent.click(submit);
         fireEvent.mouseUp(submit);
-        await new Promise((resolve) => setTimeout(resolve, 0));
       });
+
+      await waitRender();
 
       expect(fn).toBeCalledTimes(1);
       const actual: CardData = fn.mock.calls[0][0];

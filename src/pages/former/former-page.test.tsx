@@ -1,4 +1,4 @@
-import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import {
   expectedTestCardData,
   fillTheInputs,
@@ -51,8 +51,8 @@ describe('Former page component', () => {
         fireEvent.mouseDown(submit);
         fireEvent.click(submit);
         fireEvent.mouseUp(submit);
-        await new Promise((resolve) => setTimeout(resolve, 0));
       });
+      await waitRender();
 
       expect(screen.getByText(/^Card \(Id = .+\) has been saved$/)).toBeInTheDocument();
     } finally {
