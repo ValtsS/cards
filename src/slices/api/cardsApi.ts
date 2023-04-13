@@ -46,6 +46,7 @@ interface CardsResultStore {
   status: StoreStatus;
   error?: string;
   query: string;
+  errorcounter: number;
 }
 
 const intialState: CardsResultStore = {
@@ -53,6 +54,7 @@ const intialState: CardsResultStore = {
   info: { totalcount: 0 },
   status: StoreStatus.idle,
   query: '',
+  errorcounter: 0,
 };
 
 export const cardsSlice = createSlice({
@@ -70,10 +72,12 @@ export const cardsSlice = createSlice({
         state.info = action.payload.info;
         state.error = undefined;
         state.query = action.payload.query;
+        state.errorcounter = 0;
       })
       .addCase(fetchCards.rejected, (state, action) => {
         state.status = StoreStatus.failed;
         state.error = action.payload as string;
+        state.errorcounter++;
       });
   },
 });

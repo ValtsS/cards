@@ -34,6 +34,7 @@ describe('cards Api tests', () => {
     const data = updatedState.cardsAPI;
     expect(data.status).toBe(StoreStatus.succeeded);
     expect(data.cards).toEqual(cardTestData2B);
+    expect(data.errorcounter).toBe(0);
   });
 
   it('should handle errors', async () => {
@@ -66,5 +67,6 @@ describe('cards Api tests', () => {
     expect(data.status).toBe(StoreStatus.failed);
     expect(data.error).toBeTruthy();
     expect(data.cards.length).toBe(0);
+    expect(data.errorcounter).toBe(1);
   });
 });
