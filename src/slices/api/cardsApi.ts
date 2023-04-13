@@ -1,7 +1,7 @@
 import { ResultsInfo, getCards } from '@/providers/card/api-client';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as Schema from '@/__generated__/graphql';
-import { CardData } from '@/providers';
+import { CardData, SortBy } from '@/providers';
 import { ApolloClient } from '@apollo/client';
 import { RootState } from '@/store';
 
@@ -26,7 +26,10 @@ export const fetchCards = createAsyncThunk(
       );
 
       const query = params.params.searchQuery;
-      return { cards, info, query };
+      const limit = params.limit;
+      const offset = params.offset;
+      const orderBy = SortBy.getSortingStr(params.order).join(', ');
+      return { cards, info, query, limit, offset, orderBy };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -40,13 +43,16 @@ export enum StoreStatus {
   succeeded = 'succeeded',
 }
 
-interface CardsResultStore {
+export interface CardsResultStore {
   cards: CardData[];
   info: ResultsInfo;
   status: StoreStatus;
   error?: string;
   query: string;
   errorcounter: number;
+  limit: number;
+  offset: number;
+  orderBy: string;
 }
 
 const intialState: CardsResultStore = {
@@ -55,6 +61,9 @@ const intialState: CardsResultStore = {
   status: StoreStatus.idle,
   query: '',
   errorcounter: 0,
+  limit: 0,
+  offset: 0,
+  orderBy: '',
 };
 
 export const cardsSlice = createSlice({
@@ -73,6 +82,9 @@ export const cardsSlice = createSlice({
         state.error = undefined;
         state.query = action.payload.query;
         state.errorcounter = 0;
+        state.limit = action.payload.limit;
+        state.offset = action.payload.offset;
+        state.orderBy = action.payload.orderBy;
       })
       .addCase(fetchCards.rejected, (state, action) => {
         state.status = StoreStatus.failed;

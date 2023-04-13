@@ -1,5 +1,5 @@
 import type { PreloadedState } from '@reduxjs/toolkit';
-import type { RenderOptions } from '@testing-library/react';
+import { RenderOptions, act } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import React, { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
@@ -25,4 +25,10 @@ export function renderWithProviders(
 
   // Return an object with the store and all of RTL's query functions
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
+
+export async function waitRender() {
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
 }

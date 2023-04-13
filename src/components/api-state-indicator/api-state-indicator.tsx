@@ -1,19 +1,18 @@
-import { ProviderState } from '@/providers/card/api-provider';
+import { CardsResultStore, StoreStatus } from '@/slices/api/cardsApi';
 import React from 'react';
 import './api-state-indicator.css';
 
-export const APIState = (props: ProviderState) => {
+export const APIState = (props: CardsResultStore) => {
+  const loading = props.status == StoreStatus.loading;
   return (
     <div className="api-state-container">
       <p>
         <strong>API Status:</strong>
-        <span className={props.loading ? 'loading' : ''}>
-          {props.loading ? 'Loading' : 'Ready'}
-        </span>
+        <span className={loading ? 'loading' : ''}>{props.status}</span>
       </p>
       <p>
         <strong>Total results:</strong>
-        <span>{props.total}</span>
+        <span>{props.info.totalcount}</span>
       </p>
       <p>
         <strong>Offset:</strong>
@@ -25,15 +24,15 @@ export const APIState = (props: ProviderState) => {
       </p>
       <p>
         <strong>Sorting:</strong>
-        <span>{props.sortingBy}</span>
+        <span>{props.orderBy}</span>
       </p>
       <p>
         <strong>Has Prev?:</strong>
-        <span>{props.hasPrevious ? 'yes' : ''}</span>
+        <span>{props.info.pageInfo?.hasPreviousPage ? 'yes' : ''}</span>
       </p>
       <p>
         <strong>Has Next?:</strong>
-        <span>{props.hasNext ? 'yes' : ''}</span>
+        <span>{props.info.pageInfo?.hasNextPage ? 'yes' : ''}</span>
       </p>
     </div>
   );

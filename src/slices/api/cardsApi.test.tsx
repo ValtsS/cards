@@ -35,6 +35,8 @@ describe('cards Api tests', () => {
     expect(data.status).toBe(StoreStatus.succeeded);
     expect(data.cards).toEqual(cardTestData2B);
     expect(data.errorcounter).toBe(0);
+    expect(data.limit).toBe(params.limit);
+    expect(data.offset).toBe(params.offset);
   });
 
   it('should handle errors', async () => {

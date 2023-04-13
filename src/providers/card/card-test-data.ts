@@ -36,10 +36,10 @@ export const cardTestData2: Schema.Card[] = [
     imageUrl: 'Url',
     matches: true,
     minipic: 'Mini',
-    price: 2456,
+    price: 92456,
     rating: 3,
-    text: 'text',
-    title: 'Titel',
+    text: 'text1234',
+    title: 'TitelA',
     uuid: '1234',
   },
   {
@@ -49,8 +49,8 @@ export const cardTestData2: Schema.Card[] = [
     matches: true,
     minipic: 'MiniY',
     price: 2456,
-    text: 'text',
-    title: 'Titel',
+    text: 'text456',
+    title: 'TitelB',
     uuid: '1235',
   },
 ];
@@ -61,10 +61,10 @@ const card1: CardData = {
   addedat: new Date('2022-01-13').getTime(),
   imageUrl: 'Url',
   minipic: 'Mini',
-  price: '2456',
+  price: '92456',
   rating: 3,
-  text: 'text',
-  title: 'Titel',
+  text: 'text1234',
+  title: 'TitelA',
   uuid: '1234',
 };
 
@@ -76,8 +76,8 @@ const card2: CardData = {
   minipic: 'MiniY',
   price: '2456',
   rating: undefined,
-  text: 'text',
-  title: 'Titel',
+  text: 'text456',
+  title: 'TitelB',
   uuid: '1235',
 };
 
@@ -87,6 +87,15 @@ export const twoCards: Schema.GetCardsCollectionSegment = {
   pageInfo: {
     hasNextPage: false,
     hasPreviousPage: false,
+  },
+  totalCount: 2,
+  items: cardTestData2,
+};
+
+export const pagedTwoCards: Schema.GetCardsCollectionSegment = {
+  pageInfo: {
+    hasNextPage: true,
+    hasPreviousPage: true,
   },
   totalCount: 2,
   items: cardTestData2,

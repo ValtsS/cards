@@ -5,7 +5,7 @@ import { mainPageReducer } from '@/slices/mainpage/mainpageSlice';
 import { notificationsReducer } from '@/slices/notifications/notificationsSlice';
 import { searchBarReducer } from '@/slices/searchbar/searchbarSlice';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   cards: cardReducer,
@@ -27,3 +27,4 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

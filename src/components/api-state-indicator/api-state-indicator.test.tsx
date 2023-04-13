@@ -1,35 +1,38 @@
-import { ProviderState } from '@/providers';
+import { CardsResultStore, StoreStatus } from '@/slices/api/cardsApi';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { APIState } from './api-state-indicator';
 
 describe('APIState', () => {
-  const defaultProps: ProviderState = {
-    loading: false,
-    total: 113124,
-    offset: 9919321,
-    limit: 512313,
+  const defaultProps: CardsResultStore = {
     cards: [],
     errorcounter: 0,
-    exception: null,
-    filteringBy: '',
-    sortingBy: 'XX',
-    hasNext: false,
-    hasPrevious: false,
+    limit: 25,
+    offset: 125,
+    query: '1234566',
+    orderBy: 'priceasc',
+    status: StoreStatus.succeeded,
+    info: {
+      totalcount: 1000,
+      pageInfo: {
+        hasNextPage: true,
+        hasPreviousPage: true,
+      },
+    },
   };
 
   test('renders API state information', () => {
     render(<APIState {...defaultProps} />);
     expect(screen.getByText('API Status:')).toBeInTheDocument();
-    expect(screen.getByText('Ready')).toBeInTheDocument();
-    expect(screen.getByText(defaultProps.total ?? 0)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.status)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.info.totalcount ?? 0)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.offset ?? 0)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.limit ?? 0)).toBeInTheDocument();
-    expect(screen.getByText(defaultProps.sortingBy ?? 0)).toBeInTheDocument();
+    expect(screen.getByText(defaultProps.orderBy ?? 0)).toBeInTheDocument();
   });
 
   test('displays "Loading" when loading prop is true', () => {
-    render(<APIState {...defaultProps} loading={true} />);
-    expect(screen.getByText('Loading')).toBeInTheDocument();
+    render(<APIState {...defaultProps} status={StoreStatus.loading} />);
+    expect(screen.getByText(StoreStatus.loading)).toBeInTheDocument();
   });
 });
