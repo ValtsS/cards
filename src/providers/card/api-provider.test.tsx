@@ -3,7 +3,7 @@ import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { act, screen } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { AppContextProvider } from '../app-context-provider';
-import { NotificationsProvider, useNotifications } from '../notifications-provider';
+import { useNotifications } from '../notifications-provider';
 import { CardsApiProvider, useCardsApiContext } from './api-provider';
 import { setupDefaultAPI } from './api-test-helper';
 import { CardData } from './card-provider';
@@ -109,7 +109,7 @@ describe('API provider tests', () => {
 
     expect(screen.getByText('singleuuid:undefined')).toBeInTheDocument();
 
-    expect(screen.getByText('Message=Unknown API Error')).toBeInTheDocument();
+    expect(screen.getByText('Message=Unknown API server error')).toBeInTheDocument();
     expect(screen.getByText('Error=true')).toBeInTheDocument();
   });
 
@@ -130,12 +130,10 @@ function renderDefault(api: MockGqlApi | null) {
   // Create a mock store with initial state and configure it with the card reducer
 
   renderWithProviders(
-    <NotificationsProvider>
-      <AppContextProvider apolloClient={api?.clientMock || null}>
-        <CardsApiProvider>
-          <CardApiTester />
-        </CardsApiProvider>
-      </AppContextProvider>
-    </NotificationsProvider>
+    <AppContextProvider apolloClient={api?.clientMock || null}>
+      <CardsApiProvider>
+        <CardApiTester />
+      </CardsApiProvider>
+    </AppContextProvider>
   );
 }

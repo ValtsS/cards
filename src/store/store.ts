@@ -1,5 +1,6 @@
 import { cardReducer } from '@/slices/card/cardSlice';
 import { mainPageReducer } from '@/slices/mainpage/mainpageSlice';
+import { notificationsReducer } from '@/slices/notifications/notificationsSlice';
 import { searchBarReducer } from '@/slices/searchbar/searchbarSlice';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 
@@ -7,6 +8,7 @@ const rootReducer = combineReducers({
   cards: cardReducer,
   searchBar: searchBarReducer,
   mainPage: mainPageReducer,
+  notifications: notificationsReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

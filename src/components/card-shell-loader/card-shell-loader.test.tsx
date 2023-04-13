@@ -1,9 +1,12 @@
+import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { ContextValue, ProviderState } from '@/providers/card';
 import { mockCardTestData } from '@/providers/card/card-test-data';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { setupStore } from '@/store';
+import { act, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import { CardShellLoader } from './card-shell-loader';
 import { useCardsApiContext } from '@/providers/card/api-provider';
+//Import order change can break the mock
 
 jest.mock('@/providers/card/api-provider', () => {
   const state: ProviderState = {
@@ -33,8 +36,9 @@ jest.mock('@/providers/card/api-provider', () => {
 
 describe('CardShellLoader component', () => {
   it('should return the data', () => {
+    const store = setupStore();
     act(() => {
-      render(<CardShellLoader query="test" />);
+      renderWithProviders(<CardShellLoader query="test" />, { store });
     });
 
     expect(screen.getByText('275')).toBeInTheDocument();
@@ -49,8 +53,9 @@ describe('CardShellLoader component', () => {
   });
 
   it('should trigger the sorting', async () => {
+    const store = setupStore();
     act(() => {
-      render(<CardShellLoader query="test" />);
+      renderWithProviders(<CardShellLoader query="test" />, { store });
     });
 
     expect(screen.getByText('275')).toBeInTheDocument();

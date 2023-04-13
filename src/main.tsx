@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import App from './App';
 import { CardsApp } from './cards-app';
 import { CardsApiProvider } from './providers/card/api-provider';
-import { NotificationsProvider } from './providers/notifications-provider/notifications-provider';
 import { setupStore } from './store';
 
 const client = new ApolloClient({
@@ -22,15 +21,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App>
       <Provider store={store}>
-        <NotificationsProvider>
-          <AppContextProvider apolloClient={client}>
-            <ModalDialogProvider>
-              <CardsApiProvider>
-                <CardsApp routesConfig={defaultRoutes} />
-              </CardsApiProvider>
-            </ModalDialogProvider>
-          </AppContextProvider>
-        </NotificationsProvider>
+        <AppContextProvider apolloClient={client}>
+          <ModalDialogProvider>
+            <CardsApiProvider>
+              <CardsApp routesConfig={defaultRoutes} />
+            </CardsApiProvider>
+          </ModalDialogProvider>
+        </AppContextProvider>
       </Provider>
     </App>
   </React.StrictMode>

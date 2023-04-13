@@ -1,8 +1,9 @@
 import { ContextValue, ProviderState } from '@/providers/card/api-provider';
 import { mockCardTestData } from '@/providers/card/card-test-data';
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import React from 'react';
 
+import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { LoadSingleCard } from './load-single-card';
 
 jest.mock('@/providers/card/api-provider', () => {
@@ -33,7 +34,7 @@ jest.mock('@/providers/card/api-provider', () => {
 
 describe('Load Single card component', () => {
   it('should not crash and load a card', async () => {
-    act(() => render(<LoadSingleCard uuid={'512'} />));
+    act(() => renderWithProviders(<LoadSingleCard uuid={'512'} />));
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
