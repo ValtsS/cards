@@ -55,7 +55,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
             },
           };
 
-          dispatch(fetchCards(params))
+          await dispatch(fetchCards(params))
             .unwrap()
             .catch((rejectedValueOrSerializedError) => {
               setMessage(
@@ -74,11 +74,9 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
   );
 
   const goNext = () => {
-    console.log('NEXT!');
     handleQueryChange(props.query, offset + 25);
   };
   const goPrev = () => {
-    console.log('PREV!');
     handleQueryChange(props.query, offset - 25);
   };
 

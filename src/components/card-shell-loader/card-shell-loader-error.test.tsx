@@ -1,43 +1,57 @@
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
-import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/providers';
-import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
 import { setupStore } from '@/store';
-import { act, screen } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import React from 'react';
 import { CardShellLoader } from './card-shell-loader';
+import { setupDefaultAPI } from '@/providers/card/api-test-helper';
 
 describe('CardShellLoader component', () => {
   const api = new MockGqlApi();
   const errorText = 'API Error';
 
   beforeEach(() => {
-    api.clientMock.query = jest.fn().mockImplementation(() => {
-      throw new Error(errorText);
-    });
+    setupDefaultAPI(api);
   });
 
   it('should handle API errors with N failures', async () => {
-    return;
     const store = setupStore();
+    api.clientMock.query = jest.fn();
+
+    const preload = store.getState();
+    const xx = {
+      ...preload,
+      cardsAPI: {
+        ...preload.cardsAPI,
+        errorcounter: 15,
+      },
+    };
+
     act(() => {
       renderWithProviders(
         <AppContextProvider apolloClient={api.clientMock}>
           <CardShellLoader query="test" />
         </AppContextProvider>,
-        { store }
+        { store, preloadedState: xx }
       );
     });
-    const { setMessage } = useNotifications();
-    expect(setMessage).toBeCalled();
-    expect(setMessage).toBeCalledWith(
-      'giving up due to multiple API server errors :-( Is server down?',
-      true
-    );
+    await waitRender();
+
+    const state = store.getState();
+
+    expect(state.notifications.error).toBe(true);
+    expect(state.notifications.queue).toContainEqual({
+      error: true,
+      message: 'giving up due to multiple API server errors :-( Is server down?',
+    });
   });
 
   it('should handle other failures', async () => {
-    return;
+    api.clientMock.query = jest.fn().mockImplementation(() => {
+      throw new Error(errorText);
+    });
+
     const store = setupStore();
     act(() => {
       renderWithProviders(
@@ -47,10 +61,9 @@ describe('CardShellLoader component', () => {
         { store }
       );
     });
-
-    const { setMessage } = useNotifications();
-    expect(setMessage).toBeCalled();
-    expect(setMessage).toBeCalledWith('API call failed', true);
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    await waitRender();
+    const state = store.getState();
+    expect(state.notifications.error).toBe(true);
+    expect(state.notifications.message).toBe('Error caught while loading card: ' + errorText);
   });
 });
