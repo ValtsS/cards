@@ -4,6 +4,7 @@ import { getCard } from '@/providers/card/api-client';
 import { ApolloClient } from '@apollo/client';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from './cardsApi';
+import { RootState } from '@/store';
 
 export const fetchCard = createAsyncThunk(
   'card/fetchCard',
@@ -53,3 +54,4 @@ export const cardSlice = createSlice({
 });
 
 export const { reducer: cardApiReducer } = cardSlice;
+export const selectApiCardData = (state: RootState) => state.cardAPI;

@@ -1,45 +1,34 @@
-import { ContextValue, ProviderState } from '@/providers/card/api-provider';
-import { mockCardTestData } from '@/providers/card/card-test-data';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
+import { renderWithProviders } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/providers';
+import { setupDefaultAPI } from '@/providers/card/api-test-helper';
+import { cardTestData2 } from '@/providers/card/card-test-data';
+import { setupStore } from '@/store';
 import { act, screen } from '@testing-library/react';
 import React from 'react';
-
-import { renderWithProviders } from '@/../__mocks__/test-utils';
 import { LoadSingleCard } from './load-single-card';
-
-jest.mock('@/providers/card/api-provider', () => {
-  const state: ProviderState = {
-    cards: mockCardTestData,
-    loading: false,
-    errorcounter: 0,
-    total: 2,
-    limit: 275,
-    offset: 0,
-    exception: null,
-    filteringBy: 'oldstate',
-    hasNext: false,
-    hasPrevious: false,
-  };
-
-  const cval: ContextValue = {
-    state: state,
-    getSingleCard: jest.fn().mockResolvedValue(mockCardTestData[0]),
-    loadCards: jest.fn(),
-  };
-
-  return {
-    ...jest.requireActual('@/providers/card/api-provider'),
-    useCardsApiContext: jest.fn().mockImplementation(() => cval),
-  };
-});
 
 describe('Load Single card component', () => {
   it('should not crash and load a card', async () => {
-    act(() => renderWithProviders(<LoadSingleCard uuid={'512'} />));
+    const api = new MockGqlApi();
+
+    setupDefaultAPI(api);
+
+    const store = setupStore();
+
+    act(() =>
+      renderWithProviders(
+        <AppContextProvider apolloClient={api.clientMock}>
+          <LoadSingleCard uuid={'512'} />
+        </AppContextProvider>,
+        { store }
+      )
+    );
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
-    const card = mockCardTestData[0];
+    const card = cardTestData2[0];
 
     expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(card.text ?? '')).toBeInTheDocument();

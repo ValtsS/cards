@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as Schema from '@/__generated__/graphql';
 import { CardData } from '@/providers';
 import { ApolloClient } from '@apollo/client';
+import { RootState } from '@/store';
 
 export type fetchParams = {
   client: ApolloClient<unknown>;
@@ -78,3 +79,4 @@ export const cardsSlice = createSlice({
 });
 
 export const { reducer: cardsApiReducer } = cardsSlice;
+export const selectApiCardsData = (state: RootState) => state.cardsAPI;
