@@ -2,7 +2,7 @@ import * as Schema from '@/__generated__/graphql';
 import { SortBy } from './sort-by';
 import { Cards } from './card-data';
 
-describe('Card provider', () => {
+describe('Card test data provider', () => {
   it('should allocate', () => {
     const dummy = Cards.alloc();
     expect(dummy).toBeTruthy();
