@@ -1,2 +1,2 @@
 export * from './card-data';
-export * from './api-provider';
+export * from './sort-by';

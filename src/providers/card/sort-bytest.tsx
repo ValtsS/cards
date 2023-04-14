@@ -1,4 +1,4 @@
-import { SortBy } from './api-provider';
+import { SortBy } from './sort-by';
 
 describe('SortBy', () => {
   test('getSortingStr should return correct sorting strings', () => {

@@ -1,5 +1,5 @@
 import * as Schema from '@/__generated__/graphql';
-import { SortBy } from './api-provider';
+import { SortBy } from './sort-by';
 import { Cards } from './card-data';
 
 describe('Card provider', () => {

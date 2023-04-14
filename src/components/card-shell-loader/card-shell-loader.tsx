@@ -1,7 +1,7 @@
 import * as Schema from '@/__generated__/graphql';
 import { CardShell } from '@/components/card-shell';
 import { useAppContext } from '@/providers';
-import { SortBy } from '@/providers/card/api-provider';
+import { SortBy } from '@/providers/card/sort-by';
 import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
 import { StoreStatus, fetchCards, fetchParams, selectApiCardsData } from '@/slices/api/cardsApi';
 import { useAppDispatch } from '@/store';
