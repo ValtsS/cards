@@ -1,12 +1,12 @@
-[![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module04)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
+[![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module05)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
 
 **Cards**
-Module 04
+Module 05
 
 _Git:_
 
 `git clone https://github.com/ValtsS/cards.git`
-`git checkout module04`
+`git checkout module05`
 
 _Install_:
 

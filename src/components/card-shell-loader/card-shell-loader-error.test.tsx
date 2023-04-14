@@ -1,75 +1,69 @@
-import { ContextValue, ProviderState, useCardsApiContext } from '@/providers/card';
-import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
-import { act, render, screen } from '@testing-library/react';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/providers';
+import { setupStore } from '@/store';
+import { act } from '@testing-library/react';
 import React from 'react';
 import { CardShellLoader } from './card-shell-loader';
-
-jest.mock('@/providers/card/api-provider', () => {
-  const state: ProviderState = {
-    cards: [],
-    loading: false,
-    errorcounter: 25,
-    total: 2,
-    limit: 275,
-    offset: 0,
-    exception: null,
-    filteringBy: 'oldstate',
-    hasNext: false,
-    hasPrevious: false,
-  };
-
-  const cval: ContextValue = {
-    state: state,
-    getSingleCard: jest.fn().mockImplementation(() => {
-      throw new Error('Loading issue #2');
-    }),
-    loadCards: jest.fn().mockImplementation(() => {
-      throw new Error('Loading issue #1');
-    }),
-  };
-
-  return {
-    ...jest.requireActual('@/providers/card/api-provider'),
-    useCardsApiContext: jest.fn().mockImplementation(() => cval),
-  };
-});
-
-jest.mock('@/providers/notifications-provider/notifications-provider', () => {
-  return {
-    ...jest.requireActual('@/providers/notifications-provider/notifications-provider'),
-    useNotifications: jest.fn().mockReturnValue({
-      state: {
-        message: '123',
-      },
-      setMessage: jest.fn(),
-    }),
-  };
-});
+import { setupDefaultAPI } from '@/providers/card/api-test-helper';
 
 describe('CardShellLoader component', () => {
-  it('should handle API errors with N failures', () => {
-    act(() => {
-      render(<CardShellLoader query="test" />);
-    });
-    const { setMessage } = useNotifications();
-    expect(setMessage).toBeCalled();
-    expect(setMessage).toBeCalledWith(
-      'giving up due to multiple API server errors :-( Is server down?',
-      true
-    );
+  const api = new MockGqlApi();
+  const errorText = 'API Error';
+
+  beforeEach(() => {
+    setupDefaultAPI(api);
   });
 
-  it('should handle other failures', () => {
-    const { state } = useCardsApiContext();
-    state.errorcounter = 0;
-    state.loading = true;
+  it('should handle API errors with N failures', async () => {
+    const store = setupStore();
+    api.clientMock.query = jest.fn();
+
+    const initial = store.getState();
+    const preload = {
+      ...initial,
+      cardsAPI: {
+        ...initial.cardsAPI,
+        errorcounter: 15,
+      },
+    };
 
     act(() => {
-      render(<CardShellLoader query="test" />);
+      renderWithProviders(
+        <AppContextProvider apolloClient={api.clientMock}>
+          <CardShellLoader query="test" />
+        </AppContextProvider>,
+        { store, preloadedState: preload }
+      );
     });
-    const { setMessage } = useNotifications();
-    expect(setMessage).toBeCalled();
-    expect(setMessage).toBeCalledWith('API call failed', true);
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    await waitRender();
+
+    const state = store.getState();
+
+    expect(state.notifications.error).toBe(true);
+    expect(state.notifications.queue).toContainEqual({
+      error: true,
+      message: 'giving up due to multiple API server errors :-( Is server down?',
+    });
+  });
+
+  it('should handle other failures', async () => {
+    api.clientMock.query = jest.fn().mockImplementation(() => {
+      throw new Error(errorText);
+    });
+
+    const store = setupStore();
+    act(() => {
+      renderWithProviders(
+        <AppContextProvider apolloClient={api.clientMock}>
+          <CardShellLoader query="test" />
+        </AppContextProvider>,
+        { store }
+      );
+    });
+    await waitRender();
+    const state = store.getState();
+    expect(state.notifications.error).toBe(true);
+    expect(state.notifications.message).toBe('Error caught while loading card: ' + errorText);
   });
 });

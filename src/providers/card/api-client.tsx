@@ -1,9 +1,9 @@
 import { ApolloClient } from '@apollo/client';
 import * as Schema from '@/__generated__/graphql';
-import { CardData } from './card-provider';
+import { CardData, Cards } from './card-data';
 
 export function assignCardData(target: CardData, source: Schema.Card): void {
-  target.addedat = source.addedat ? source.addedat : undefined;
+  target.addedat = source.addedat ? source.addedat.getTime() : undefined;
   target.flipimg = source.flipimg;
   target.grayscale = source.grayscale;
   target.imageUrl = source.imageUrl;
@@ -45,9 +45,9 @@ export const getCards = async (
   if (data)
     data.forEach((e) => {
       const { addedat, ...otherProps } = e;
-      const c = new CardData();
+      const c = Cards.alloc();
       assignCardData(c, otherProps);
-      c.addedat = addedat ? new Date(addedat) : undefined;
+      c.addedat = addedat ? new Date(addedat).getTime() : undefined;
       patched.push(c);
     });
 
@@ -76,9 +76,9 @@ export const getCard = async (
   if (data)
     data.forEach((e) => {
       const { addedat, ...otherProps } = e;
-      const c = new CardData();
+      const c = Cards.alloc();
       assignCardData(c, otherProps);
-      c.addedat = addedat ? new Date(addedat) : undefined;
+      c.addedat = addedat ? new Date(addedat).getTime() : undefined;
       patched.push(c);
     });
 

@@ -1,45 +1,34 @@
-import { ContextValue, ProviderState } from '@/providers/card';
-import { mockCardTestData } from '@/providers/card/card-test-data';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/providers';
+import { setupPagedDefaultAPI } from '@/providers/card/api-test-helper';
+import { cardTestData2, mockCardTestData } from '@/providers/card/card-test-data';
+import { setupStore } from '@/store';
+import { act, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 import { CardShellLoader } from './card-shell-loader';
-import { useCardsApiContext } from '@/providers/card/api-provider';
-
-jest.mock('@/providers/card/api-provider', () => {
-  const state: ProviderState = {
-    cards: mockCardTestData,
-    loading: false,
-    errorcounter: 0,
-    total: 2,
-    limit: 275,
-    offset: 0,
-    exception: null,
-    filteringBy: 'oldstate',
-    hasNext: true,
-    hasPrevious: true,
-  };
-
-  const cval: ContextValue = {
-    state: state,
-    getSingleCard: jest.fn(),
-    loadCards: jest.fn(),
-  };
-
-  return {
-    ...jest.requireActual('@/providers/card/api-provider'),
-    useCardsApiContext: jest.fn().mockImplementation(() => cval),
-  };
-});
 
 describe('CardShellLoader component', () => {
-  it('should return the data', () => {
+  const api = new MockGqlApi();
+
+  beforeEach(() => {
+    setupPagedDefaultAPI(api);
+  });
+
+  it('should return the data', async () => {
+    const store = setupStore();
     act(() => {
-      render(<CardShellLoader query="test" />);
+      renderWithProviders(
+        <AppContextProvider apolloClient={api.clientMock}>
+          <CardShellLoader query="test" />
+        </AppContextProvider>,
+        { store }
+      );
     });
 
-    expect(screen.getByText('275')).toBeInTheDocument();
+    await waitRender();
 
-    mockCardTestData.forEach((card) => {
+    cardTestData2.forEach((card) => {
       expect(screen.getByText(card.title ?? '')).toBeInTheDocument();
       const price = card.price ? '$' + card.price : '';
       expect(screen.getByText(price)).toBeInTheDocument();
@@ -49,11 +38,17 @@ describe('CardShellLoader component', () => {
   });
 
   it('should trigger the sorting', async () => {
+    const store = setupStore();
     act(() => {
-      render(<CardShellLoader query="test" />);
+      renderWithProviders(
+        <AppContextProvider apolloClient={api.clientMock}>
+          <CardShellLoader query="test" />
+        </AppContextProvider>,
+        { store }
+      );
     });
 
-    expect(screen.getByText('275')).toBeInTheDocument();
+    await waitRender();
 
     const buttonSort = screen.getAllByRole('button')[0];
     expect(buttonSort).toBeInTheDocument();
@@ -64,37 +59,104 @@ describe('CardShellLoader component', () => {
     const buttonNext = screen.getAllByRole('button')[2];
     expect(buttonNext).toBeInTheDocument();
 
-    const { loadCards } = useCardsApiContext();
+    expect(api.clientMock.query).toBeCalledTimes(1);
 
-    expect(loadCards).toBeCalledTimes(1);
-    expect(loadCards).toHaveBeenLastCalledWith('test', 0, []);
+    expect(api.clientMock.query).lastCalledWith(
+      expect.objectContaining({
+        variables: {
+          filter: {
+            searchQuery: 'test',
+            uuid: '',
+          },
+          order: [],
+          skip: 0,
+          take: 25,
+        },
+      })
+    );
 
     act(() => {
       fireEvent.click(buttonSort);
     });
+    await waitRender();
 
-    expect(loadCards).toBeCalledTimes(2);
-    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'ASC' }]);
+    expect(api.clientMock.query).toBeCalledTimes(2);
+
+    expect(api.clientMock.query).lastCalledWith(
+      expect.objectContaining({
+        variables: {
+          filter: {
+            searchQuery: 'test',
+            uuid: '',
+          },
+          order: [{ price: 'ASC' }],
+          skip: 0,
+          take: 25,
+        },
+      })
+    );
 
     act(() => {
       fireEvent.click(buttonSort);
     });
+    await waitRender();
 
-    expect(loadCards).toBeCalledTimes(3);
-    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'DESC' }]);
+    expect(api.clientMock.query).toBeCalledTimes(3);
+
+    expect(api.clientMock.query).lastCalledWith(
+      expect.objectContaining({
+        variables: {
+          filter: {
+            searchQuery: 'test',
+            uuid: '',
+          },
+          order: [{ price: 'DESC' }],
+          skip: 0,
+          take: 25,
+        },
+      })
+    );
 
     act(() => {
       fireEvent.click(buttonNext);
     });
+    await waitRender();
 
-    expect(loadCards).toBeCalledTimes(4);
-    expect(loadCards).toHaveBeenLastCalledWith('test', 25, [{ price: 'DESC' }]);
+    expect(api.clientMock.query).toBeCalledTimes(4);
+
+    expect(api.clientMock.query).lastCalledWith(
+      expect.objectContaining({
+        variables: {
+          filter: {
+            searchQuery: 'test',
+            uuid: '',
+          },
+          order: [{ price: 'DESC' }],
+          skip: 25,
+          take: 25,
+        },
+      })
+    );
 
     act(() => {
       fireEvent.click(buttonPrev);
     });
+    await waitRender();
 
-    expect(loadCards).toBeCalledTimes(5);
-    expect(loadCards).toHaveBeenLastCalledWith('test', 0, [{ price: 'DESC' }]);
+    expect(api.clientMock.query).toBeCalledTimes(5);
+
+    expect(api.clientMock.query).lastCalledWith(
+      expect.objectContaining({
+        variables: {
+          filter: {
+            searchQuery: 'test',
+            uuid: '',
+          },
+          order: [{ price: 'DESC' }],
+          skip: 0,
+          take: 25,
+        },
+      })
+    );
   });
 });

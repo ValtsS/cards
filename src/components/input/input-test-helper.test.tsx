@@ -1,6 +1,7 @@
 import { fireEvent, screen, render, act } from '@testing-library/react';
 import React from 'react';
 import { TestHelper } from './input-test-helper';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('TestHelper', () => {
   it('renders decorator with error, corrects and submits form successfully', async () => {
@@ -22,10 +23,7 @@ describe('TestHelper', () => {
 
     fireEvent.click(submit);
 
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('[BAD]')).toBeInTheDocument();
 
@@ -33,10 +31,7 @@ describe('TestHelper', () => {
 
     fireEvent.click(submit);
 
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.queryByText('[BAD]')).not.toBeInTheDocument();
     expect(screen.queryByText('[GOOD]')).not.toBeInTheDocument();
@@ -61,21 +56,13 @@ describe('TestHelper', () => {
     expect(screen.queryByText('[BAD]')).not.toBeInTheDocument();
 
     fireEvent.click(submit);
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('[BAD]')).toBeInTheDocument();
 
     fireEvent.click(orientation[0]);
     fireEvent.click(submit);
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.queryByText('[BAD]')).not.toBeInTheDocument();
     expect(screen.queryByText('[GOOD]')).not.toBeInTheDocument();
@@ -99,21 +86,13 @@ describe('TestHelper', () => {
     expect(screen.queryByText('[BAD]')).not.toBeInTheDocument();
 
     fireEvent.click(submit);
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.getByText('[BAD]')).toBeInTheDocument();
 
     fireEvent.change(ratingcontrol, { target: { value: 'GOOD' } });
     fireEvent.click(submit);
-
-    // wait for the component to re-render
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
+    await waitRender();
 
     expect(screen.queryByText('[BAD]')).not.toBeInTheDocument();
     expect(screen.queryByText('[GOOD]')).not.toBeInTheDocument();

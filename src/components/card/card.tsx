@@ -22,7 +22,8 @@ export const Card = (props: CardProps): ReactElement => {
     (card.flipimg && card.flipimg.valueOf() ? ' ' + IMGCLS_FLIP : '') +
     (card.grayscale && card.grayscale.valueOf() ? ' ' + IMGCLS_GRAY : '');
 
-  const dateSet = card.addedat && card.addedat.getFullYear() > 0;
+  const dateSet = card.addedat && new Date(card.addedat).getFullYear() > 0;
+  const dateStr = card.addedat && dateSet ? new Date(card.addedat).toDateString() : '';
   const ratingSet = card.rating && card.rating > 0;
   const priceSet = Boolean(card.price);
   const miniSet = Boolean(card.minipic);
@@ -47,7 +48,7 @@ export const Card = (props: CardProps): ReactElement => {
 
         <p className="smalltitle">{card.text}</p>
         {miniSet && <img src={card.minipic} className="minipic"></img>}
-        {dateSet && <p className="date">{card.addedat?.toDateString()}</p>}
+        {dateSet && <p className="date">{dateStr}</p>}
         <div className="clearfix"></div>
       </div>
     </div>

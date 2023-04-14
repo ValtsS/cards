@@ -1,30 +1,28 @@
-import { SearchBar } from '@/components/searchbar';
 import { CardShellLoader } from '@/components/card-shell-loader';
-import { useAppContext } from '@/providers';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { SearchBar } from '@/components/searchbar';
+import { change, selectMainPageData } from '@/slices/mainpage/mainpageSlice';
+import React, { ReactElement, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface MainPageProps {
   onSearch?: (searchQuery: string) => void;
 }
-const mainpageLastQuery = 'mainpage_lastquery_key';
 
 export const MainPage = (props: MainPageProps): ReactElement => {
-  const { localStore } = useAppContext();
-  const [query, setQuery] = useState('');
+  const dispatch = useDispatch();
+  const query = useSelector(selectMainPageData);
 
   const handleQueryChange = useCallback(
     async (searchQuery: string) => {
       if (props.onSearch) props.onSearch(searchQuery);
-      localStore.setItem(mainpageLastQuery, searchQuery);
-      setQuery(searchQuery);
+      dispatch(change(searchQuery));
     },
-    [localStore, props]
+    [props, dispatch]
   );
 
   useEffect(() => {
-    const prevQuery = localStore.getItem(mainpageLastQuery) ?? '';
-    handleQueryChange(prevQuery);
-  }, [localStore, handleQueryChange]);
+    handleQueryChange(query);
+  }, [handleQueryChange, query]);
 
   return (
     <>

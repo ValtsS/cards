@@ -1,24 +1,18 @@
 import * as Schema from '@/__generated__/graphql';
-import { SortBy } from './api-provider';
-import { CardData, CardProviderStore } from './card-provider';
+import { SortBy } from './sort-by';
+import { Cards } from './card-data';
 
-describe('Card provider', () => {
-  it('should provide', () => {
-    const prov = new CardProviderStore();
-    expect(prov.data.length).toBe(0);
-    const dummy = new CardData();
-    prov.insert(dummy);
-    expect(prov.data.length).toBe(1);
-    prov.insert(dummy);
-    expect(prov.data.length).toBe(1);
-    prov.insert(new CardData());
-    expect(prov.data.length).toBe(2);
+describe('Card test data provider', () => {
+  it('should allocate', () => {
+    const dummy = Cards.alloc();
+    expect(dummy).toBeTruthy();
+    expect(dummy.uuid).toBeTruthy();
   });
 
   it('should generate guids', () => {
-    const card = new CardData();
-    expect(card.uuid).toBe((CardData.counter - 1).toString());
-    expect(new CardData().uuid).not.toBe(card.uuid);
+    const card = Cards.alloc();
+    expect(card.uuid).toBe((Cards.counter - 1).toString());
+    expect(Cards.alloc().uuid).not.toBe(card.uuid);
   });
 });
 

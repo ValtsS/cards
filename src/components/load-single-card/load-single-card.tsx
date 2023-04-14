@@ -1,26 +1,41 @@
-import { CardData } from '@/providers';
-import { useCardsApiContext } from '@/providers/card/api-provider';
+import * as Schema from '@/__generated__/graphql';
+import { useAppContext } from '@/providers';
 import { useNotifications } from '@/providers/notifications-provider/notifications-provider';
-import React, { useEffect, useState } from 'react';
+import { fetchCard, selectApiCardData } from '@/slices/api/cardApi';
+import { useAppDispatch } from '@/store';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Card } from '../card';
 import { Spinner } from '../spinner/spinner';
 
 export const LoadSingleCard = ({ uuid }: { uuid: string }) => {
-  const { getSingleCard } = useCardsApiContext();
-
-  const [card, setCard] = useState<CardData | null>();
+  const dispatch = useAppDispatch();
+  const card = useSelector(selectApiCardData).card;
   const { setMessage } = useNotifications();
+  const { apolloClient } = useAppContext();
 
   useEffect(() => {
-    if (getSingleCard) {
-      const promise = getSingleCard(uuid);
-      promise
-        .then((value) => {
-          setCard(value);
+    if (apolloClient) {
+      const params: Schema.CardFilterInput = {
+        uuid,
+        searchQuery: '',
+      };
+
+      dispatch(
+        fetchCard({
+          client: apolloClient,
+          params,
         })
-        .catch(() => setMessage('Error caught while loading card', true));
+      )
+        .unwrap()
+        .catch((rejectedValueOrSerializedError) => {
+          setMessage(
+            'Error caught while loading card: ' + String(rejectedValueOrSerializedError),
+            true
+          );
+        });
     }
-  }, [getSingleCard, uuid, setMessage]);
+  }, [uuid, setMessage, apolloClient, dispatch]);
 
   return (
     <>

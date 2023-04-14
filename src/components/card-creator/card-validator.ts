@@ -1,4 +1,4 @@
-import { CardData } from '@/providers';
+import { CardData, Cards } from '@/providers';
 import { Message } from 'react-hook-form';
 import ImageCache from '@/core/ImageCache';
 
@@ -95,7 +95,8 @@ export class CardValidator {
 
     if (!card.addedat) this.errors['addedat'] = CardValidator.ERRORS.ADDED_AT_REQUIRED;
     else {
-      if (card.addedat > new Date()) this.errors['addedat'] = CardValidator.ERRORS.ADDED_AT_FUTURE;
+      if (card.addedat > new Date().getTime())
+        this.errors['addedat'] = CardValidator.ERRORS.ADDED_AT_FUTURE;
     }
 
     if (!card.rating || card.rating < 1)
@@ -114,11 +115,11 @@ export class CardValidator {
   prepareCard(vals: CardFormValues, cache: ImageCache): CardData {
     const parsed = Date.parse(vals.addedat);
 
-    const c = new CardData();
+    const c = Cards.alloc();
     c.title = vals.title;
     c.text = vals.text;
     c.price = vals.price.toString();
-    c.addedat = isNaN(parsed) === false ? new Date(parsed) : undefined;
+    c.addedat = isNaN(parsed) === false ? new Date(parsed).getTime() : undefined;
     c.rating = +(vals.rating ? vals.rating : 0);
     c.grayscale = vals.grayscale;
     c.imageUrl = cache.formImageURL(true, vals.bigimagemage[0]);

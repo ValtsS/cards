@@ -1,8 +1,8 @@
 import { InputDecorator, RadioWithDecorator, SelectWithDecorator } from '@/components/input';
+import ImageCache from '@/core/ImageCache';
 import { CardData } from '@/providers';
 import React, { ChangeEvent, ReactElement, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import ImageCache from '@/core/ImageCache';
 import './card-creator.css';
 import { CardFormValues, CardValidator } from './card-validator';
 
@@ -10,14 +10,8 @@ export interface CardCreatorProps {
   onCardCreate?: (newCard: CardData) => void;
 }
 
-class LocalCardState2 {
-  card: CardData;
+class LocalState {
   previewImageUrl?: string;
-
-  constructor(defaultDate: Date) {
-    this.card = new CardData();
-    this.card.addedat = defaultDate;
-  }
 }
 
 export const CardCreator = (props: CardCreatorProps): ReactElement => {
@@ -28,7 +22,7 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
   ];
   const imageCache = new ImageCache();
 
-  const [state, setState] = useState(new LocalCardState2(new Date()));
+  const [state, setState] = useState(new LocalState());
 
   const handleImagePrview = (event: ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;

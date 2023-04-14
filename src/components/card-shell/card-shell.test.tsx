@@ -1,4 +1,4 @@
-import { CardData } from '@/providers';
+import { Cards } from '@/providers';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CardShell } from './card-shell';
@@ -23,7 +23,7 @@ describe('Card Shell component', () => {
     expect(screen.getByText('no cards found for your search query: UUUUU')).toBeInTheDocument();
   });
   it('should render something', () => {
-    const test = new CardData();
+    const test = Cards.alloc();
     test.title = 'Title';
     test.price = '100';
     test.text = 'Text';
@@ -41,7 +41,7 @@ describe('Card Shell component', () => {
   });
 
   it('should call showDialog!', () => {
-    const test = new CardData();
+    const test = Cards.alloc();
     test.title = 'Title';
     test.price = '100';
     test.text = 'Text';
@@ -55,7 +55,7 @@ describe('Card Shell component', () => {
   });
 
   it('should not call showDialog!', () => {
-    const test = new CardData();
+    const test = Cards.alloc();
     test.title = 'Title';
     test.price = '100';
     test.text = 'Text';

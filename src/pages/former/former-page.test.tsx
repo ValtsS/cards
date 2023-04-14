@@ -1,29 +1,63 @@
-import { AppContextProvider, CardProviderStore, MemoryStorage } from '@/providers';
+import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
+import {
+  expectedTestCardData,
+  fillTheInputs,
+} from '@/components/card-creator/cart-creator-test-helper';
+import { AppContextProvider } from '@/providers';
 import { mockCardTestData } from '@/providers/card/card-test-data';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';
 
 describe('Former page component', () => {
   it('should render without crash', async () => {
-    const testCardProvider = new CardProviderStore();
     const firstCard = mockCardTestData[0];
+    firstCard.addedat = new Date('2024-06-11').getDate();
 
-    testCardProvider.data.push(firstCard);
-
-    render(
-      <AppContextProvider
-        localStoreProvider={new MemoryStorage()}
-        apolloClient={null}
-        formCardProvider={testCardProvider}
-      >
+    renderWithProviders(
+      <AppContextProvider apolloClient={null}>
         <FormerPage />
-      </AppContextProvider>
+      </AppContextProvider>,
+      {
+        preloadedState: {
+          cards: { data: [firstCard] },
+        },
+      }
     );
     const submit = screen.getByRole('button');
     expect(submit).toBeInTheDocument();
     expect(screen.getByText(firstCard.title ?? '')).toBeInTheDocument();
     expect(screen.getByText(firstCard.text ?? '')).toBeInTheDocument();
+  });
+
+  it('should should create a card', async () => {
+    const mockCreateObjectURL = jest.fn(() => 'mock-url');
+    const original = global.URL.createObjectURL;
+    try {
+      global.URL.createObjectURL = mockCreateObjectURL;
+
+      renderWithProviders(
+        <AppContextProvider apolloClient={null}>
+          <FormerPage />
+        </AppContextProvider>
+      );
+
+      const file = new File(['test image'], 'test.png', { type: 'image/png' });
+      await fillTheInputs(expectedTestCardData, file);
+      const submit = screen.getByRole('button');
+      expect(submit).toBeInTheDocument();
+
+      await act(async () => {
+        fireEvent.mouseDown(submit);
+        fireEvent.click(submit);
+        fireEvent.mouseUp(submit);
+      });
+      await waitRender();
+
+      expect(screen.getByText(/^Card \(Id = .+\) has been saved$/)).toBeInTheDocument();
+    } finally {
+      global.URL.createObjectURL = original;
+    }
   });
 });
 
