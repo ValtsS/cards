@@ -21,8 +21,7 @@ export const MainPage = (props: MainPageProps): ReactElement => {
   );
 
   useEffect(() => {
-    const prevQuery = query;
-    handleQueryChange(prevQuery);
+    handleQueryChange(query);
   }, [handleQueryChange, query]);
 
   return (
