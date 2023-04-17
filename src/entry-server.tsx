@@ -12,12 +12,6 @@ import { ReadStream } from 'fs';
 import App from './App';
 import { entryRender } from './entry-shared';
 
-
-export function gc(url: string):ReactNode {
-
-return(
-<div id="root">{entryRender()}</div>
-);
+export function gc(url: string): ReactNode {
+  return <div id="root">{entryRender()}</div>;
 }
-
-

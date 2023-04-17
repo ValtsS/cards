@@ -10,17 +10,13 @@ import { setupStore } from './store';
 import { BrowserRouter } from 'react-router-dom';
 import { entryRender } from './entry-shared';
 
-
 const client = new ApolloClient({
-    uri: 'http://ng4.velns.org:8000/graphql',
-    cache: new InMemoryCache(),
-  });
+  uri: 'http://ng4.velns.org:8000/graphql',
+  cache: new InMemoryCache(),
+});
 
-  const store = setupStore();
+const store = setupStore();
 
-const root = document.getElementById("root") as HTMLElement;
-console.log('reached',root);
-hydrateRoot(
-  root,
-entryRender()
-  );
+const root = document.getElementById('root') as HTMLElement;
+console.log('reached', root);
+hydrateRoot(root, entryRender());

@@ -6,7 +6,7 @@ import path from 'path';
 export default defineConfig({
   //plugins: [react()],
   ssr: {
-    noExternal: ['@reduxjs/toolkit']
+    noExternal: ['@reduxjs/toolkit'],
   },
   resolve: {
     alias: {
