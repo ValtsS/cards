@@ -36,7 +36,7 @@ export const fetchCards = createAsyncThunk(
   }
 );
 
-export enum StoreStatus {
+export const enum StoreStatus {
   idle = 'idle',
   loading = 'loading',
   failed = 'failed',

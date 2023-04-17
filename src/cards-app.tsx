@@ -1,6 +1,7 @@
 import { ErrorPage, RootLayout, RouteConfig } from '@/routes';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AboutPage } from './pages';
 
 export interface CardsAppProps {
   routesConfig: RouteConfig[];
@@ -9,9 +10,13 @@ export interface CardsAppProps {
 export const CardsApp = (props: CardsAppProps) => {
   const { routesConfig } = props;
 
+
+  return (<>{routesConfig[0].element}</>);
+
   return (
     <>
-      <BrowserRouter>
+
+
         <Routes>
           {routesConfig.map((c, index) => (
             <Route
@@ -25,7 +30,7 @@ export const CardsApp = (props: CardsAppProps) => {
 
           <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
         </Routes>
-      </BrowserRouter>
+
     </>
   );
 };

@@ -19,5 +19,8 @@
     "resolveJsonModule": true
   },
   "include": ["./src/**/*", "styled.d.ts"],
+  "ts-node": {
+    "esm": true
+  },
   "references": [{ "path": "./tsconfig.node.json" }]
 }

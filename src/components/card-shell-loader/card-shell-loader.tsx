@@ -94,10 +94,10 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
           Push to sort by price!
         </button>
         <button disabled={!pageInfo?.hasPreviousPage} onClick={goPrev}>
-          &#x00AB;
+          Prev
         </button>
         <button disabled={!pageInfo?.hasNextPage} onClick={goNext}>
-          &#x00BB;
+          Next
         </button>
       </span>
       <FloatNotification message={notify.message} error={notify.error} />
