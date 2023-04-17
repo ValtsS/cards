@@ -7,6 +7,7 @@ import { defaultRoutes } from './routes';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { setupStore } from './store';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 
 export const entryRender = (ssr: boolean, url?: string) => {
   const client = new ApolloClient({
@@ -18,7 +19,7 @@ export const entryRender = (ssr: boolean, url?: string) => {
 
   let app = <CardsApp routesConfig={defaultRoutes} />;
 
-  if (ssr) app = <MemoryRouter initialEntries={[url ?? '/']}>{app}</MemoryRouter>;
+  if (ssr) app = <StaticRouter location={url ?? '/'}>{app}</StaticRouter>;
   else app = <BrowserRouter>{app}</BrowserRouter>;
 
   return (

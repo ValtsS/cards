@@ -85,7 +85,6 @@ describe('Card Shell component', () => {
 
       expect(submit).toBeInTheDocument();
 
-      // wait for the component to re-render
       await act(async () => {
         fireEvent.mouseDown(submit);
         fireEvent.click(submit);
