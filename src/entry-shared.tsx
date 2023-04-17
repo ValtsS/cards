@@ -1,13 +1,13 @@
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { CardsApp } from './cards-app';
 import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { setupStore } from './store';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
 
 export const entryRender = (ssr: boolean, url?: string) => {
   const client = new ApolloClient({

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node ./server.ts",
     "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc -noEmit && vite build",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
+    "build:server": "eslint src --ext js,ts,tsx && prettier --check . && tsc -noEmit && vite build --outDir dist/server --ssr src/entry-server.tsx",
     "preview": "vite preview",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
