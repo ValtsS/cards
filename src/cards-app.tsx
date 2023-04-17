@@ -1,17 +1,14 @@
 import { ErrorPage, RootLayout, RouteConfig } from '@/routes';
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AboutPage } from './pages';
+import { Route, Routes } from 'react-router-dom';
 
 export interface CardsAppProps {
   routesConfig: RouteConfig[];
+  ssr?: boolean;
 }
 
 export const CardsApp = (props: CardsAppProps) => {
   const { routesConfig } = props;
-
-  return <>{routesConfig[0].element}</>;
-
   return (
     <>
       <Routes>

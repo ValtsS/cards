@@ -6,8 +6,9 @@ import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { setupStore } from './store';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
-export const entryRender = () => {
+export const entryRender = (ssr: boolean) => {
   const client = new ApolloClient({
     uri: 'http://ng4.velns.org:8000/graphql',
     cache: new InMemoryCache(),
@@ -15,14 +16,17 @@ export const entryRender = () => {
 
   const store = setupStore();
 
+  let app = <CardsApp routesConfig={defaultRoutes} />;
+
+  if (ssr) app = <MemoryRouter initialEntries={['/']}>{app}</MemoryRouter>;
+  else app = <BrowserRouter>{app}</BrowserRouter>;
+
   return (
     <React.StrictMode>
       <App>
         <Provider store={store}>
           <AppContextProvider apolloClient={client}>
-            <ModalDialogProvider>
-              <CardsApp routesConfig={defaultRoutes} />
-            </ModalDialogProvider>
+            <ModalDialogProvider>{app}</ModalDialogProvider>
           </AppContextProvider>
         </Provider>
       </App>
