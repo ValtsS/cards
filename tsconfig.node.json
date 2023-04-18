@@ -1,9 +1,19 @@
 {
+  "extends": "./tsconfig.json",
+  "exclude": ["vite.config.ts"],
+  "include": ["server.ts"],
   "compilerOptions": {
-    "composite": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
+    "checkJs": false,
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "composite": false,
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
-  },
-  "include": ["vite.config.ts"]
+    "moduleResolution": "Node"
+  }
 }

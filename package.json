@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node ./server.ts",
-    "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc -noEmit && vite build",
-    "build:server": "eslint src --ext js,ts,tsx && prettier --check . && tsc -noEmit && vite build --outDir dist/server --ssr src/entry-server.tsx",
     "preview": "vite preview",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
@@ -17,7 +15,11 @@
     "pre-commit": "lint-staged",
     "gql:compile": "graphql-codegen",
     "gql:watch": "graphql-codegen -w",
-    "check-strict": "eslint src --ext js,ts,tsx  --max-warnings 0 && tsc --noEmit --strict"
+    "check-strict": "eslint src --ext js,ts,tsx  --max-warnings 0 && tsc --noEmit --strict",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx --config vite.server.config.ts",
+    "build:server-prod": "tsc -p tsconfig.node.json",
+    "prod": "cross-env NODE_ENV=production node dist/server.js",
+    "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc -noEmit && vite build && npm run build:server && npm run build:server-prod"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",

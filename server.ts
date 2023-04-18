@@ -19,7 +19,9 @@ app.use('*', async (req, res, next) => {
   const url = req.originalUrl;
 
   try {
-    const xx = await vite.ssrLoadModule('./src/entry-server.tsx');
+    const isProduction = process.env.NODE_ENV?.toLowerCase() === 'production';
+    const entryPath = isProduction ? './server/entry-server.js' : '/src/entry-server.tsx';
+    const xx = isProduction ? await import(entryPath) : await vite.ssrLoadModule(entryPath);
     const gc = xx['gc'];
     const nodes: ReactNode = gc(url);
 
