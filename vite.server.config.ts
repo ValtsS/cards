@@ -4,11 +4,17 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   //plugins: [react()],
-  ssr: {},
+  ssr: {
+    target: 'node',
+  },
+  build: {
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@apollo/client': '@apollo/client', // Update the alias to the correct path
     },
   },
 });

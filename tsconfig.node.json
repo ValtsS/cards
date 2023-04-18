@@ -6,14 +6,14 @@
     "baseUrl": ".",
     "allowJs": true,
     "alwaysStrict": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "checkJs": false,
     "declarationMap": false,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "composite": false,
     "module": "ESNext",
-    "moduleResolution": "Node"
+    "moduleResolution": "nodenext"
   }
 }
