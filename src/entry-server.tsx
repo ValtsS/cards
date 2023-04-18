@@ -6,15 +6,8 @@ import { CardsApp } from './cards-app';
 import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
 import { setupStore } from './store';
-
 import pkg from '@apollo/client';
-
 const { ApolloClient, InMemoryCache } = pkg;
-
-const client = new ApolloClient({
-  uri: 'http://ng4.velns.org:8000/graphql',
-  cache: new InMemoryCache(),
-});
 
 export const entryRender = (url?: string) => {
   const client = new ApolloClient({
