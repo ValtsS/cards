@@ -9,13 +9,25 @@ import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
 import { setupStore } from './store';
 
+declare global {
+  interface Window {
+    __PRELOADED_STATE__?: string;
+  }
+}
+
 async function entryRender() {
   const client = new ApolloClient({
     uri: 'http://ng4.velns.org:8000/graphql',
     cache: new InMemoryCache(),
   });
 
-  const store = setupStore();
+  const preload = window.__PRELOADED_STATE__;
+
+  const initState = preload ? JSON.parse(atob(preload)) : {};
+
+  console.log('XXX', initState);
+
+  const store = setupStore(initState);
 
   let app = <CardsApp routesConfig={defaultRoutes} />;
   app = <BrowserRouter>{app}</BrowserRouter>;

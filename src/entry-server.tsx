@@ -1,16 +1,14 @@
-import React, { ReactElement, ReactNode } from 'react';
+import pkg from '@apollo/client';
+import React, { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { CardsApp } from './cards-app';
 import { AppContextProvider, ModalDialogProvider } from './providers';
+import { getCards } from './providers/card/api-client';
 import { defaultRoutes } from './routes';
+import { CardsResultStore, StoreStatus } from './slices/api/cardsApi';
 import { setupStore } from './store';
-import pkg from '@apollo/client';
-import { fetchCards } from './slices/api/cardsApi';
-import { renderToString } from 'react-dom/server';
-import { CardShellLoader } from './components/card-shell-loader';
-import { getDataFromTree } from '@apollo/client/react/ssr';
 const { ApolloClient, InMemoryCache } = pkg;
 
 async function entryRender(url?: string) {
@@ -21,13 +19,52 @@ async function entryRender(url?: string) {
 
   const store = setupStore();
 
-  let app = <CardsApp routesConfig={defaultRoutes} />;
-  app = <StaticRouter location={url ?? '/'}>{app}</StaticRouter>;
+  const { cards: loaded, info } = await getCards(
+    client,
+    {
+      searchQuery: '',
+      uuid: '',
+    },
+    25,
+    0,
+    []
+  );
 
-  return (
+  const initState = store.getState();
+
+  const newStateX: CardsResultStore = {
+    cards: loaded,
+    info,
+    status: StoreStatus.succeeded,
+    query: '',
+    errorcounter: 0,
+    limit: 25,
+    offset: 0,
+    orderBy: '',
+  };
+
+  const newState = {
+    ...initState,
+    cards: {
+      ...initState.cards,
+      ...newStateX,
+    },
+  };
+
+  const updatedStore = setupStore(newState);
+
+  const preloadedJson = JSON.stringify(updatedStore.getState());
+
+  const app = (
+    <StaticRouter location={url ?? '/'}>
+      <CardsApp routesConfig={defaultRoutes} />
+    </StaticRouter>
+  );
+
+  const nodes = (
     <React.StrictMode>
       <App>
-        <Provider store={store}>
+        <Provider store={updatedStore}>
           <AppContextProvider apolloClient={client}>
             <ModalDialogProvider>{app}</ModalDialogProvider>
           </AppContextProvider>
@@ -35,8 +72,18 @@ async function entryRender(url?: string) {
       </App>
     </React.StrictMode>
   );
+
+  return { nodes, preloadedJson };
 }
 
 export async function gc(url: string): Promise<ReactNode> {
-  return <div id="root">{await entryRender(url)}</div>;
+  const { nodes, preloadedJson } = await entryRender(url);
+  const base64 = Buffer.from(preloadedJson).toString('base64');
+
+  return (
+    <>
+      <div id="root">{nodes}</div>
+      <script dangerouslySetInnerHTML={{ __html: `window.__PRELOADED_STATE__="${base64}"` }} />
+    </>
+  );
 }
