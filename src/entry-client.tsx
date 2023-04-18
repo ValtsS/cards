@@ -25,6 +25,8 @@ async function entryRender() {
 
   const initState = preload ? JSON.parse(atob(preload)) : {};
 
+  if (preload) delete window.__PRELOADED_STATE__;
+
   const store = setupStore(initState);
   const app = (
     <BrowserRouter>
