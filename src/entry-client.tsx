@@ -9,7 +9,7 @@ import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
 import { setupStore } from './store';
 
-export const entryRender = () => {
+async function entryRender() {
   const client = new ApolloClient({
     uri: 'http://ng4.velns.org:8000/graphql',
     cache: new InMemoryCache(),
@@ -31,12 +31,12 @@ export const entryRender = () => {
       </App>
     </React.StrictMode>
   );
-};
+}
 
-export function gc(url: string): ReactNode {
-  return <div id="root">{entryRender()}</div>;
+export async function gc(): Promise<ReactNode> {
+  return <div id="root">{await entryRender()}</div>;
 }
 
 const root = document.getElementById('root') as HTMLElement;
 
-hydrateRoot(root, entryRender());
+hydrateRoot(root, await entryRender());

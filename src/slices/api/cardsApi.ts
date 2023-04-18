@@ -1,9 +1,9 @@
 import { ResultsInfo, getCards } from '@/providers/card/api-client';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as Schema from '@/__generated__/graphql';
 import { CardData, SortBy } from '@/providers';
 import { ApolloClient } from '@apollo/client';
 import { RootState } from '@/store';
+import { createAsyncThunk, createSlice } from '@/core/toolkitModule';
 
 export type fetchParams = {
   client: ApolloClient<unknown>;

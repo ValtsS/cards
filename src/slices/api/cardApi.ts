@@ -2,9 +2,9 @@ import * as Schema from '@/__generated__/graphql';
 import { CardData } from '@/providers';
 import { getCard } from '@/providers/card/api-client';
 import { ApolloClient } from '@apollo/client';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from './cardsApi';
 import { RootState } from '@/store';
+import { createAsyncThunk, createSlice } from '@/core/toolkitModule';
 
 export const fetchCard = createAsyncThunk(
   'card/fetchCard',

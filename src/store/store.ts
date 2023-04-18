@@ -1,10 +1,11 @@
+import { combineReducers, configureStore } from '@/core/toolkitModule';
 import { cardApiReducer } from '@/slices/api/cardApi';
 import { cardsApiReducer } from '@/slices/api/cardsApi';
 import { cardReducer } from '@/slices/card/cardSlice';
 import { mainPageReducer } from '@/slices/mainpage/mainpageSlice';
 import { notificationsReducer } from '@/slices/notifications/notificationsSlice';
 import { searchBarReducer } from '@/slices/searchbar/searchbarSlice';
-import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
+import { PreloadedState } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
@@ -7,9 +7,13 @@ import { AppContextProvider, ModalDialogProvider } from './providers';
 import { defaultRoutes } from './routes';
 import { setupStore } from './store';
 import pkg from '@apollo/client';
+import { fetchCards } from './slices/api/cardsApi';
+import { renderToString } from 'react-dom/server';
+import { CardShellLoader } from './components/card-shell-loader';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 const { ApolloClient, InMemoryCache } = pkg;
 
-export const entryRender = (url?: string) => {
+async function entryRender(url?: string) {
   const client = new ApolloClient({
     uri: 'http://ng4.velns.org:8000/graphql',
     cache: new InMemoryCache(),
@@ -31,8 +35,8 @@ export const entryRender = (url?: string) => {
       </App>
     </React.StrictMode>
   );
-};
+}
 
-export function gc(url: string): ReactNode {
-  return <div id="root">{entryRender(url)}</div>;
+export async function gc(url: string): Promise<ReactNode> {
+  return <div id="root">{await entryRender(url)}</div>;
 }

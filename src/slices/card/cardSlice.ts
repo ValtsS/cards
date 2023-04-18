@@ -1,6 +1,7 @@
+import { createSlice } from '@/core/toolkitModule';
 import { CardData } from '@/providers';
 import { RootState } from '@/store/store';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 interface CardStore {
   data: CardData[];

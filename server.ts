@@ -23,10 +23,10 @@ app.use('*', async (req, res, next) => {
     const entryPath = isProduction ? './server/entry-server.js' : '/src/entry-server.tsx';
     const xx = isProduction ? await import(entryPath) : await vite.ssrLoadModule(entryPath);
     const gc = xx['gc'];
-    const nodes: ReactNode = gc(url);
+    const nodes: Promise<ReactNode> = await gc(url);
 
     let didError = false;
-    const pipe = renderToPipeableStream(nodes, {
+    const pipe = renderToPipeableStream(await nodes, {
       bootstrapModules: ['./src/entry-client.tsx'],
       onShellReady: () => {
         res.statusCode = didError ? 500 : 200;
