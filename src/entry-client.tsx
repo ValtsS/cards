@@ -25,8 +25,6 @@ async function entryRender() {
 
   const initState = preload ? JSON.parse(atob(preload)) : {};
 
-  console.log('XXX', initState);
-
   const store = setupStore(initState);
 
   let app = <CardsApp routesConfig={defaultRoutes} />;
