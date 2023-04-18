@@ -8,7 +8,7 @@ import { AppContextProvider, ModalDialogProvider } from './providers';
 import { getCards } from './providers/card/api-client';
 import { defaultRoutes } from './routes';
 import { CardsResultStore, StoreStatus } from './slices/api/cardsApi';
-import { setupStore } from './store';
+import { RootState, setupStore } from './store';
 const { ApolloClient, InMemoryCache } = pkg;
 
 async function entryRender(url?: string) {
@@ -43,10 +43,10 @@ async function entryRender(url?: string) {
     orderBy: '',
   };
 
-  const newState = {
+  const newState: RootState = {
     ...initState,
-    cards: {
-      ...initState.cards,
+    cardsAPI: {
+      ...initState.cardsAPI,
       ...newStateX,
     },
   };

@@ -26,9 +26,11 @@ async function entryRender() {
   const initState = preload ? JSON.parse(atob(preload)) : {};
 
   const store = setupStore(initState);
-
-  let app = <CardsApp routesConfig={defaultRoutes} />;
-  app = <BrowserRouter>{app}</BrowserRouter>;
+  const app = (
+    <BrowserRouter>
+      <CardsApp routesConfig={defaultRoutes} />
+    </BrowserRouter>
+  );
 
   return (
     <React.StrictMode>
