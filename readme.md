@@ -22,8 +22,12 @@ Run:
 
 or
 
-`npm run preview`
+`npm run prod`
 
-_Test coverage:_
+_Unit Test coverage:_
 
 `npm run coverage`
+
+_Cypress E2E Test coverage:_
+
+`npm run test:e2e`

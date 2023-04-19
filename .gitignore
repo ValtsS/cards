@@ -35,3 +35,7 @@ junit.xml
 src/**/*.js
 /server.js
 /.nyc_output
+/instrumented
+/cypress/videos
+/cypress/downloads
+
