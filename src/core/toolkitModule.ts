@@ -1,11 +1,7 @@
 import * as toolkitRaw from '@reduxjs/toolkit';
 
-interface ToolkitModule {
-  createSlice: typeof toolkitRaw.createSlice;
-  createAsyncThunk: typeof toolkitRaw.createAsyncThunk;
-  configureStore: typeof toolkitRaw.configureStore;
-  combineReducers: typeof toolkitRaw.combineReducers;
-}
+type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
 
-export const { createSlice, createAsyncThunk, configureStore, combineReducers }: ToolkitModule =
-  toolkitRaw;
+export const { createSlice, createAsyncThunk, configureStore, combineReducers } = ((
+  toolkitRaw as TypeToolkitRaw
+).default ?? toolkitRaw) as typeof toolkitRaw;
