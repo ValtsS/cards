@@ -21,9 +21,11 @@ app.use('*', async (req, res, next) => {
   try {
     const isProduction = process.env.NODE_ENV?.toLowerCase() === 'production';
     const entryPath = isProduction ? './server/entry-server.js' : '/src/entry-server.tsx';
-    const xx = isProduction ? await import(entryPath) : await vite.ssrLoadModule(entryPath);
-    const gc = xx['gc'];
-    const nodes: Promise<ReactNode> = await gc(url);
+    const importedModule = isProduction
+      ? await import(entryPath)
+      : await vite.ssrLoadModule(entryPath);
+    const getContent = importedModule['gc'];
+    const nodes: Promise<ReactNode> = await getContent(url);
 
     let didError = false;
     const pipe = renderToPipeableStream(await nodes, {
