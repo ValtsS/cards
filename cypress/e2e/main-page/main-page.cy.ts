@@ -17,19 +17,6 @@ describe('Main page', () => {
     checkImportantBits();
   });
 
-  function checkImportantBits() {
-    cy.get('.search-container div').should('contain.text', SEARCH_CAPTION);
-    cy.get('.search-container input[type="text"]').should('have.length', 1).and('be.enabled');
-    const submit = cy.get('.search-container button').should('have.length', 1).and('be.enabled');
-    submit.should('contain.text', 'Search');
-    submit.should('have.length', 1);
-
-    cy.get('.buttonland > button').and('contain.text', TEXT_SORT_BUTTON).and('be.enabled');
-
-    cy.get('.buttonland > button').and('contain.text', TEXT_PAGE_LEFT).and('be.disabled');
-    cy.get('.buttonland > button').should('exist').and('contain.text', TEXT_PAGE_RIGHT);
-  }
-
   it('it should list some cards on load', function () {
     checkImportantBits();
     validateLoadedCardCount();
@@ -77,39 +64,6 @@ describe('Main page', () => {
     cy.get('[data-testid="overlay-content"]').should('not.exist');
   });
 
-  function getNextButton(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy
-      .get('.buttonland > button:nth-child(3)')
-      .should('exist')
-      .and('contain.text', TEXT_PAGE_RIGHT);
-  }
-
-  function getPrevButton(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy
-      .get('.buttonland > button:nth-child(2)')
-      .should('exist')
-      .and('contain.text', TEXT_PAGE_LEFT);
-  }
-
-  function getSortButton(): Cypress.Chainable<JQuery<HTMLElement>> {
-    return cy
-      .get('.buttonland > button:nth-child(1)')
-      .should('exist')
-      .and('contain.text', TEXT_SORT_BUTTON);
-  }
-
-  function checkApiSort(value: string): Cypress.Chainable<Chai.Assertion> {
-    return sortState().then((val) => expect(val.trim()).to.be.eq(value));
-  }
-
-  function checkApiNext(value: string): Cypress.Chainable<Chai.Assertion> {
-    return nextPageState().then((val) => expect(val.toUpperCase().trim()).to.be.eq(value));
-  }
-
-  function checkApiPrev(value: string): Cypress.Chainable<Chai.Assertion> {
-    return prevPageState().then((val) => expect(val.toUpperCase().trim()).to.be.eq(value));
-  }
-
   it('it should flip through pages', function () {
     checkImportantBits();
     validateLoadedCardCount();
@@ -131,6 +85,28 @@ describe('Main page', () => {
     getPrevButton().click().wait(50); // caching should work
     validateOffset(0);
   });
+
+  it('it should filter', function () {
+    checkImportantBits();
+    validateLoadedCardCount();
+
+    getFilterText().should('be.eq', 'Filter: ');
+
+    cy.get(':nth-child(1) > .inner > .price > span')
+      .first()
+      .invoke('text')
+      .then((e) => {
+        const pstr = String(e).replace('$', '');
+        cy.get('.search-container input[type="text"]').type(pstr + '{enter}');
+        waitForQuery();
+
+        getFilterText().should('be.eq', 'Filter: ' + pstr);
+      });
+  });
+
+  function getFilterText() {
+    return cy.get('.filtertext').should('exist').invoke('text');
+  }
 
   function sortState(): Cypress.Chainable<string> {
     cy.get('.api-state-container > :nth-child(5)').should('contain.text', 'Sorting:');
@@ -223,5 +199,51 @@ describe('Main page', () => {
 
   function waitForQuery() {
     cy.wait('@getCards').wait(50);
+  }
+
+  function getNextButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy
+      .get('.buttonland > button:nth-child(3)')
+      .should('exist')
+      .and('contain.text', TEXT_PAGE_RIGHT);
+  }
+
+  function getPrevButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy
+      .get('.buttonland > button:nth-child(2)')
+      .should('exist')
+      .and('contain.text', TEXT_PAGE_LEFT);
+  }
+
+  function getSortButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy
+      .get('.buttonland > button:nth-child(1)')
+      .should('exist')
+      .and('contain.text', TEXT_SORT_BUTTON);
+  }
+
+  function checkApiSort(value: string): Cypress.Chainable<Chai.Assertion> {
+    return sortState().then((val) => expect(val.trim()).to.be.eq(value));
+  }
+
+  function checkApiNext(value: string): Cypress.Chainable<Chai.Assertion> {
+    return nextPageState().then((val) => expect(val.toUpperCase().trim()).to.be.eq(value));
+  }
+
+  function checkApiPrev(value: string): Cypress.Chainable<Chai.Assertion> {
+    return prevPageState().then((val) => expect(val.toUpperCase().trim()).to.be.eq(value));
+  }
+
+  function checkImportantBits() {
+    cy.get('.search-container div').should('contain.text', SEARCH_CAPTION);
+    cy.get('.search-container input[type="text"]').should('have.length', 1).and('be.enabled');
+    const submit = cy.get('.search-container button').should('have.length', 1).and('be.enabled');
+    submit.should('contain.text', 'Search');
+    submit.should('have.length', 1);
+
+    cy.get('.buttonland > button').and('contain.text', TEXT_SORT_BUTTON).and('be.enabled');
+
+    cy.get('.buttonland > button').and('contain.text', TEXT_PAGE_LEFT).and('be.disabled');
+    cy.get('.buttonland > button').should('exist').and('contain.text', TEXT_PAGE_RIGHT);
   }
 });
