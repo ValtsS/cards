@@ -1,14 +1,20 @@
 /// <reference types="cypress" />
 
 describe('Navigation checks', () => {
-  const textForm = 'Form';
-  const textMain = 'Main';
-  const textAbout = 'About us';
+  const TEXT_FORM = 'Form';
+  const TEXT_MAIN = 'Main';
+  const TEXT_ABOUT = 'About us';
+  const TEXT_BACK2MAIN = 'Go back to the main page';
 
-  const allLinkTexts = [textAbout, textForm, textMain];
+  const allLinkTexts = [TEXT_ABOUT, TEXT_FORM, TEXT_MAIN];
 
   beforeEach(() => {
     cy.visit('/');
+  });
+
+  it('check that 404 works', function () {
+    cy.visit('/404nonexistant');
+    cy.get('a').contains(TEXT_BACK2MAIN).should('exist');
   });
 
   it('check that main page loaded', function () {
@@ -25,32 +31,32 @@ describe('Navigation checks', () => {
 
     getActiveMain();
 
-    const formLink = cy.get('header a').contains(textForm);
+    const formLink = cy.get('header a').contains(TEXT_FORM);
     formLink.should('exist');
 
-    const aboutLink = cy.get('header a').contains(textAbout);
+    const aboutLink = cy.get('header a').contains(TEXT_ABOUT);
     aboutLink.should('exist');
     checkPresenceOfLinks();
   });
 
   it('check if navigation to form works', function () {
-    const formLink = cy.get('header a').contains(textForm);
+    const formLink = cy.get('header a').contains(TEXT_FORM);
     formLink.should('exist');
 
     formLink.click();
 
     const link = getActiveLink();
-    link.should('have.text', textForm);
+    link.should('have.text', TEXT_FORM);
     checkPresenceOfLinks();
   });
 
   it('check if navigation to about works', function () {
-    const aboutLink = cy.get('header a').contains(textAbout);
+    const aboutLink = cy.get('header a').contains(TEXT_ABOUT);
     aboutLink.should('exist');
     aboutLink.click();
 
     const link = getActiveLink();
-    link.should('have.text', textAbout);
+    link.should('have.text', TEXT_ABOUT);
     checkPresenceOfLinks();
   });
 
@@ -68,7 +74,7 @@ describe('Navigation checks', () => {
 
   function getActiveMain() {
     const activeLink = getActiveLink();
-    activeLink.should('exist').and('have.text', textMain);
+    activeLink.should('exist').and('have.text', TEXT_MAIN);
     activeLink.should('have.length', 1);
     return activeLink;
   }
