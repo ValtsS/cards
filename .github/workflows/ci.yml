@@ -7,7 +7,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     if: ${{ github.event.repository.owner.login == github.actor }}
     env:
-     CYPRESS_BASE_URL: "http://localhost:5999"
+      CYPRESS_BASE_URL: 'http://localhost:5999'
     steps:
       - uses: actions/checkout@v3
         with:
