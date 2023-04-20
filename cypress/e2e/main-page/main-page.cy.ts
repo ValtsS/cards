@@ -10,7 +10,7 @@ describe('Main page', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('getCards');
     cy.visit('/');
-    cy.wait('@getCards').wait(50);
+    waitForQuery();
   });
 
   it('check that important parts are present', function () {
@@ -46,13 +46,13 @@ describe('Main page', () => {
     checkApiSort('');
 
     getSortButton().should('be.enabled').click();
-    cy.wait('@getCards');
-    checkApiSort('↑Price').wait(50);
+    waitForQuery();
+    checkApiSort('↑Price');
     validatePriceOrder(true);
 
     getSortButton().should('be.enabled').click();
-    cy.wait('@getCards');
-    checkApiSort('↓Price').wait(50);
+    waitForQuery();
+    checkApiSort('↓Price');
     validatePriceOrder(false);
   });
 
@@ -61,7 +61,8 @@ describe('Main page', () => {
     validateLoadedCardCount();
 
     const firstCard = cy.get('main .card-container > .card').first().should('exist');
-    firstCard.click().wait('@getCards').wait(50);
+    firstCard.click();
+    waitForQuery();
 
     cy.get('[data-testid="overlay-content"]').should('be.visible');
 
@@ -121,13 +122,13 @@ describe('Main page', () => {
 
     checkApiNext('YES');
     getNextButton().click();
-    cy.wait('@getCards').wait(50);
+    waitForQuery();
 
     getNextLimit().then((limit) => validateOffset(limit));
 
     checkApiPrev('YES');
     getPrevButton().should('be.enabled');
-    getPrevButton().click().wait(50);
+    getPrevButton().click().wait(50); // caching should work
     validateOffset(0);
   });
 
@@ -218,5 +219,9 @@ describe('Main page', () => {
     const limitResult = cy.get('.api-state-container > :nth-child(4) > span').should('exist');
     const valLimitResult = limitResult.invoke('text').then(parseInt).should('be.gt', 0);
     return { valLimitResult, valTotalResult };
+  }
+
+  function waitForQuery() {
+    cy.wait('@getCards').wait(50);
   }
 });
