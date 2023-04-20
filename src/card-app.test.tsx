@@ -4,6 +4,7 @@ import React from 'react';
 import { RootLayout } from 'routes/root-layout';
 import { CardsApp } from './cards-app';
 import { AboutPage } from './pages';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('CardsApp', () => {
   it('should render main page with correct props', async () => {
@@ -18,7 +19,13 @@ describe('CardsApp', () => {
       },
     ];
 
-    act(() => render(<CardsApp routesConfig={routes} />));
+    act(() =>
+      render(
+        <BrowserRouter>
+          <CardsApp routesConfig={routes} />
+        </BrowserRouter>
+      )
+    );
 
     expect(screen.getByText('Fantastic about page of module01 react project')).toBeInTheDocument();
   });
