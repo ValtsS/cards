@@ -69,6 +69,7 @@ describe('Navigation checks', () => {
   function getActiveMain() {
     const activeLink = getActiveLink();
     activeLink.should('exist').and('have.text', textMain);
+    activeLink.should('have.length', 1);
     return activeLink;
   }
 });
