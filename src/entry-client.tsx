@@ -23,7 +23,8 @@ async function entryRender() {
 
   const preload = window.__PRELOADED_STATE__;
 
-  const initState = preload ? JSON.parse(atob(preload)) : {};
+  const decoded = Buffer.from(preload as string, 'base64').toString();
+  const initState = preload ? JSON.parse(decoded) : {};
 
   if (preload) delete window.__PRELOADED_STATE__;
 
