@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-import { get } from 'cypress/types/lodash';
-
 const SEARCH_CAPTION = 'Enter search query';
 
 const TEXT_SORT_BUTTON = 'Push to sort by price!';
@@ -12,7 +10,7 @@ describe('Main page', () => {
   beforeEach(() => {
     cy.intercept('POST', '**/graphql').as('getCards');
     cy.visit('/');
-    cy.wait('@getCards');
+    cy.wait('@getCards').wait(50);
   });
 
   it('check that important parts are present', function () {
@@ -42,6 +40,42 @@ describe('Main page', () => {
     validateLoadedCardCount();
   });
 
+  it('it should sort', function () {
+    checkImportantBits();
+    validateLoadedCardCount();
+    checkApiSort('');
+
+    getSortButton().should('be.enabled').click();
+    cy.wait('@getCards');
+    checkApiSort('↑Price').wait(50);
+    validatePriceOrder(true);
+
+    getSortButton().should('be.enabled').click();
+    cy.wait('@getCards');
+    checkApiSort('↓Price').wait(50);
+    validatePriceOrder(false);
+  });
+
+  it('it should open on click', function () {
+    checkImportantBits();
+    validateLoadedCardCount();
+
+    const firstCard = cy.get('main .card-container > .card').first().should('exist');
+    firstCard.click().wait('@getCards').wait(50);
+
+    cy.get('[data-testid="overlay-content"]').should('be.visible');
+
+    cy.get(':nth-child(2) > .card .bigpic').should('be.visible');
+    cy.get(':nth-child(2) > .card .minipic').should('be.visible');
+    cy.get(':nth-child(2) > .card > .inner > .title').should('exist');
+    cy.get(':nth-child(2) > .card > .inner > .smalltitle').should('exist');
+    cy.get(':nth-child(2) > .card > .inner > .price').should('exist');
+    cy.get(':nth-child(2) > .card > .inner > .date').should('exist');
+
+    cy.get('.close').should('be.visible').click();
+    cy.get('[data-testid="overlay-content"]').should('not.exist');
+  });
+
   function getNextButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy
       .get('.buttonland > button:nth-child(3)')
@@ -54,6 +88,17 @@ describe('Main page', () => {
       .get('.buttonland > button:nth-child(2)')
       .should('exist')
       .and('contain.text', TEXT_PAGE_LEFT);
+  }
+
+  function getSortButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy
+      .get('.buttonland > button:nth-child(1)')
+      .should('exist')
+      .and('contain.text', TEXT_SORT_BUTTON);
+  }
+
+  function checkApiSort(value: string): Cypress.Chainable<Chai.Assertion> {
+    return sortState().then((val) => expect(val.trim()).to.be.eq(value));
   }
 
   function checkApiNext(value: string): Cypress.Chainable<Chai.Assertion> {
@@ -76,15 +121,20 @@ describe('Main page', () => {
 
     checkApiNext('YES');
     getNextButton().click();
-    cy.wait('@getCards');
+    cy.wait('@getCards').wait(50);
 
     getNextLimit().then((limit) => validateOffset(limit));
 
     checkApiPrev('YES');
     getPrevButton().should('be.enabled');
-    getPrevButton().click();
+    getPrevButton().click().wait(50);
     validateOffset(0);
   });
+
+  function sortState(): Cypress.Chainable<string> {
+    cy.get('.api-state-container > :nth-child(5)').should('contain.text', 'Sorting:');
+    return cy.get('.api-state-container > :nth-child(5) > span').should('exist').invoke('text');
+  }
 
   function nextPageState(): Cypress.Chainable<string> {
     cy.get('.api-state-container > :nth-child(7)').should('contain.text', 'Has Next?:');
@@ -116,18 +166,57 @@ describe('Main page', () => {
     cy.get('.api-state-container > :nth-child(2)').should('contain.text', 'Total results');
     cy.get('.api-state-container > :nth-child(4)').should('contain.text', 'Limit');
 
-    const totalResult = cy.get('.api-state-container > :nth-child(2) > span').should('exist');
-    const valTotalResult = totalResult.invoke('text').then(parseInt).should('be.gte', minCount);
-
-    const limitResult = cy.get('.api-state-container > :nth-child(4) > span').should('exist');
-    const valLimitResult = limitResult.invoke('text').then(parseInt).should('be.gt', 0);
+    const { valLimitResult, valTotalResult } = getCards(minCount);
 
     valLimitResult.then((limit) => {
       valTotalResult.then((total) => {
         const shouldDisplay = Math.min(limit, total);
         cy.get('main .card-container > .card').should('have.length', shouldDisplay);
         cy.get('main .card-container > .card img').should('have.length', shouldDisplay);
+        cy.get('main .card-container > .card .price').should('have.length', shouldDisplay);
       });
     });
+  }
+
+  function validatePriceOrder(ascending: boolean) {
+    const { _: dollar } = Cypress;
+
+    const { valLimitResult, valTotalResult } = getCards(2);
+
+    valLimitResult.then((limit) => {
+      valTotalResult.then((total) => {
+        const shouldDisplay = Math.min(limit, total);
+        const prices = cy
+          .get('main .card-container > .card .price')
+          .should('have.length', shouldDisplay);
+        prices.then((p) => {
+          const priceList = dollar
+            .chain(p)
+            .map((e) => e.textContent)
+            .value()
+            .filter((e) => e !== null)
+            .map((e) => String(e).replace('$', ''))
+            .map((e) => parseFloat(e));
+
+          const isSorted = priceList.every((val, i, arr) => {
+            if (i === 0) {
+              return true;
+            } else {
+              return ascending ? val >= arr[i - 1] : val <= arr[i - 1];
+            }
+          });
+          expect(isSorted).to.be.true;
+        });
+      });
+    });
+  }
+
+  function getCards(minCount: number) {
+    const totalResult = cy.get('.api-state-container > :nth-child(2) > span').should('exist');
+    const valTotalResult = totalResult.invoke('text').then(parseInt).should('be.gte', minCount);
+
+    const limitResult = cy.get('.api-state-container > :nth-child(4) > span').should('exist');
+    const valLimitResult = limitResult.invoke('text').then(parseInt).should('be.gt', 0);
+    return { valLimitResult, valTotalResult };
   }
 });
