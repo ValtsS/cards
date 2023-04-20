@@ -52,8 +52,7 @@ describe('Main page', () => {
     const deadline = new Date(new Date().getTime() + 10 * 1000);
     let counter = 0;
 
-    while (counter < 3 && (new Date()<deadline))
-    {
+    while (counter < 3 && new Date() < deadline) {
       fillFastForm({ uid: ++counter });
     }
 
