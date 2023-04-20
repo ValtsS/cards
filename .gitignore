@@ -38,4 +38,6 @@ src/**/*.js
 /instrumented
 /cypress/videos
 /cypress/downloads
+/cypress/screenshots
+
 
