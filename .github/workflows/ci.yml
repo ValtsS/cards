@@ -23,5 +23,9 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run coverage
+      - name: Start test server
+        run: npm run test:startserver
+      - name: Run Cypress
+        run: npm run test:e2e
       - name: Sonarqube
         run: npm run sonar
