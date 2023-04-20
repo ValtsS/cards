@@ -16,7 +16,7 @@
     "test:clean": "npx rimraf coverage && npx rimraf .nyc_output && npx rimraf instrumented",
     "test": "npm run test:jest && npm run test:prep && npm run test:e2e",
     "watch-tests": "cross-env BABEL_ENV=test NODE_ENV=test jest --watch",
-    "coverage": "npm run test:clean && cross-env BABEL_ENV=test NODE_ENV=test jest --coverage && npm run test:prep && npm run test:e2e",
+    "coverage": "npm run test:clean && cross-env BABEL_ENV=test NODE_ENV=test jest --coverage && npm run test:e2e",
     "sonar": "/sonar/runsonar.sh",
     "pre-commit": "lint-staged",
     "gql:compile": "graphql-codegen",

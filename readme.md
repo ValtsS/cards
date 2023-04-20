@@ -24,10 +24,6 @@ or
 
 `npm run prod`
 
-_Unit Test coverage:_
-
+_Unit and E2R Test coverage:_
+`npm run dev`
 `npm run coverage`
-
-_Cypress E2E Test coverage:_
-
-`npm run test:e2e`

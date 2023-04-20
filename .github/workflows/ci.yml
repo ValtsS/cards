@@ -22,10 +22,12 @@ jobs:
         run: npm run check-strict
       - name: Build code
         run: npm run build
-      - name: Test
-        run: npm run coverage
       - name: Start test Dev server
         run: nohup npm run test:startserver-dev > /dev/null 2>&1 & echo $! > test-server.pid
+      - name: Test
+        run: npm run test
+      - name: Test
+        run: npm run coverage
       - name: Run Cypress
         run: sleep 10s && npm run test:e2e
       - name: Stop test server
