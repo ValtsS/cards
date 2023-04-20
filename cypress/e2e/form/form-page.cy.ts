@@ -46,6 +46,63 @@ describe('Main page', () => {
     fillForm({ flipped: false });
   });
 
+  it('fill and create many cards', function () {
+    checkImportantBits();
+
+    const deadline = new Date(new Date().getTime() + 10 * 1000);
+    let counter = 0;
+
+    while (counter < 3 && (new Date()<deadline))
+    {
+      fillFastForm({ uid: ++counter });
+    }
+
+    cy.get('.card').should('have.length', counter);
+  });
+
+  function fillFastForm({ uid }: { uid: number }) {
+    cy.fixture('bg.jpg', null).then((e: Buffer) =>
+      cy.get('input[type=file]').selectFile({
+        contents: e,
+        fileName: 'bg.jpg',
+        lastModified: Date.now(),
+      })
+    );
+
+    cy.get('.bg-alt img.preview').should('be.visible');
+
+    const textTitle = 'Test Title #' + uid.toString();
+    const textSubtitle = 'Test SubTitle #' + uid.toString();
+    const textPrice = '6578342' + uid.toString();
+    const textDate = '2011-11-15';
+
+    let inputCounter = 0;
+
+    setTextInput(++inputCounter, textTitle);
+    setTextInput(++inputCounter, textSubtitle);
+    setTextInput(++inputCounter, textPrice);
+    cy.get(':nth-child(4) > label > input').clear();
+    cy.get(':nth-child(4) > label > input').type(textDate);
+
+    cy.get('form select').select(3);
+
+    inputCounter = 5;
+    getNthInput(++inputCounter).check();
+    NoErrorAt(++inputCounter);
+    cy.get('form fieldset [type="radio"]').first().check();
+
+    pushSubmit();
+    errorCountShouldBe(0);
+
+    cy.get('.card').should('be.visible');
+    cy.get('.card .title').should('be.visible').and('contain.text', textTitle);
+    cy.get('.card img.bigpic.grayscale').should('be.visible');
+    cy.get('.card .price').should('be.visible').and('contain.text', textPrice);
+    cy.get('.card .price').should('be.visible').and('contain.text', '★★★');
+    cy.get('.card .price').should('be.visible').and('contain.text', '☆☆');
+    cy.get('.card .smalltitle').should('be.visible').and('contain.text', textSubtitle);
+  }
+
   function fillForm({ flipped }: { flipped: boolean }) {
     let errors = 9;
 
@@ -108,7 +165,6 @@ describe('Main page', () => {
     errorCountShouldBe(--errors);
 
     ErrorAt(++inputCounter);
-    setTextInput(inputCounter, 'checked');
     getNthInput(inputCounter).check();
     pushSubmit();
     NoErrorAt(inputCounter);
