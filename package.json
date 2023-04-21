@@ -97,5 +97,12 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "nyc": {
+    "exclude": [
+      "cypress/**/*",
+      "!cypress/integration/e2e/**/*",
+      "__mocks__/**/*"
+    ]
   }
 }
