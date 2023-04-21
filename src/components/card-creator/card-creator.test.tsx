@@ -53,6 +53,42 @@ describe('Card Shell component', () => {
     screen.getByText(CardValidator.ERRORS.TITLE_REQUIRED);
   });
 
+  it('should Trigger rarer validation errors', async () => {
+    render(<CardCreator />);
+
+    const expected: CardData = {
+      addedat: new Date('2099-01-01').getTime(),
+      flipimg: false,
+      grayscale: true,
+      imageUrl: 'mock-url',
+      minipic: undefined,
+      price: '-13',
+      rating: 1,
+      text: 'Text2',
+      title: 'Text1',
+      uuid: '4',
+    };
+
+    const file = new File(['test html'], 'test.html', { type: 'text/html' });
+
+    await fillTheInputs(expected, file);
+
+    const submit = screen.getByRole('button');
+
+    expect(submit).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.mouseDown(submit);
+      fireEvent.click(submit);
+      fireEvent.mouseUp(submit);
+    });
+
+    await waitRender();
+    screen.getByText(CardValidator.ERRORS.ADDED_AT_FUTURE);
+    screen.getByText(CardValidator.ERRORS.PRICE_VALID);
+    screen.getByText(CardValidator.ERRORS.IMAGE_REQUIRED);
+  });
+
   it('should handle creation', async () => {
     const mockCreateObjectURL = jest.fn(() => 'mock-url');
     const original = global.URL.createObjectURL;
