@@ -50,7 +50,7 @@ describe('ImageCache', () => {
 
       files.forEach((file) => ImageCache.formImageURL(false, file));
 
-      const oldImages = ImageCache.oldimages.toArray();
+      const oldImages = [...ImageCache.oldimages.items];
       expect(oldImages.length).toBe(ImageCache.CACHED_IMAGES);
       expect(oldImages.every((url) => url.startsWith('blob:'))).toBe(true);
 

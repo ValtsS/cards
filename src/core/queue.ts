@@ -1,7 +1,10 @@
 export class Queue<T> {
   static EMPTY_ERROR = 'Queue is empty';
 
-  private items: T[] = [];
+  private _items: T[] = [];
+  public get items(): T[] {
+    return this._items;
+  }
 
   enqueue(item: T): void {
     this.items.push(item);
@@ -18,9 +21,5 @@ export class Queue<T> {
 
   size(): number {
     return this.items.length;
-  }
-
-  toArray(): T[] {
-    return [...this.items];
   }
 }
