@@ -1,7 +1,7 @@
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import * as Schema from '@/__generated__/graphql';
 import { setupDefaultAPI } from '@/providers/card/api-test-helper';
-import { cardTestData2B } from '@/providers/card/card-test-data';
+import { cardTestData2B } from '@/../__mocks__/card-test-data';
 import { setupStore } from '@/store';
 import { StoreStatus, fetchCards, fetchParams } from './cardsApi';
 

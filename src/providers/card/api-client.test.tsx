@@ -1,8 +1,8 @@
 import * as Schema from '@/__generated__/graphql';
-import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { getCard, getCards } from './api-client';
 import { setupDefaultAPI } from './api-test-helper';
-import { cardTestData2B } from './card-test-data';
+import { cardTestData2B } from '@/../__mocks__/card-test-data';
 
 describe('Client tests', () => {
   const api = new MockGqlApi();

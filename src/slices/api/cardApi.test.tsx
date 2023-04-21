@@ -3,7 +3,7 @@ import { setupStore } from '@/store';
 import { fetchCard } from './cardApi';
 import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { setupDefaultAPI } from '@/providers/card/api-test-helper';
-import { cardTestData2B } from '@/providers/card/card-test-data';
+import { cardTestData2B } from '../../../__mocks__/card-test-data';
 import { StoreStatus } from './cardsApi';
 
 describe('cardApi tests', () => {

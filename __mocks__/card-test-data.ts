@@ -1,5 +1,5 @@
 import * as Schema from '@/__generated__/graphql';
-import { CardData } from './card-data';
+import { CardData } from '@/providers/card/card-data';
 
 let dummy = 999999;
 

@@ -1,6 +1,6 @@
 import * as Schema from '@/__generated__/graphql';
-import { MockGqlApi } from '../../../__mocks__/mock-gql-api';
-import { pagedTwoCards, singleCard, twoCards } from './card-test-data';
+import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
+import { pagedTwoCards, singleCard, twoCards } from '@/../__mocks__/card-test-data';
 
 export function setupDefaultAPI(api: MockGqlApi) {
   api.configureQuery<Schema.GetCardsQuery>({
