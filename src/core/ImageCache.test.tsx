@@ -53,20 +53,21 @@ describe('ImageCache', () => {
 
       files.forEach((file) => imageCache.formImageURL(false, file));
 
-      const oldImages = imageCache.oldimages.toArray();
+      const oldImages = ImageCache.oldimages.toArray();
       expect(oldImages.length).toBe(ImageCache.CACHED_IMAGES);
       expect(oldImages.every((url) => url.startsWith('blob:'))).toBe(true);
 
-      expect(imageCache.oldimages.size()).toBe(ImageCache.CACHED_IMAGES);
+      expect(ImageCache.oldimages.size()).toBe(ImageCache.CACHED_IMAGES);
     });
 
     it('does not store image URLs when permanent is false', () => {
+      const count = ImageCache.oldimages.size();
       const file = new File(['file content'], 'file.jpg', { type: 'image/jpeg' });
       for (let i = 0; i < ImageCache.CACHED_IMAGES + 1; i++) {
-        const url = imageCache.formImageURL(true, file);
+        const url = imageCache.formImageURL(false, file);
         expect(url).toMatch(/^blob:/);
       }
-      expect(imageCache.oldimages.size()).toBe(0);
+      expect(ImageCache.oldimages.size()).toBe(count);
     });
   });
 });

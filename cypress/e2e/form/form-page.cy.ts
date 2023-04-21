@@ -16,15 +16,14 @@ describe('Main page', () => {
 
   beforeEach(() => {
     cy.visit('/former').wait(200);
+    checkImportantBits();
   });
 
   it('check that important parts are present', function () {
-    checkImportantBits();
+    expect(true).to.be.eq(true);
   });
 
   it('trigger all errors', function () {
-    checkImportantBits();
-
     pushSubmit();
 
     FieldNames.forEach((_, idx) =>
@@ -37,18 +36,30 @@ describe('Main page', () => {
   });
 
   it('fill and create normal', function () {
-    checkImportantBits();
     fillForm({ flipped: false });
   });
 
   it('fill and create flipped', function () {
-    checkImportantBits();
     fillForm({ flipped: false });
   });
 
-  it('fill and create multiple cards', function () {
-    checkImportantBits();
+  it('image preview caching', function () {
+    for (let i = 0; i < 64; i++) {
+      const fixtureName = i % 2 == 0 ? 'bg.jpg' : 'circle.png';
 
+      cy.fixture('bg.jpg', null).then((e: Buffer) =>
+        cy.get('input[type=file]').selectFile({
+          contents: e,
+          fileName: i.toString() + fixtureName,
+          lastModified: Date.now(),
+        })
+      );
+
+      cy.get('.bg-alt img.preview').should('be.visible');
+    }
+  });
+
+  it('fill and create multiple cards', function () {
     const deadline = new Date(new Date().getTime() + 10 * 1000);
     let counter = 0;
 
