@@ -76,14 +76,21 @@ async function entryRender(url?: string) {
   return { nodes, preloadedJson };
 }
 
-export async function gc(url: string): Promise<ReactNode> {
+export async function getContent(css: string, url: string): Promise<ReactNode> {
   const { nodes, preloadedJson } = await entryRender(url);
   const base64 = Buffer.from(preloadedJson).toString('base64');
-
   return (
     <>
-      <div id="root">{nodes}</div>
-      <script dangerouslySetInnerHTML={{ __html: `window.__PRELOADED_STATE__="${base64}"` }} />
+      <html lang="en">
+        <head>
+          <meta charSet="UTF-8" />
+          {css && <link rel="stylesheet" href={css} />}
+        </head>
+        <body>
+          <div id="root">{nodes}</div>
+          <script dangerouslySetInnerHTML={{ __html: `window.__PRELOADED_STATE__="${base64}"` }} />
+        </body>
+      </html>
     </>
   );
 }

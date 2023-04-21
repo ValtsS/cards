@@ -47,10 +47,13 @@ async function entryRender() {
   );
 }
 
-export async function gc(): Promise<ReactNode> {
+export async function getContent(): Promise<ReactNode> {
   return <div id="root">{await entryRender()}</div>;
 }
 
-const root = document.getElementById('root') as HTMLElement;
+async function init() {
+  const root = document.getElementById('root') as HTMLElement;
+  hydrateRoot(root, await entryRender());
+}
 
-hydrateRoot(root, await entryRender());
+init();
