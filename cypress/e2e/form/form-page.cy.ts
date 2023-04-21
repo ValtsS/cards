@@ -15,7 +15,7 @@ describe('Main page', () => {
   ];
 
   beforeEach(() => {
-    cy.visit('/former');
+    cy.visit('/former').wait(200);
   });
 
   it('check that important parts are present', function () {

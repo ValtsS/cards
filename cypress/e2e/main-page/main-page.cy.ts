@@ -82,7 +82,7 @@ describe('Main page', () => {
 
     checkApiPrev('YES');
     getPrevButton().should('be.enabled');
-    getPrevButton().click().wait(50); // caching should work
+    getPrevButton().click().wait(500); // caching should work
     validateOffset(0);
   });
 
@@ -198,7 +198,7 @@ describe('Main page', () => {
   }
 
   function waitForQuery() {
-    cy.wait('@getCards').wait(50);
+    cy.wait('@getCards').wait(250);
   }
 
   function getNextButton(): Cypress.Chainable<JQuery<HTMLElement>> {
