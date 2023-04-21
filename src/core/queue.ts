@@ -12,11 +12,6 @@ export class Queue<T> {
     return this.items.shift() as T;
   }
 
-  peek(): T | undefined {
-    if (this.isEmpty()) throw Error(Queue.EMPTY_ERROR);
-    return this.items[0];
-  }
-
   isEmpty(): boolean {
     return this.items.length === 0;
   }
