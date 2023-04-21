@@ -26,7 +26,7 @@ jobs:
         run: nohup npm run test:startserver-dev > /dev/null 2>&1 & echo $! > test-server.pid
       - name: Test
         run: npm run test
-      - name: Test
+      - name: Coverage
         run: npm run coverage
       - name: Run Cypress
         run: sleep 10s && npm run test:e2e
