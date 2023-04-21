@@ -112,7 +112,7 @@ export class CardValidator {
     return Object.keys(this.errors).length === 0;
   }
 
-  prepareCard(vals: CardFormValues, cache: ImageCache): CardData {
+  prepareCard(vals: CardFormValues): CardData {
     const parsed = Date.parse(vals.addedat);
 
     const c = Cards.alloc();
@@ -122,7 +122,7 @@ export class CardValidator {
     c.addedat = isNaN(parsed) === false ? new Date(parsed).getTime() : undefined;
     c.rating = +(vals.rating ? vals.rating : 0);
     c.grayscale = vals.grayscale;
-    c.imageUrl = cache.formImageURL(true, vals.bigimagemage[0]);
+    c.imageUrl = ImageCache.formImageURL(true, vals.bigimagemage[0]);
 
     const selected = vals.radioflip;
 

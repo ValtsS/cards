@@ -1,4 +1,3 @@
-import ImageCache from '@/core/ImageCache';
 import { Cards } from '@/providers';
 import { CardFormValues, CardValidator } from './card-validator';
 
@@ -155,7 +154,6 @@ describe('CardValidator Prepare Card', () => {
   });
 
   describe('prepareCard', () => {
-    const cache = new ImageCache();
     const validator = new CardValidator();
     const validValues: CardFormValues = {
       title: 'Test Card',
@@ -169,7 +167,7 @@ describe('CardValidator Prepare Card', () => {
     };
 
     it('should prepare card data with valid input', () => {
-      const card = validator.prepareCard(validValues, cache);
+      const card = validator.prepareCard(validValues);
       expect(card.title).toBe('Test Card');
       expect(card.text).toBe('This is a test card.');
       expect(card.price).toBe('9.99');
@@ -185,7 +183,7 @@ describe('CardValidator Prepare Card', () => {
         ...validValues,
         radioflip: 'Flipped',
       };
-      const card = validator.prepareCard(values, cache);
+      const card = validator.prepareCard(values);
       expect(card.flipimg).toBe(true);
     });
 
@@ -194,7 +192,7 @@ describe('CardValidator Prepare Card', () => {
         ...validValues,
         radioflip: '',
       };
-      const card = validator.prepareCard(values, cache);
+      const card = validator.prepareCard(values);
       expect(card).toBeTruthy();
       expect(card.flipimg).toBe(undefined);
     });
@@ -204,7 +202,7 @@ describe('CardValidator Prepare Card', () => {
         rating: '',
         addedat: 'trash',
       };
-      const card = validator.prepareCard(values, cache);
+      const card = validator.prepareCard(values);
       expect(card).toBeTruthy();
       expect(card.rating).toBe(0);
       expect(card.addedat).toBe(undefined);

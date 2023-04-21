@@ -4,7 +4,7 @@ export default class ImageCache {
   static CACHED_IMAGES = 8;
   static oldimages: Queue<string> = new Queue<string>();
 
-  formImageURL(permanent: boolean, file: File): string | undefined {
+  static formImageURL(permanent: boolean, file: File): string | undefined {
     while (ImageCache.oldimages.size() >= ImageCache.CACHED_IMAGES) {
       URL.revokeObjectURL(ImageCache.oldimages.dequeue());
     }
