@@ -20,14 +20,10 @@ export const cardsSlice = createSlice({
       const lastcardUUID = state.data.length > 0 ? state.data[0].uuid : -1;
       if (card.uuid != lastcardUUID) state.data.unshift(card);
     },
-    deleteCard: (state, action: PayloadAction<string>) => {
-      const toRemoveUUID = action.payload;
-      state.data = state.data.filter((x) => x.uuid !== toRemoveUUID);
-    },
   },
 });
 
-export const { insertCard, deleteCard } = cardsSlice.actions;
+export const { insertCard } = cardsSlice.actions;
 
 export const cardReducer = cardsSlice.reducer;
 

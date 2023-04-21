@@ -19,23 +19,4 @@ describe('cardSlice tests', () => {
     updatedState = store.getState();
     expect(updatedState.cards.data.length).toBe(1);
   });
-
-  it('should delete a card', async () => {
-    const cardData = { uuid: 'some-uuid', data: 'some-data' };
-
-    const store = setupStore({
-      cards: { data: [cardData] },
-    });
-
-    let updatedState = store.getState();
-    expect(updatedState.cards.data.length).toBe(1);
-    const action = cardsSlice.actions.deleteCard(cardData.uuid);
-
-    // Act
-    store.dispatch(action);
-
-    // Assert
-    updatedState = store.getState();
-    expect(updatedState.cards.data.length).toBe(0);
-  });
 });
