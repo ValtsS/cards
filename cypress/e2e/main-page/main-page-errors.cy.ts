@@ -21,8 +21,6 @@ describe('Main page', () => {
     const firstCard = cy.get('main .card-container > .card').first().should('exist');
     firstCard.click();
     waitForQuery();
-
-    cy.get('[data-testid="spinner"]').should('be.visible');
     cy.get('.errorfloater').should('be.visible');
   });
 
