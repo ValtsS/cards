@@ -46,7 +46,7 @@ describe('Main page', () => {
     fillForm({ flipped: false });
   });
 
-  it('fill and create many cards', function () {
+  it('fill and create multiple cards', function () {
     checkImportantBits();
 
     const deadline = new Date(new Date().getTime() + 10 * 1000);
