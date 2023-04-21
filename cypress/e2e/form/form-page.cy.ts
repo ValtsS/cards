@@ -47,7 +47,7 @@ describe('Main page', () => {
   });
 
   it('fill and create flipped', function () {
-    fillForm({ flipped: false });
+    fillForm({ flipped: true });
   });
 
   it('image preview caching', function () {
