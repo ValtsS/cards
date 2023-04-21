@@ -42,18 +42,14 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
 
   const onSubmit = (data: CardFormValues) => {
     const c = validator.prepareCard(data);
-    const isValid = validator.isValid(c);
-
-    if (!isValid) throw Error('Invalid data passed, should be cleaned in prevalidation. ');
-
     setState((prevState) => ({
       ...prevState,
       card: c,
-      previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
+      previewImageUrl: undefined,
     }));
 
-    if (isValid && props.onCardCreate) props.onCardCreate(c);
-    if (isValid) methods.reset();
+    if (props.onCardCreate) props.onCardCreate(c);
+    methods.reset();
   };
 
   return (

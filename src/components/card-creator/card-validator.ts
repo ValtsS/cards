@@ -83,35 +83,6 @@ export class CardValidator {
     return true;
   };
 
-  isValid(card: CardData): boolean {
-    this.errors = {};
-
-    if (!card.title) this.errors['title'] = CardValidator.ERRORS.TITLE_REQUIRED;
-    if (!card.text) this.errors['text'] = CardValidator.ERRORS.TEXT_REQUIRED;
-    if (!card.price) this.errors['price'] = CardValidator.ERRORS.PRICE_REQUIRED;
-    else {
-      if (+card.price <= 0) this.errors['price'] = CardValidator.ERRORS.PRICE_VALID;
-    }
-
-    if (!card.addedat) this.errors['addedat'] = CardValidator.ERRORS.ADDED_AT_REQUIRED;
-    else {
-      if (card.addedat > new Date().getTime())
-        this.errors['addedat'] = CardValidator.ERRORS.ADDED_AT_FUTURE;
-    }
-
-    if (!card.rating || card.rating < 1)
-      this.errors['rating'] = CardValidator.ERRORS.RATING_REQUIRED;
-
-    if (!card.grayscale) this.errors['grayscale'] = CardValidator.ERRORS.GRAYSCALE_REQUIRED;
-
-    if (!card.imageUrl) this.errors['bigimagemage'] = CardValidator.ERRORS.IMAGE_REQUIRED;
-
-    if (typeof card.flipimg === 'undefined')
-      this.errors['radioflip'] = CardValidator.ERRORS.ORIENTATION_REQUIRED;
-
-    return Object.keys(this.errors).length === 0;
-  }
-
   prepareCard(vals: CardFormValues): CardData {
     const parsed = Date.parse(vals.addedat);
 
