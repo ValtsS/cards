@@ -59,6 +59,16 @@ describe('Main page', () => {
     }
   });
 
+  it('image invalid upload', function () {
+    cy.get('input[type=file]').selectFile({
+      contents: Cypress.Buffer.from('haha'),
+      fileName: 'haha.json',
+      lastModified: Date.now(),
+    });
+
+    cy.get('.bg-alt img.preview').should('not.exist');
+  });
+
   it('fill and create multiple cards', function () {
     const deadline = new Date(new Date().getTime() + 10 * 1000);
     let counter = 0;
