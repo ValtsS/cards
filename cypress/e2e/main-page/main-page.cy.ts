@@ -43,7 +43,7 @@ describe('Main page', () => {
     validatePriceOrder(false);
   });
 
-  it('it should open on click', function () {
+  it('it should open modal on click', function () {
     checkImportantBits();
     validateLoadedCardCount();
 
@@ -61,6 +61,19 @@ describe('Main page', () => {
     cy.get(':nth-child(2) > .card > .inner > .date').should('exist');
 
     cy.get('.close').should('be.visible').click();
+    cy.get('[data-testid="overlay-content"]').should('not.exist');
+  });
+
+  it('it should open modal on click and close on overlay', function () {
+    checkImportantBits();
+    validateLoadedCardCount();
+
+    const firstCard = cy.get('main .card-container > .card').first().should('exist');
+    firstCard.click();
+    waitForQuery();
+
+    cy.get('[data-testid="overlay-content"]').should('be.visible');
+    cy.get('[data-testid="overlay"]').should('be.visible').click(1, 1);
     cy.get('[data-testid="overlay-content"]').should('not.exist');
   });
 
