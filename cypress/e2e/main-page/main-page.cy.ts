@@ -199,6 +199,15 @@ describe('Main page', () => {
 
   function waitForQuery() {
     cy.wait('@getCards').wait(250);
+
+    getApiReady().then((val) => {
+      const trimmedVal = val.toLowerCase().trim();
+      expect(trimmedVal).to.be.oneOf(['succeeded', 'idle']);
+    });
+  }
+
+  function getApiReady() {
+    return cy.get('.api-state-container > :nth-child(1) > span').should('exist').invoke('text');
   }
 
   function getNextButton(): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -211,6 +220,7 @@ describe('Main page', () => {
   function getPrevButton(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy
       .get('.buttonland > button:nth-child(2)')
+
       .should('exist')
       .and('contain.text', TEXT_PAGE_LEFT);
   }
