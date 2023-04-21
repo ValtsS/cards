@@ -5,25 +5,33 @@ import { RootLayout } from 'routes/root-layout';
 import { CardsApp } from './cards-app';
 import { AboutPage } from './pages';
 import { BrowserRouter } from 'react-router-dom';
+import { setupStore } from './store';
+import { Provider } from 'react-redux';
 
 describe('CardsApp', () => {
   it('should render main page with correct props', async () => {
+    const store = setupStore();
+
     const routes: RouteConfig[] = [
       {
         path: '/',
         element: (
-          <RootLayout>
-            <AboutPage />
-          </RootLayout>
+          <Provider store={store}>
+            <RootLayout>
+              <AboutPage />
+            </RootLayout>
+          </Provider>
         ),
       },
     ];
 
     act(() =>
       render(
-        <BrowserRouter>
-          <CardsApp routesConfig={routes} />
-        </BrowserRouter>
+        <Provider store={store}>
+          <BrowserRouter>
+            <CardsApp routesConfig={routes} />
+          </BrowserRouter>
+        </Provider>
       )
     );
 
