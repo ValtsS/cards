@@ -35,6 +35,13 @@ describe('Main page', () => {
     errorCountShouldBe(8);
   });
 
+  it('trigger negative price error', function () {
+    pushSubmit();
+
+    setTextInput(3, '-3');
+    cy.get('.validation-error').should('contain.text', 'positive');
+  });
+
   it('fill and create normal', function () {
     fillForm({ flipped: false });
   });
