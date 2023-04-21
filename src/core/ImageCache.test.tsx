@@ -1,7 +1,6 @@
 import ImageCache from './ImageCache';
 
 describe('ImageCache', () => {
-
   let originalCreate: (obj: Blob | MediaSource) => string;
   let originalRevoke: (url: string) => void;
 
