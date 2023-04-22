@@ -39,7 +39,7 @@ jobs:
         run: pkill -F dev-test-server.pid || true
       - name: Output log if failed
         if: ${{ always() }} && failure()
-        run: cat ./server-dev.log
+        run: cat ./server-dev.log && cat ./package.json
 
   test-prod:
     runs-on: [self-hosted, linux, x64]
@@ -57,7 +57,7 @@ jobs:
         run: pkill -F prod-test-server.pid || true
       - name: Output log if failed
         if: ${{ always() }} && failure()
-        run: cat ./server-prod.log
+        run: cat ./server-prod.log && cat ./package.json
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
