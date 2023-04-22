@@ -5,10 +5,9 @@ import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { CardsApp } from './cards-app';
 import { AppContextProvider, ModalDialogProvider } from './providers';
-import { getCards } from './providers/card/api-client';
 import { defaultRoutes } from './routes';
-import { CardsResultStore, StoreStatus, fetchCards, fetchParams } from './slices/api/cardsApi';
-import { RootState, setupStore } from './store';
+import { fetchCards, fetchParams } from './slices/api/cardsApi';
+import { setupStore } from './store';
 const { ApolloClient, InMemoryCache } = pkg;
 
 async function entryRender(url?: string) {
