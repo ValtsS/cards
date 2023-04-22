@@ -37,7 +37,7 @@ jobs:
         if: always()
         run: pkill -F dev-test-server.pid || true
       - name: Output log if failed
-        if: ${{ job.status != 'success' || job.needs.${{ matrix.job }}.result == 'failure' }}
+        if: ${{ always() }} && failure()
         run: cat ./server-dev.log
 
   test-prod:
@@ -54,7 +54,7 @@ jobs:
         if: always()
         run: pkill -F prod-test-server.pid || true
       - name: Output log if failed
-        if: ${{ job.status != 'success' || job.needs.${{ matrix.job }}.result == 'failure' }}
+        if: ${{ always() }} && failure()
         run: cat ./server-prod.log
 
   sonarqube:
