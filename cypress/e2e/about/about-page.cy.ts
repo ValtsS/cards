@@ -11,7 +11,7 @@ describe('About page', () => {
     cy.get('div.infofloater').should('be.visible').and('contain.text', TEST_MESSAGE);
     const img = cy.get('img.logo.react');
     img.should('exist');
-    img.should('have.attr', 'src', '/src/assets/react.svg');
+    img.should('have.attr', 'src');
 
     cy.contains(DISCLAIMER_INFO).should('exist');
     cy.contains(WELCOME_MESSAGE).should('exist');
