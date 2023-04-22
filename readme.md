@@ -27,4 +27,3 @@ or
 _Unit and E2R Test coverage:_
 `npm run dev`
 `npm run coverage`
-
