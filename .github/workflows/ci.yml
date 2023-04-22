@@ -30,18 +30,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [dev, prod]
+        mode:
+          [
+            { mode: dev, url: 'http://localhost:5999', port: 5999 },
+            { mode: prod, url: 'http://localhost:5998', port 5998 },
+          ]
     needs: [build-and-test]
     env:
-      CYPRESS_BASE_URL: 'http://localhost:599${{ matrix.mode == "dev" ? 9 : 8 }}'
-      PORT: '599${{ matrix.mode == "dev" ? 9 : 8 }}'
+      CYPRESS_BASE_URL: ${{ matrix.mode.url }}
+      PORT: ${{ matrix.mode.port }}
     steps:
       - uses: actions/checkout@v3
       - name: Debug
         run: |
           pwd
           echo "PORT = ${PORT}"
-          echo "CYPRESS_BASE_URL = ${CYPRESS_BASE_URL}"	
+          echo "CYPRESS_BASE_URL = ${CYPRESS_BASE_URL}"
       - name: Check file existence
         run: |
           if [ -e "server.pid" ]; then
@@ -58,8 +62,8 @@ jobs:
         run: npm run check-strict
       - name: Build dev and prod code
         run: npm run build
-      - name: Start test ${{ matrix.mode }} server
-        run: nohup npm run ${{ matrix.mode }} > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
+      - name: Start test ${{ matrix.mode.mode }} server
+        run: nohup npm run ${{ matrix.mode.mode }} > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
