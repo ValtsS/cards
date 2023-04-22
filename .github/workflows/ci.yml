@@ -33,10 +33,18 @@ jobs:
         mode: [dev, prod]
     needs: [build-and-test]
     env:
-      CYPRESS_BASE_URL: 'http://localhost:599{{ matrix.mode == "dev" ? 9 : 8 }}'
-      PORT: '599{{ matrix.mode == "dev" ? 9 : 8 }}'
+      CYPRESS_BASE_URL: 'http://localhost:599${{ matrix.mode == "dev" ? 9 : 8 }}'
+      PORT: '599${{ matrix.mode == "dev" ? 9 : 8 }}'
     steps:
       - uses: actions/checkout@v3
+      - name: Debug
+        run: pwd && echo
+      - name: Check file existence
+        run: |
+          if [ -e "server.pid" ]; then
+            echo "Clean location expected!"
+            exit 1
+          fi
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -47,8 +55,8 @@ jobs:
         run: npm run check-strict
       - name: Build dev and prod code
         run: npm run build
-      - name: Start test $MODE server
-        run: nohup npm run $MODE > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
+      - name: Start test ${{ matrix.mode }} server
+        run: nohup npm run ${{ matrix.mode }} > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
