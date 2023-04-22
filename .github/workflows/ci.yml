@@ -33,7 +33,7 @@ jobs:
         mode:
           [
             { mode: dev, url: 'http://localhost:5999', port: 5999 },
-            { mode: prod, url: 'http://localhost:5998', port: 5998 },
+            { mode: prod-default, url: 'http://localhost:5998', port: 5998 },
           ]
     needs: [build-and-test]
     env:
