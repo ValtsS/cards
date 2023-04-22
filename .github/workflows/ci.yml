@@ -25,7 +25,6 @@ jobs:
       - name: Debug
         run: pwd && ls -l
 
-
   test-dev:
     runs-on: [self-hosted, linux, x64]
     needs: [build-and-test, test-prod]
