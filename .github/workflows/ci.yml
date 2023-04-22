@@ -36,6 +36,7 @@ jobs:
             { mode: prod-default, url: 'http://localhost:5998', port: 5998 },
           ]
     needs: [build-and-test]
+    working-directory: ${{ matrix.mode.mode }}
     env:
       CYPRESS_BASE_URL: ${{ matrix.mode.url }}
       PORT: ${{ matrix.mode.port }}
@@ -77,6 +78,7 @@ jobs:
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
+    working-directory: sonar
     needs: build-and-test
     strategy:
       fail-fast: false
@@ -86,6 +88,5 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          path: 'sonartest'
       - name: Sonarqube
         run: npm run sonar
