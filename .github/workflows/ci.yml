@@ -28,9 +28,10 @@ jobs:
     needs: [build-and-test, test-prod]
     env:
       CYPRESS_BASE_URL: 'http://localhost:5999'
+      PORT: 5999
     steps:
       - name: Start test Dev server
-        run: nohup npm run ci:startserver-dev > ./server-dev.log 2>&1 & echo $! > dev-test-server.pid
+        run: nohup npm run ci:startserver-dev > ./server-dev.log 2>&1 & echo $! > dev-test-server.pid && sleep 2s && cat ./server-dev.log
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
@@ -45,9 +46,10 @@ jobs:
     needs: [build-and-test]
     env:
       CYPRESS_BASE_URL: 'http://localhost:5998'
+      PORT: 5998
     steps:
       - name: Start test prod server
-        run: nohup npm run ci:startserver-prod > ./server-prod.log 2>&1 & echo $! > prod-test-server.pid
+        run: nohup npm run ci:startserver-prod > ./server-prod.log 2>&1 & echo $! > prod-test-server.pid && sleep 2s && cat ./server-dev.log
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
