@@ -10,9 +10,15 @@ import { fetchCards, fetchParams } from './slices/api/cardsApi';
 import { setupStore } from './store';
 const { ApolloClient, InMemoryCache } = pkg;
 
-async function entryRender(url?: string) {
+const apiUrl = process.env.GQL_API;
+
+if (!apiUrl) {
+  console.error(`GQL_API is not specified in .env`);
+}
+
+async function entryRender(url?: string): Promise<{ nodes: JSX.Element; preloadedJson: string }> {
   const client = new ApolloClient({
-    uri: 'http://ng4.velns.org:8000/graphql',
+    uri: apiUrl,
     cache: new InMemoryCache(),
   });
 
@@ -54,7 +60,8 @@ async function entryRender(url?: string) {
 
 export async function getContent(css: string, url: string): Promise<ReactNode> {
   const { nodes, preloadedJson } = await entryRender(url);
-  const base64 = Buffer.from(preloadedJson).toString('base64');
+  const base64state = Buffer.from(preloadedJson).toString('base64');
+  const base64api = Buffer.from(apiUrl ?? '').toString('base64');
   return (
     <>
       <html lang="en">
@@ -64,7 +71,10 @@ export async function getContent(css: string, url: string): Promise<ReactNode> {
         </head>
         <body>
           <div id="root">{nodes}</div>
-          <script dangerouslySetInnerHTML={{ __html: `window.__PRELOADED_STATE__="${base64}"` }} />
+          <script
+            dangerouslySetInnerHTML={{ __html: `window.__PRELOADED_STATE__="${base64state}"` }}
+          />
+          <script dangerouslySetInnerHTML={{ __html: `window.__API_URL__="${base64api}"` }} />
         </body>
       </html>
     </>

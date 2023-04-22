@@ -12,12 +12,15 @@ import { setupStore } from './store';
 declare global {
   interface Window {
     __PRELOADED_STATE__?: string;
+    __API_URL__?: string;
   }
 }
 
 async function entryRender() {
+  const apiUrl = window.__API_URL__ && atob(window.__API_URL__);
+
   const client = new ApolloClient({
-    uri: 'http://ng4.velns.org:8000/graphql',
+    uri: apiUrl,
     cache: new InMemoryCache(),
   });
 

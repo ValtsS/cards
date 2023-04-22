@@ -3,8 +3,10 @@ import * as path from 'path';
 import { ReactNode } from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import { createServer as createViteServer } from 'vite';
-
+import { config as dotenvConfig } from 'dotenv';
 import { fileURLToPath } from 'url';
+
+dotenvConfig();
 
 const PORT = process.env.PORT || 7000;
 const app = express();
