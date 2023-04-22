@@ -18,7 +18,7 @@
     "coverage": "npm run test:clean && npm run coverage:jest && npm run test:e2e",
     "sonar": "/sonar/runsonar.sh",
     "ci:startserver-dev": "ts-node ./server.ts",
-    "ci:startserver-prod": "cross-env NODE_ENV=production ts-node ./server.ts",
+    "ci:startserver-prod": "cross-env NODE_ENV=production node dist/server.js",
     "pre-commit": "lint-staged",
     "gql:compile": "graphql-codegen",
     "gql:watch": "graphql-codegen -w",
