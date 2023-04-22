@@ -41,7 +41,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     needs: [build-and-test, test-dev]
     env:
-      CYPRESS_BASE_URL: 'http://localhost:5998'
+      CYPRESS_BASE_URL: 'http://localhost:5999'
     steps:
       - name: Start test prod server
         run: nohup npm run ci:startserver-prod > /dev/null 2>&1 & echo $! > prod-test-server.pid
