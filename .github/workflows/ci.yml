@@ -6,6 +6,9 @@ jobs:
   build-and-test:
     runs-on: [self-hosted, linux, x64]
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: builder
     if: ${{ github.event.repository.owner.login == github.actor }}
     steps:
       - uses: actions/checkout@v3
@@ -87,7 +90,7 @@ jobs:
         mode: [sonar]
     defaults:
       run:
-        working-directory: ${{ matrix.mode.mode }}
+        working-directory: sonar
     steps:
       - uses: actions/checkout@v3
         with:
