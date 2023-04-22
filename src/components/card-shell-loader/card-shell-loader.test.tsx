@@ -2,7 +2,7 @@ import { MockGqlApi } from '@/../__mocks__/mock-gql-api';
 import { renderWithProviders, waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/providers';
 import { setupPagedDefaultAPI } from '@/providers/card/api-test-helper';
-import { cardTestData2, mockCardTestData } from '@/providers/card/card-test-data';
+import { cardTestData2, mockCardTestData } from '@/../__mocks__/card-test-data';
 import { setupStore } from '@/store';
 import { act, fireEvent, screen } from '@testing-library/react';
 import React from 'react';

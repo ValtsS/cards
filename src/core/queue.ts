@@ -1,7 +1,10 @@
 export class Queue<T> {
   static EMPTY_ERROR = 'Queue is empty';
 
-  private items: T[] = [];
+  private _items: T[] = [];
+  public get items(): T[] {
+    return this._items;
+  }
 
   enqueue(item: T): void {
     this.items.push(item);
@@ -12,20 +15,11 @@ export class Queue<T> {
     return this.items.shift() as T;
   }
 
-  peek(): T | undefined {
-    if (this.isEmpty()) throw Error(Queue.EMPTY_ERROR);
-    return this.items[0];
-  }
-
   isEmpty(): boolean {
     return this.items.length === 0;
   }
 
   size(): number {
     return this.items.length;
-  }
-
-  toArray(): T[] {
-    return [...this.items];
   }
 }

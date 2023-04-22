@@ -20,7 +20,6 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
     CardValidator.IMAGE_ORIENTATION.NORMAL,
     CardValidator.IMAGE_ORIENTATION.FLIPPED,
   ];
-  const imageCache = new ImageCache();
 
   const [state, setState] = useState(new LocalState());
 
@@ -30,7 +29,7 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
     let url: string | undefined = undefined;
 
     if (fileList && validator.onImageValidate(fileList) === true)
-      url = imageCache.formImageURL(false, fileList[0]);
+      url = ImageCache.formImageURL(false, fileList[0]);
 
     setState((prevState) => ({
       ...prevState,
@@ -42,19 +41,15 @@ export const CardCreator = (props: CardCreatorProps): ReactElement => {
   const register = methods.register;
 
   const onSubmit = (data: CardFormValues) => {
-    const c = validator.prepareCard(data, imageCache);
-    const isValid = validator.isValid(c);
-
-    if (!isValid) throw Error('Invalid data passed, should be cleaned in prevalidation. ');
-
+    const c = validator.prepareCard(data);
     setState((prevState) => ({
       ...prevState,
       card: c,
-      previewImageUrl: isValid ? undefined : prevState.previewImageUrl,
+      previewImageUrl: undefined,
     }));
 
-    if (isValid && props.onCardCreate) props.onCardCreate(c);
-    if (isValid) methods.reset();
+    if (props.onCardCreate) props.onCardCreate(c);
+    methods.reset();
   };
 
   return (

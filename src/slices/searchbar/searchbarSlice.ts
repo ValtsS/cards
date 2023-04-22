@@ -1,5 +1,6 @@
+import { createSlice } from '@/core/toolkitModule';
 import { RootState } from '@/store';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 interface SearchBarStore {
   query: { [key: string]: string };

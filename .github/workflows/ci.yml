@@ -3,14 +3,22 @@ name: CI
 on: push
 
 jobs:
-  build:
+  build-and-test:
     runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
+    defaults:
+      run:
+        working-directory: sonar
     if: ${{ github.event.repository.owner.login == github.actor }}
-
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          path: ${{ matrix.mode }}
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -19,9 +27,87 @@ jobs:
         run: npm ci
       - name: Strict checks
         run: npm run check-strict
-      - name: Build code
+      - name: Build dev and prod code
         run: npm run build
-      - name: Test
-        run: npm run coverage
+      - name: Unit Test
+        run: npm run coverage:jest
+      - name: Debug
+        run: pwd && ls -l
+
+  cypress:
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+          [
+            { mode: dev, url: 'http://localhost:5999', port: 5999 },
+            { mode: prod-default, url: 'http://localhost:5998', port: 5998 },
+          ]
+    needs: [build-and-test]
+    env:
+      CYPRESS_BASE_URL: ${{ matrix.mode.url }}
+      PORT: ${{ matrix.mode.port }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.mode.mode }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: ${{ matrix.mode.mode }}
+      - name: Debug
+        run: |
+          pwd
+          echo "PORT = ${PORT}"
+          echo "CYPRESS_BASE_URL = ${CYPRESS_BASE_URL}"
+      - name: Check file existence
+        run: |
+          if [ -e "server.pid" ]; then
+            echo "Clean location expected!"
+            exit 1
+          fi
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Strict checks
+        run: npm run check-strict
+      - name: Build dev and prod code
+        run: npm run build
+      - name: Start test ${{ matrix.mode.mode }} server
+        run: nohup npm run ${{ matrix.mode.mode }} > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
+      - name: Run Cypress
+        run: sleep 5s && npm run test:e2e
+      - name: Stop test server
+        if: always()
+        run: pkill -F server.pid || true
+      - name: Output log if failed
+        if: ${{ always() }} && failure()
+        run: cat ./server.log && cat ./package.json && pwd
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./${{ matrix.mode.mode }}
+
+  sonarqube:
+    runs-on: [self-hosted, linux, x64]
+    needs: build-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
+    defaults:
+      run:
+        working-directory: sonar
+    steps:
       - name: Sonarqube
         run: npm run sonar
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./sonar

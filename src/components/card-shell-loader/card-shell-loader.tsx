@@ -8,7 +8,6 @@ import { useAppDispatch } from '@/store';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { APIState } from '../api-state-indicator';
-import { FloatNotification } from '../float-notification';
 import { Spinner } from '../spinner/spinner';
 import './card-shell-loader.css';
 
@@ -21,7 +20,7 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
 
   const dispatch = useAppDispatch();
   const state = useSelector(selectApiCardsData);
-  const { state: notify, setMessage } = useNotifications();
+  const { setMessage } = useNotifications();
   const { apolloClient } = useAppContext();
 
   const [sortByPrice, setUseSort] = useState(0);
@@ -100,7 +99,6 @@ export const CardShellLoader = (props: CardShellLoaderProps) => {
           &#x00BB;
         </button>
       </span>
-      <FloatNotification message={notify.message} error={notify.error} />
       {state.status == StoreStatus.loading && <Spinner />}
       {state.cards && <CardShell data={state.cards} query={state.query} showdetails={true} />}
     </>

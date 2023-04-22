@@ -33,3 +33,11 @@ coverage
 junit.xml
 # trash from vite build
 src/**/*.js
+/server.js
+/.nyc_output
+/instrumented
+/cypress/videos
+/cypress/downloads
+/cypress/screenshots
+
+

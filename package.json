@@ -4,23 +4,34 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "eslint src --ext js,ts,tsx && prettier --check . && tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "dev": "ts-node ./server.ts",
+    "prod": "cross-env NODE_ENV=production PORT=6999 npm run prod-default",
+    "prod-default": "node dist/server.js",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
-    "test": "cross-env BABEL_ENV=test NODE_ENV=test jest",
+    "test:prep": "npm run test:clean && npx nyc instrument --compact=false src instrumented",
+    "test:jest": "npm run test:clean && cross-env BABEL_ENV=test NODE_ENV=test jest",
+    "test:e2e": "npm run test:prep && npx cypress run --e2e && npx nyc report && npx nyc report --reporter=text-summary",
+    "test:clean": "npx rimraf coverage && npx rimraf .nyc_output && npx rimraf instrumented",
+    "test": "npm run test:jest && npm run test:e2e",
     "watch-tests": "cross-env BABEL_ENV=test NODE_ENV=test jest --watch",
-    "coverage": "cross-env BABEL_ENV=test NODE_ENV=test jest --coverage",
+    "coverage:jest": "cross-env BABEL_ENV=test NODE_ENV=test jest --coverage",
+    "coverage": "npm run test:clean && npm run coverage:jest && npm run test:e2e",
     "sonar": "/sonar/runsonar.sh",
     "pre-commit": "lint-staged",
     "gql:compile": "graphql-codegen",
     "gql:watch": "graphql-codegen -w",
-    "check-strict": "eslint src --ext js,ts,tsx  --max-warnings 0 && tsc --noEmit --strict"
+    "check-strict": "eslint src --ext js,ts,tsx --max-warnings 0 && tsc --noEmit --strict",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx --config vite.server.config.ts",
+    "build:server-prod": "tsc -p tsconfig.node.json",
+    "moveserver": "mv ./server.js ./dist/server.js",
+    "build": "npm run lint && prettier --check . && tsc -noEmit && vite build && npm run build:server && npm run build:server-prod && npm run moveserver"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",
     "@reduxjs/toolkit": "^1.9.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
@@ -34,18 +45,22 @@
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.4",
+    "@cypress/code-coverage": "^3.10.4",
     "@graphql-codegen/cli": "^3.3.0",
     "@graphql-codegen/client-preset": "^3.0.0",
     "@graphql-codegen/introspection": "^3.0.1",
     "@graphql-codegen/typescript-graphql-request": "^4.5.9",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "@types/express": "^4.17.17",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "babel-plugin-istanbul": "^6.1.1",
     "cross-env": "^7.0.3",
+    "cypress": "^12.10.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
@@ -64,9 +79,13 @@
     "jest-fail-on-console": "^3.1.1",
     "jest-junit": "^15.0.0",
     "lint-staged": "^13.2.1",
+    "nyc": "^15.1.0",
     "prettier": "^2.8.7",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
-    "vite": "^4.2.1"
+    "vite": "^4.2.1",
+    "vite-plugin-istanbul": "^4.0.1"
   },
   "husky": {
     "hooks": {
@@ -77,6 +96,14 @@
     "src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "cypress/**/*",
+      "!cypress/integration/e2e/**/*",
+      "__mocks__/**/*",
+      "**/*.test.tsx"
     ]
   }
 }

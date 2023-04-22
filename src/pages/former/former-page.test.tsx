@@ -4,7 +4,7 @@ import {
   fillTheInputs,
 } from '@/components/card-creator/cart-creator-test-helper';
 import { AppContextProvider } from '@/providers';
-import { mockCardTestData } from '@/providers/card/card-test-data';
+import { mockCardTestData } from '@/../__mocks__/card-test-data';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { ConfirmationMessage, FormerPage } from './former-page';

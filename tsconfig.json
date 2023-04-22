@@ -14,10 +14,13 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "types": ["cypress"]
     },
     "resolveJsonModule": true
   },
   "include": ["./src/**/*", "styled.d.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "ts-node": {
+    "esm": true
+  }
 }

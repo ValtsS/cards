@@ -1,5 +1,5 @@
 import { CardData } from '@/providers';
-import { mockCardTestData } from '@/providers/card/card-test-data';
+import { mockCardTestData } from '@/../__mocks__/card-test-data';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Card, IMGCLS_FLIP, IMGCLS_GRAY } from './card';

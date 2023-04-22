@@ -1,12 +1,12 @@
-[![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module05)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
+[![CI](https://github.com/ValtsS/cards/actions/workflows/ci.yml/badge.svg?branch=module06)](https://github.com/ValtsS/cards/actions/workflows/ci.yml)
 
 **Cards**
-Module 05
+Module 06
 
 _Git:_
 
 `git clone https://github.com/ValtsS/cards.git`
-`git checkout module05`
+`git checkout module06`
 
 _Install_:
 
@@ -22,8 +22,8 @@ Run:
 
 or
 
-`npm run preview`
+`npm run prod`
 
-_Test coverage:_
-
+_Unit and E2R Test coverage:_
+`npm run dev`
 `npm run coverage`
