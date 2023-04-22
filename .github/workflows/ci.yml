@@ -6,12 +6,18 @@ jobs:
   build-and-test:
     runs-on: [self-hosted, linux, x64]
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
     defaults:
       run:
-        working-directory: builder
+        working-directory: sonar
     if: ${{ github.event.repository.owner.login == github.actor }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: ${{ matrix.mode }}
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -95,5 +101,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          path: ${{ matrix.mode }}
       - name: Sonarqube
         run: npm run sonar
