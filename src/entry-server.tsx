@@ -7,7 +7,7 @@ import { CardsApp } from './cards-app';
 import { AppContextProvider, ModalDialogProvider } from './providers';
 import { getCards } from './providers/card/api-client';
 import { defaultRoutes } from './routes';
-import { CardsResultStore, StoreStatus } from './slices/api/cardsApi';
+import { CardsResultStore, StoreStatus, fetchCards, fetchParams } from './slices/api/cardsApi';
 import { RootState, setupStore } from './store';
 const { ApolloClient, InMemoryCache } = pkg;
 
@@ -17,42 +17,19 @@ async function entryRender(url?: string) {
     cache: new InMemoryCache(),
   });
 
-  const store = setupStore();
-
-  const { cards: loaded, info } = await getCards(
+  const updatedStore = setupStore();
+  const defaultSearchParams: fetchParams = {
     client,
-    {
+    limit: 25,
+    offset: 0,
+    order: [],
+    params: {
       searchQuery: '',
       uuid: '',
     },
-    25,
-    0,
-    []
-  );
-
-  const initState = store.getState();
-
-  const newStateX: CardsResultStore = {
-    cards: loaded,
-    info,
-    status: StoreStatus.succeeded,
-    query: '',
-    errorcounter: 0,
-    limit: 25,
-    offset: 0,
-    orderBy: '',
   };
 
-  const newState: RootState = {
-    ...initState,
-    cardsAPI: {
-      ...initState.cardsAPI,
-      ...newStateX,
-    },
-  };
-
-  const updatedStore = setupStore(newState);
-
+  await updatedStore.dispatch(fetchCards(defaultSearchParams));
   const preloadedJson = JSON.stringify(updatedStore.getState());
 
   const app = (
