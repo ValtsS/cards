@@ -20,23 +20,21 @@ jobs:
         run: npm ci
       - name: Strict checks
         run: npm run check-strict
-      - name: Build code
+      - name: Build dev and prod code
         run: npm run build
+      - name: Unit Test
+        run: npm run coverage:jest
       - name: Start test Dev server
         run: nohup npm run test:startserver-dev > /dev/null 2>&1 & echo $! > test-server.pid
-      - name: Test
-        run: npm run test
-      - name: Coverage
-        run: npm run coverage
       - name: Run Cypress
-        run: sleep 10s && npm run test:e2e
+        run: sleep 5s && npm run test:e2e
       - name: Stop test server
         if: always()
         run: pkill -F test-server.pid || true
       - name: Start test prod server
         run: nohup npm run test:startserver-prod > /dev/null 2>&1 & echo $! > test-server.pid
       - name: Run Cypress
-        run: sleep 10s && npm run test:e2e
+        run: sleep 5s && npm run test:e2e
       - name: Stop test server
         if: always()
         run: pkill -F test-server.pid || true
