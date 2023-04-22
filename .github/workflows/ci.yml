@@ -80,7 +80,6 @@ jobs:
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
-    working-directory: sonar
     needs: build-and-test
     strategy:
       fail-fast: false
