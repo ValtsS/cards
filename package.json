@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node ./server.ts",
-    "prod": "cross-env NODE_ENV=production PORT=6999 node dist/server.js",
+    "prod": "cross-env NODE_ENV=production PORT=6999 npm run prod-default",
+    "prod-default": "node dist/server.js",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
     "test:prep": "npm run test:clean && npx nyc instrument --compact=false src instrumented",
