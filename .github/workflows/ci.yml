@@ -25,14 +25,14 @@ jobs:
       - name: Unit Test
         run: npm run coverage:jest
       - name: Start test Dev server
-        run: nohup npm run test:startserver-dev > /dev/null 2>&1 & echo $! > test-server.pid
+        run: nohup npm run ci:startserver-dev > /dev/null 2>&1 & echo $! > test-server.pid
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
         if: always()
         run: pkill -F test-server.pid || true
       - name: Start test prod server
-        run: nohup npm run test:startserver-prod > /dev/null 2>&1 & echo $! > test-server.pid
+        run: nohup npm run ci:startserver-prod > /dev/null 2>&1 & echo $! > test-server.pid
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
