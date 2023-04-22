@@ -38,7 +38,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Debug
-        run: pwd && echo
+        run: |
+          pwd
+          echo "PORT = ${PORT}"
+          echo "CYPRESS_BASE_URL = ${CYPRESS_BASE_URL}"	
       - name: Check file existence
         run: |
           if [ -e "server.pid" ]; then
