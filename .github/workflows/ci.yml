@@ -22,6 +22,9 @@ jobs:
         run: npm run build
       - name: Unit Test
         run: npm run coverage:jest
+      - name: Debug
+        run: pwd && ls -l
+
 
   test-dev:
     runs-on: [self-hosted, linux, x64]
@@ -30,6 +33,8 @@ jobs:
       CYPRESS_BASE_URL: 'http://localhost:5999'
       PORT: 5999
     steps:
+      - name: Debug
+        run: pwd && ls -l
       - name: Start test Dev server
         run: nohup npm run dev > ./server-dev.log 2>&1 & echo $! > dev-test-server.pid && sleep 4s && cat ./server-dev.log
       - name: Run Cypress
@@ -48,6 +53,8 @@ jobs:
       CYPRESS_BASE_URL: 'http://localhost:5998'
       PORT: 5998
     steps:
+      - name: Debug
+        run: pwd && ls -l
       - name: Start test prod server
         run: nohup npm run prod-default > ./server-prod.log 2>&1 & echo $! > prod-test-server.pid && sleep 4s && cat ./server-prod.log
       - name: Run Cypress
