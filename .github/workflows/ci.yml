@@ -5,6 +5,7 @@ on: push
 jobs:
   build-and-test:
     runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
     if: ${{ github.event.repository.owner.login == github.actor }}
     steps:
       - uses: actions/checkout@v3
@@ -23,12 +24,17 @@ jobs:
       - name: Debug
         run: pwd && ls -l
 
-  test-dev:
+  cypress:
     runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [dev, prod]
     needs: [build-and-test]
     env:
-      CYPRESS_BASE_URL: 'http://localhost:5999'
-      PORT: 5999
+      CYPRESS_BASE_URL: 'http://localhost:599{{ matrix.mode == "dev" ? 9 : 8 }}'
+      PORT: '599{{ matrix.mode == "dev" ? 9 : 8 }}'
     steps:
       - uses: actions/checkout@v3
       - name: Install Node.js
@@ -41,51 +47,24 @@ jobs:
         run: npm run check-strict
       - name: Build dev and prod code
         run: npm run build
-      - name: Start test Dev server
-        run: nohup npm run dev > ./server-dev.log 2>&1 & echo $! > dev-test-server.pid && sleep 4s && cat ./server-dev.log
+      - name: Start test $MODE server
+        run: nohup npm run $MODE > ./server.log 2>&1 & echo $! > server.pid && sleep 4s && cat ./server.log
       - name: Run Cypress
         run: sleep 5s && npm run test:e2e
       - name: Stop test server
         if: always()
-        run: pkill -F dev-test-server.pid || true
+        run: pkill -F server.pid || true
       - name: Output log if failed
         if: ${{ always() }} && failure()
-        run: cat ./server-dev.log && cat ./package.json && pwd
-
-  test-prod:
-    runs-on: [self-hosted, linux, x64]
-    needs: build-and-test
-    env:
-      CYPRESS_BASE_URL: 'http://localhost:5998'
-      PORT: 5998
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-      - name: Install dependencies
-        run: npm ci
-      - name: Strict checks
-        run: npm run check-strict
-      - name: Build dev and prod code
-        run: npm run build
-      - name: Debug
-        run: pwd && ls -l
-      - name: Start test prod server
-        run: nohup npm run prod-default > ./server-prod.log 2>&1 & echo $! > prod-test-server.pid && sleep 4s && cat ./server-prod.log
-      - name: Run Cypress
-        run: sleep 5s && npm run test:e2e
-      - name: Stop test server
-        if: always()
-        run: pkill -F prod-test-server.pid || true
-      - name: Output log if failed
-        if: ${{ always() }} && failure()
-        run: cat ./server-prod.log && cat ./package.json && pwd
+        run: cat ./server.log && cat ./package.json && pwd
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
     needs: build-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
     steps:
       - uses: actions/checkout@v3
         with:
