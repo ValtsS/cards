@@ -8,8 +8,6 @@ jobs:
     if: ${{ github.event.repository.owner.login == github.actor }}
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -27,13 +25,22 @@ jobs:
 
   test-dev:
     runs-on: [self-hosted, linux, x64]
-    needs: [build-and-test, test-prod]
+    needs: [build-and-test]
     env:
       CYPRESS_BASE_URL: 'http://localhost:5999'
       PORT: 5999
     steps:
-      - name: Debug
-        run: pwd && ls -l
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Strict checks
+        run: npm run check-strict
+      - name: Build dev and prod code
+        run: npm run build
       - name: Start test Dev server
         run: nohup npm run dev > ./server-dev.log 2>&1 & echo $! > dev-test-server.pid && sleep 4s && cat ./server-dev.log
       - name: Run Cypress
@@ -47,11 +54,22 @@ jobs:
 
   test-prod:
     runs-on: [self-hosted, linux, x64]
-    needs: [build-and-test]
+    needs: build-and-test
     env:
       CYPRESS_BASE_URL: 'http://localhost:5998'
       PORT: 5998
     steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Strict checks
+        run: npm run check-strict
+      - name: Build dev and prod code
+        run: npm run build
       - name: Debug
         run: pwd && ls -l
       - name: Start test prod server
@@ -69,5 +87,8 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     needs: build-and-test
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Sonarqube
         run: npm run sonar
